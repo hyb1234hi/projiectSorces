@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4F4F4" >
+
+    <TextView
+        android:id="@+id/emptyView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:textColor="#9D9999"
+        android:textSize="20sp"
+        android:visibility="gone" />
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        xmlns:pull="http://schemas.android.com/apk/res-auto/com.handmark.pulltorefresh.library"
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#0000"
+        android:cacheColorHint="#0000"
+        android:choiceMode="singleChoice"
+        android:divider="#0000"
+        android:fadingEdge="none"
+        android:listSelector="#0000"
+        pull:ptrMode="both"
+        pull:scrollBarPanelInAnimation="@anim/anim_pathlist_in"
+        pull:scrollBarPanelOutAnimation="@anim/anim_pathlist_out" />
+
+    <com.sinaleju.lifecircle.app.customviews.TitleBar
+        android:id="@+id/self_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="55dp" />
+
+</RelativeLayout>

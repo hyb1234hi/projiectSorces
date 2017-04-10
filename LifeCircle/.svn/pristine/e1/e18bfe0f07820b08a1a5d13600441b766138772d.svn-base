@@ -1,0 +1,911 @@
+package com.sinaleju.lifecircle.app.fragment;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.puremvc.java.interfaces.INotification;
+import org.puremvc.java.patterns.mediator.Mediator;
+
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
+import android.os.Message;
+import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.LayoutParams;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
+
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.handmark.pulltorefresh.library.extras.ExtendedListView;
+import com.handmark.pulltorefresh.library.extras.ExtendedListView.OnPositionChangedListener;
+import com.iss.imageloader.core.ImageLoader;
+import com.sinaleju.lifecircle.R;
+import com.sinaleju.lifecircle.app.AppConst;
+import com.sinaleju.lifecircle.app.AppContext;
+import com.sinaleju.lifecircle.app.ApplicationFacade;
+import com.sinaleju.lifecircle.app.activity.ChangeHeadBgActivity;
+import com.sinaleju.lifecircle.app.activity.ChangePosswordActivity;
+import com.sinaleju.lifecircle.app.activity.ChatDetailAct;
+import com.sinaleju.lifecircle.app.activity.HomeActivity;
+import com.sinaleju.lifecircle.app.activity.IndexActivity;
+import com.sinaleju.lifecircle.app.activity.PersonalInformationActivity;
+import com.sinaleju.lifecircle.app.activity.UpdatedSignatureActivity;
+import com.sinaleju.lifecircle.app.adapter.MultiTypesAdapter;
+import com.sinaleju.lifecircle.app.base_fragment.BaseFragment;
+import com.sinaleju.lifecircle.app.camera.ADCamera;
+import com.sinaleju.lifecircle.app.customviews.HorizontalListView;
+import com.sinaleju.lifecircle.app.customviews.LCScrollBarPanel;
+import com.sinaleju.lifecircle.app.customviews.TitleBar;
+import com.sinaleju.lifecircle.app.customviews.bottommenu.BaseBottomMenu;
+import com.sinaleju.lifecircle.app.customviews.itemview.Item_PersonalPageHeader;
+import com.sinaleju.lifecircle.app.database.entity.UserBean;
+import com.sinaleju.lifecircle.app.model.AttenBtnModel;
+import com.sinaleju.lifecircle.app.model.Model_PersonalHeader;
+import com.sinaleju.lifecircle.app.model.Model_TrendsBase;
+import com.sinaleju.lifecircle.app.model.impl.MultiModelsSet;
+import com.sinaleju.lifecircle.app.model.json.JSONParser_PersonalHeader;
+import com.sinaleju.lifecircle.app.model.json.JSONParser_Trends;
+import com.sinaleju.lifecircle.app.service.Service.OnFaultHandler;
+import com.sinaleju.lifecircle.app.service.Service.OnSuccessHandler;
+import com.sinaleju.lifecircle.app.service.remote_impl.entity.RSPersonalIndexHeader;
+import com.sinaleju.lifecircle.app.service.remote_impl.entity.RSUserFollow;
+import com.sinaleju.lifecircle.app.service.remote_impl.entity.RSUserTimeLine;
+import com.sinaleju.lifecircle.app.utils.ADBitmapUtils;
+import com.sinaleju.lifecircle.app.utils.ADFileUploadUtil;
+import com.sinaleju.lifecircle.app.utils.ADHandler;
+import com.sinaleju.lifecircle.app.utils.ADHandler.MessageHandler;
+import com.sinaleju.lifecircle.app.utils.FadeInImageLoadingListener;
+import com.sinaleju.lifecircle.app.utils.LogUtils;
+import com.sinaleju.lifecircle.app.utils.PublicUtils;
+import com.sinaleju.lifecircle.app.utils.SimpleImageLoaderOptions;
+
+public class PersonalHomeFragment extends BaseFragment {
+
+	private static final String TAG = "PersonalHomeFragment";
+
+	private View mContentView = null;
+	private TitleBar mTitleBar = null;
+
+	private PullToRefreshListView mPerHomeList = null;
+	private boolean isMySelf = false;
+	private int mVisitorId = -1;
+	private UserBean mUserBean = null;
+	private boolean isFromIndexLeft = true;
+
+	private BaseBottomMenu mBottomMenu = null;
+	private ADCamera camera = null;
+	private ImageView mHeadImage = null;
+	private String mHeadImagePath = null;
+	private ImageView mHeadLayoutImage = null;
+	private Button mHeadAttenBtn = null;
+	private String mHeadImageLayoutPath = null;
+
+	private RSPersonalIndexHeader mHeaderRs = null;
+	private MultiModelsSet mSet = null;
+	private LCScrollBarPanel mScrollBar;
+	private boolean mUploadException = false;
+	private Model_PersonalHeader perModel = null;
+
+	private ExecutorService executor = Executors.newSingleThreadExecutor();
+
+	public PersonalHomeFragment() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public int getmVisitorId() {
+		return mVisitorId;
+	}
+
+	public void setmVisitorId(int mVisitorId) {
+		this.mVisitorId = mVisitorId;
+	}
+
+	public boolean isFromIndexLeft() {
+		return isFromIndexLeft;
+	}
+
+	public void setFromIndexLeft(boolean isFromIndexLeft) {
+		this.isFromIndexLeft = isFromIndexLeft;
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		LogUtils.v(TAG, "-------------initView-------");
+		// TODO Auto-generated method stub
+		if (mContentView == null) {
+			mContentView = inflater.inflate(R.layout.ac_personal_home, container, false);
+			initView();
+			initListView();
+			initData();
+			setListener();
+		} else {
+			((ViewGroup) mContentView.getParent()).removeAllViews();
+		}
+		ApplicationFacade.getInstance().registerMediator(
+				new ThisMediator(ThisMediator.NAME + this.hashCode(), null));
+		return mContentView;
+	}
+
+	@Override
+	protected void initView() {
+		// TODO Auto-generated method stub
+		mTitleBar = (TitleBar) mContentView.findViewById(R.id.mTitleBar);
+		mPerHomeList = (PullToRefreshListView) mContentView.findViewById(R.id.personal_home_list);
+		mBottomMenu = (BaseBottomMenu) mContentView.findViewById(R.id.mBottomMenu);
+
+		camera = ADCamera.builder(getActivity(), this);
+	}
+
+	private void initListView() {
+		mScrollBar = new LCScrollBarPanel(getActivity());
+		mScrollBar.setLayoutParams(new AbsListView.LayoutParams(LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT));
+		((ExtendedListView) mPerHomeList.getRefreshableView()).setScrollBarPanel(mScrollBar);
+		((ExtendedListView) mPerHomeList.getRefreshableView())
+				.setOnPositionChangedListener(new OnPositionChangedListener() {
+
+					@Override
+					public void onPositionChanged(ExtendedListView listView, int position,
+							View scrollBarPanel) {
+						if (mAdapter != null) {
+							if (position > 0) {
+								Object o = mAdapter.getItem(position - 1);
+								if (o != null && o instanceof Model_TrendsBase) {
+									Model_TrendsBase m = (Model_TrendsBase) o;
+									long time = m.getAddTime();
+									mScrollBar.updateTime(time);
+								} else {
+									mScrollBar.updateTime(System.currentTimeMillis() / 1000);
+								}
+							}
+						}
+					}
+				});
+	}
+
+	@Override
+	protected void initData() {
+		// TODO Auto-generated method stub
+		mTitleBar.setLeftButtonShow(true);
+		mTitleBar.setBackgroundResource(R.drawable.topbar_bg_transparent);
+		if (isFromIndexLeft) {
+			mTitleBar.initLeftButtonTextOrResId(0,
+					R.drawable.selector_home_page_top_bar_left_button);
+		} else {
+			mTitleBar.initLeftButtonTextOrResId(0, R.drawable.selector_topbar_back_button);
+		}
+		mTitleBar.initRightButtonTextOrResId(0, R.drawable.selector_topbar_setting_button);
+		mTitleBar.setTitleName("个人主页");
+		mTitleBar.setOnClickListener(null);
+
+		mUserBean = AppContext.curUser();
+
+		if (mUserBean != null) {
+			if (mVisitorId == mUserBean.getUid()) {
+				isMySelf = true;
+			} else {
+				isMySelf = false;
+			}
+		}
+		requestPersonalHeader();
+	}
+
+	private void requestPersonalHeader() {
+		if (mHeaderRs == null) {
+			mHeaderRs = new RSPersonalIndexHeader(mUserBean.getUid(), mVisitorId);
+			mHeaderRs.setOnSuccessHandler(new OnSuccessHandler() {
+
+				@Override
+				public void onSuccess(Object result) {
+					hideProgressDialog();
+					removeUnControledViews();
+					mSet = new MultiModelsSet(8, new JSONParser_PersonalHeader(isMySelf, mTitleBar));
+					if (mSet.add(result.toString())) {
+						mAdapter = new MultiTypesAdapter(mSet, getActivity());
+						mPerHomeList.setAdapter(mAdapter);
+						requestUserTimeLine();
+						if (isMySelf && mUploadException) {
+							ApplicationFacade.getInstance().sendNotification(
+									AppConst.APP_FACADE_LEFT_HOME_FRAGMENT_USER_UI_REFRESH);
+						}
+						mTitleBar.setRightButton1Show(true);
+					}
+				}
+
+			});
+			mHeaderRs.setOnFaultHandler(new OnFaultHandler() {
+
+				@Override
+				public void onFault(Exception ex) {
+					hideProgressDialog();
+					setRefreshComplete();
+					mHeaderRs = null;
+					mTitleBar.setRightButton1Show(false);
+					showToast("服务器连接错误");
+				}
+			});
+
+			showProgressDialog("正在加载中...", true);
+			mHeaderRs.asyncExecute(getActivity(), this);
+		}
+	}
+
+	private RSUserTimeLine mUserRs = null;
+	private MultiTypesAdapter mAdapter = null;
+	private int curPageIndex = 1;
+	private int maxPage = 0;
+	private static final int ON_REFRESHING = 1;
+	private static final int ON_MORE = 2;
+	private static final int ON_DIDLOAD = 0;
+	private int pullState = ON_DIDLOAD;
+
+	private void requestUserTimeLine() {
+
+		if (maxPage > 0 && curPageIndex > maxPage) {
+			setRefreshComplete();
+			showToast("数据已经全部加载完毕");
+			return;
+		}
+
+		if (mUserRs == null) {
+			mUserRs = new RSUserTimeLine(mVisitorId, curPageIndex, 10);
+			mUserRs.setOnSuccessHandler(new OnSuccessHandler() {
+
+				@Override
+				public void onSuccess(Object result) {
+					if (result == null) {
+						mUserRs = null;
+						mHeaderRs = null;
+						showToast("服务器连接错误");
+						return;
+					}
+					JSONObject obj = null;
+					try {
+						obj = new JSONObject(result.toString());
+						maxPage = obj.getInt("totalPage");
+					} catch (JSONException e) {
+						mUserRs = null;
+						mHeaderRs = null;
+						e.printStackTrace();
+					}
+
+					switch (pullState) {
+					case ON_DIDLOAD:
+						mSet.setJSONParser(new JSONParser_Trends(false, 0));
+						if (mSet.add(result.toString())) {
+							if (mAdapter != null) {
+								mAdapter.notifyDataSetChanged();
+							}
+							curPageIndex++;
+						}
+						break;
+					case ON_REFRESHING:
+						mSet.setJSONParser(new JSONParser_Trends(false, 0));
+						if (mSet.add(result.toString())) {
+							if (mAdapter != null) {
+								mAdapter.notifyDataSetChanged();
+							}
+							curPageIndex++;
+						}
+						break;
+					case ON_MORE:
+						if (mSet.add(result.toString())) {
+							if (mAdapter != null) {
+								mAdapter.notifyDataSetChanged();
+							}
+							curPageIndex++;
+						}
+						break;
+					}
+
+					setRefreshComplete();
+					mUserRs = null;
+					mHeaderRs = null;
+				}
+
+			});
+			mUserRs.setOnFaultHandler(new OnFaultHandler() {
+
+				@Override
+				public void onFault(Exception ex) {
+					setRefreshComplete();
+					showToast("服务器连接错误");
+					mUserRs = null;
+					mHeaderRs = null;
+				}
+			});
+			mUserRs.asyncExecute(getActivity(), this);
+		}
+	}
+
+	private void initBottomMenu(String... names) {
+		mBottomMenu.addButton(names);
+	}
+
+	private void showBottomMenu() {
+		mBottomMenu.show();
+	}
+
+	private void dismissBottomMenu() {
+		mBottomMenu.dismiss();
+	}
+
+	private void setBottomMenuButtonListener(int index, View.OnClickListener listener) {
+		mBottomMenu.setListener(index, listener);
+	}
+
+	@Override
+	protected void setListener() {
+		// TODO Auto-generated method stub
+		mTitleBar.setLeftButtonListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (isFromIndexLeft) {
+					((AppContext) getActivity().getApplication()).getHomeActivity().toggle();
+				} else {
+					getActivity().finish();
+				}
+			}
+		});
+
+		mTitleBar.setRightButton1Listener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				setRightBtnBottomMenuData();
+			}
+		});
+
+		mPerHomeList.setOnRefreshListener(new OnRefreshListener2<ListView>() {
+
+			@Override
+			public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+				refreshUserData();
+			}
+
+			@Override
+			public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+				if (mHeaderRs == null && mUserRs == null) {
+					pullState = ON_MORE;
+				}
+				requestUserTimeLine();
+			}
+		});
+	}
+
+	private void setRightBtnBottomMenuData() {
+		mBottomMenu.removeAllViews();
+		if (isMySelf) {
+			initBottomMenu(new String[] { "更新头像", "更新背景", "更新签名", "修改资料", "修改密码" });
+			setMySelfListener();
+		} else {
+			String temp = "";
+			if (mStatus.equals("0")) {
+				temp = "加关注";
+			} else if (mStatus.equals("1")) {
+				temp = "取消关注";
+			} else if (mStatus.equals("2")) {
+				temp = "取消关注";
+			}
+			if (perModel != null && !TextUtils.isEmpty(temp)) {
+				if (perModel.getSend_status() == 0) {
+					initBottomMenu(new String[] { temp });
+				} else if (perModel.getSend_status() == 1) {
+					initBottomMenu(new String[] { "私信", temp });
+				}
+				setNotMySelfListener();
+			}
+		}
+		showBottomMenu();
+	}
+
+	private static final int SET_REFRESH_COMPLETE = 101;
+	private static final int MSG_SHOW_TOAST_SUCCESS = 110;
+	private static final int MSG_SHOW_TOAST_FAILED = 120;
+	private ADHandler<PersonalHomeFragment> mHandler = new ADHandler<PersonalHomeFragment>(this,
+			new MessageHandler<PersonalHomeFragment>() {
+
+				@Override
+				public void handleMessage(PersonalHomeFragment f, Message msg) {
+					if (msg.what == SET_REFRESH_COMPLETE) {
+						f.forceRefreshListViewComplete();
+					} else if (msg.what == MSG_SHOW_TOAST_SUCCESS) {
+						f.showToast(msg.obj.toString());
+						if (isHeadImage) {
+							if (mUploadException) {
+								f.refreshUserData();
+							} else if (isMySelf) {
+								ApplicationFacade.getInstance().sendNotification(
+										AppConst.APP_FACADE_LEFT_HOME_FRAGMENT_USER_UI_REFRESH);
+							}
+						}
+					} else if (msg.what == MSG_SHOW_TOAST_FAILED) {
+						f.showToast(msg.obj.toString());
+						setUpdateHeadImageFail();
+					}
+				}
+			});
+
+	private void setUpdateHeadImageFail() {
+		if (isHeadImage) {
+			if (!TextUtils.isEmpty(mUserBean.getHeaderUrl())
+					&& !mUserBean.getHeaderUrl().equals("null")) {
+				ImageLoader.getInstance(getActivity()).displayImage(mUserBean.getHeaderUrl(),
+						mHeadImage, SimpleImageLoaderOptions.getRoundImageOptions(0, 100),
+						new FadeInImageLoadingListener(mHeadImage));
+			} else {
+				mHeadImage.setImageResource(PublicUtils.getUserIndexDefaultHeadImage(mUserBean
+						.getType()));
+			}
+		} else {
+			if (!TextUtils.isEmpty(mUserBean.getBackgroud())
+					&& !mUserBean.getBackgroud().equals("null")) {
+				ImageLoader.getInstance(getActivity()).displayImage(mUserBean.getBackgroud(),
+						mHeadLayoutImage, SimpleImageLoaderOptions.getOptions(0, true),
+						new FadeInImageLoadingListener(mHeadLayoutImage));
+			} else {
+				mHeadLayoutImage
+						.setImageResource(PublicUtils.getIndexDefaultBg(mUserBean.getType()));
+			}
+		}
+	}
+
+	private void setRefreshComplete() {
+		mHandler.sendEmptyMessageDelayed(SET_REFRESH_COMPLETE, 100);
+	}
+
+	public void forceRefreshListViewComplete() {
+		mPerHomeList.forceRefreshComplete();
+	}
+
+	private void setImageListener() {
+		setBottomMenuButtonListener(0, new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				// 进入拍照界面
+				dismissBottomMenu();
+				gotoCamera();
+			}
+		});
+
+		setBottomMenuButtonListener(1, new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				// 进入相册
+				dismissBottomMenu();
+				gotoGallery();
+			}
+		});
+	}
+
+	private void gotoCamera() {
+		camera.setDefultSmallImageUri(String.valueOf(System.currentTimeMillis()));
+		camera.startCameraForSmallPhoto();
+	}
+
+	private void gotoGallery() {
+		camera.setDefultSmallImageUri(String.valueOf(System.currentTimeMillis()));
+		camera.startGalleryForBigPhoto();
+	}
+
+	private void setMySelfListener() {
+		setBottomMenuButtonListener(0, new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				dismissBottomMenu();
+				mBottomMenu.removeAllViews();
+				initBottomMenu(new String[] { "拍摄新照片", "从照片库" });
+				setImageListener();
+				showBottomMenu();
+			}
+		});
+
+		setBottomMenuButtonListener(1, new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				dismissBottomMenu();
+				gotoChangeHeadBgActivity();
+			}
+		});
+
+		setBottomMenuButtonListener(2, new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				dismissBottomMenu();
+				gotoUpdatedSignatureActivity();
+			}
+		});
+
+		setBottomMenuButtonListener(3, new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				dismissBottomMenu();
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), PersonalInformationActivity.class);
+				((FragmentActivity) getActivity()).startActivityFromFragment(
+						PersonalHomeFragment.this, intent, 600);
+			}
+		});
+
+		setBottomMenuButtonListener(4, new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// 修改密码
+				dismissBottomMenu();
+				Intent changeIntent = new Intent(getActivity(), ChangePosswordActivity.class);
+				getActivity().startActivity(changeIntent);
+			}
+		});
+	}
+
+	private void gotoUpdatedSignatureActivity() {
+		Intent intent = new Intent();
+		intent.setClass(getActivity(), UpdatedSignatureActivity.class);
+		((FragmentActivity) getActivity()).startActivityFromFragment(PersonalHomeFragment.this,
+				intent, 600);
+	}
+
+	private void gotoChangeHeadBgActivity() {
+		Intent intent = new Intent();
+		intent.setClass(getActivity(), ChangeHeadBgActivity.class);
+		getActivity().startActivityFromFragment(PersonalHomeFragment.this, intent, 310);
+	}
+
+	private void setNotMySelfListener() {
+		if (perModel.getSend_status() == 0) {
+			setBottomMenuButtonListener(0, new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					dismissBottomMenu();
+					if (mStatus.equals("0")) {
+						updateUserFollow(1);
+					} else if (mStatus.equals("1")) {
+						updateUserFollow(0);
+					} else if (mStatus.equals("2")) {
+						updateUserFollow(0);
+					}
+				}
+			});
+		} else if (perModel.getSend_status() == 1) {
+			setBottomMenuButtonListener(0, new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					dismissBottomMenu();
+					gotoChatAct(perModel);
+				}
+			});
+			setBottomMenuButtonListener(1, new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					dismissBottomMenu();
+					if (mStatus.equals("0")) {
+						updateUserFollow(1);
+					} else if (mStatus.equals("1")) {
+						updateUserFollow(0);
+					} else if (mStatus.equals("2")) {
+						updateUserFollow(0);
+					}
+				}
+			});
+		}
+
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		mBottomMenu.removeAllViews();
+		dismissBottomMenu();
+	}
+
+	int i = 0;
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		LogUtils.e(TAG, "onActivityResult   i =  " + i + "  requestCode  :: " + requestCode
+				+ "  resultCode :: " + resultCode);
+		i++;
+		if (requestCode == 310 && resultCode == 311) {
+			mHeadImageLayoutPath = data.getStringExtra("head_layout_bg_path");
+			Bitmap bitmap = getImageBitmap(mHeadImageLayoutPath);
+			if (bitmap != null) {
+				BitmapDrawable drawable = new BitmapDrawable(bitmap);
+				mHeadLayoutImage.setImageDrawable(drawable);
+				isHeadImage = false;
+				excuteUploadImageFile(false, mHeadImageLayoutPath);
+			}
+		}
+
+		if (requestCode == 310 && resultCode == 312) {
+			if (!TextUtils.isEmpty(PublicUtils.getUserIndexDefaultBg(mUserBean.getType()))) {
+				Bitmap bitmap = ADBitmapUtils.createBitmapFromAssets(getActivity(),
+						PublicUtils.getUserIndexDefaultBg(mUserBean.getType()));
+				if (bitmap != null) {
+					BitmapDrawable drawable = new BitmapDrawable(bitmap);
+					mHeadLayoutImage.setImageDrawable(drawable);
+					isHeadImage = false;
+					excuteUploadImageFile(true,
+							PublicUtils.getUserIndexDefaultBg(mUserBean.getType()));
+				}
+			}
+		}
+
+		if (requestCode == 600 && resultCode == 601) {
+			refreshUserData();
+		}
+
+		if (camera.onHeadActivityResult(mHeadImage, requestCode, resultCode, data)
+				&& requestCode != 113) {
+			mHeadImagePath = camera.getPath();
+			isHeadImage = true;
+			excuteUploadImageFile(false, mHeadImagePath);
+		}
+	}
+
+	private void refreshUserData() {
+		curPageIndex = 1;
+		maxPage = 0;
+		pullState = ON_REFRESHING;
+		requestPersonalHeader();
+	}
+
+	private boolean isHeadImage = false;
+	private static final String HEAD_IMAGE_UPLOAD_URL = "http://shq.leju.com/api/user/header.json";
+	private static final String HEAD_BACKGROUND_UPLOAD_URL = "http://shq.leju.com/api/user/background.json";
+
+	private void excuteUploadImageFile(final boolean isFromAssets, final String path) {
+		LogUtils.e(TAG, "excuteUploadImageFile    :: path : " + path);
+		if (null == executor || executor.isShutdown()) {
+			executor = Executors.newSingleThreadExecutor();
+		}
+		executor.execute(new Runnable() {
+			@Override
+			public void run() {
+				Thread.currentThread().setName("excuteDoUploadImageFile");
+				if (isHeadImage) {
+					updateHeadImageOrBg(isFromAssets, HEAD_IMAGE_UPLOAD_URL, path, "头像更新");
+				} else {
+					updateHeadImageOrBg(isFromAssets, HEAD_BACKGROUND_UPLOAD_URL, path, "背景更新");
+				}
+			}
+		});
+	}
+
+	private void updateHeadImageOrBg(boolean isFromAssets, String url, String path, String notice) {
+		String text = "";
+		JSONObject json = null;
+		int resultCode = 1;
+		if (isHeadImage) {
+			text = ADFileUploadUtil.uploadUserHeadImage("header", url, path, mUserBean.getUid());
+		} else {
+			if (isFromAssets) {
+				text = ADFileUploadUtil.uploadUserHeadImageFromAss(getActivity(), "background",
+						url, path, mUserBean.getUid());
+			} else {
+				text = ADFileUploadUtil.uploadUserHeadImage("background", url, path,
+						mUserBean.getUid());
+			}
+		}
+		try {
+			json = new JSONObject(text);
+			resultCode = json.optInt("result");
+			String data = json.optString("data");
+			JSONObject son = new JSONObject(data);
+			String image = son.optString("url");
+			if (!TextUtils.isEmpty(image)) {
+				if (isHeadImage) {
+					mUserBean.setHeaderUrl(image);
+				} else {
+					mUserBean.setBackground(image);
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		if (TextUtils.isEmpty(text)) {
+			mUploadException = true;
+		}
+		if (resultCode == 1) {
+			sendMsgToHandle(notice + "成功", MSG_SHOW_TOAST_SUCCESS);
+		} else if (resultCode == 0) {
+			sendMsgToHandle(notice + "失败", MSG_SHOW_TOAST_FAILED);
+		}
+	}
+
+	private void sendMsgToHandle(String text, int result) {
+		Message msg = new Message();
+		msg.what = result;
+		msg.obj = text;
+		mHandler.sendMessage(msg);
+	}
+
+	private Bitmap getImageBitmap(String imgPath) {
+		return ADBitmapUtils.createBitmapFromFile(getActivity(), imgPath);
+	}
+
+	@Override
+	public void onDestroy() {
+		ApplicationFacade.getInstance().removeMediator(ThisMediator.NAME + this.hashCode());
+		super.onDestroy();
+	}
+
+	private void removeUnControledViews() {
+		if (mVisitorListView != null) {
+			if (getActivity() instanceof HomeActivity) {
+				((HomeActivity) getActivity()).removeUnControledViews(mVisitorListView);
+			}
+		}
+	}
+
+	private void updateUserFollow(final int type) {
+		mHeadAttenBtn.setEnabled(false);
+		RSUserFollow followRs = new RSUserFollow(mUserBean.getUid(), mVisitorId, type);
+		followRs.setOnSuccessHandler(new OnSuccessHandler() {
+
+			@Override
+			public void onSuccess(Object result) {
+				if (type == 0) {
+					showToast("取消关注成功");
+					mHeadAttenBtn.setBackgroundResource(R.drawable.jia_guan_zhu);
+					mStatus = "0";
+					((IndexActivity) getActivity()).setFollowStatus(0);// 取消关注
+				} else if (type == 1) {
+					showToast("加关注成功");
+					JSONObject obj = null;
+					try {
+						obj = new JSONObject(result.toString());
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+					int status = obj.optInt("status");
+					((IndexActivity) getActivity()).setFollowStatus(status);// 加关注
+					if (status == 1) {
+						mHeadAttenBtn.setBackgroundResource(R.drawable.yi_guan_zhu);
+						mStatus = "1";
+					} else if (status == 2) {
+						mHeadAttenBtn.setBackgroundResource(R.drawable.wu_xiang_guan_zhu);
+						mStatus = "2";
+					}
+				}
+				mHeadAttenBtn.setEnabled(true);
+			}
+
+		});
+		followRs.setOnFaultHandler(new OnFaultHandler() {
+
+			@Override
+			public void onFault(Exception ex) {
+				if (type == 0) {
+					showToast("取消关注失败");
+				} else if (type == 1) {
+					showToast("加关注失败");
+				}
+				mHeadAttenBtn.setEnabled(true);
+			}
+		});
+
+		followRs.asyncExecute(getActivity());
+	}
+
+	private String mStatus = "";
+	private HorizontalListView mVisitorListView = null;
+
+	private class ThisMediator extends Mediator {
+		public static final String NAME = "PersonalHomeFragment";
+
+		public ThisMediator(String mediatorName, Object viewComponent) {
+			super(mediatorName, viewComponent);
+		}
+
+		@Override
+		public void handleNotification(INotification notification) {
+			String name = notification.getName();
+			if (name.equals(AppConst.APP_FACADE_PERSONAL_HOMEFRAGMENT_BOTTOM
+					+ getActivity().hashCode())) {
+				mHeadImage = (ImageView) notification.getBody();
+				if (isMySelf) {
+					mBottomMenu.removeAllViews();
+					initBottomMenu(new String[] { "拍摄新照片", "从照片库" });
+					setImageListener();
+					showBottomMenu();
+				}
+			} else if (name.equals(AppConst.APP_FACADE_PERSONAL_HEAD_ITEMVIEW
+					+ getActivity().hashCode())) {
+				Item_PersonalPageHeader item = (Item_PersonalPageHeader) notification.getBody();
+				mHeadImage = item.getmHeadImage();
+				mHeadLayoutImage = item.getmHeadLayoutImage();
+				mVisitorListView = item.getmVisitorListView();
+			} else if (name.equals(AppConst.APP_FACADE_PERSONAL_HEAD_ATTENBTN_MODEL
+					+ getActivity().hashCode())) {
+				AttenBtnModel model = (AttenBtnModel) notification.getBody();
+				mStatus = model.getId();
+				mHeadAttenBtn = model.getAttenBtn();
+			} else if (name.equals(AppConst.APP_FACADE_PERSONAL_HEAD_ATTENBTN
+					+ getActivity().hashCode())) {
+				if (mStatus.equals("0")) {
+					updateUserFollow(1);
+				} else if (mStatus.equals("1")) {
+					updateUserFollow(0);
+				} else if (mStatus.equals("2")) {
+					updateUserFollow(0);
+				}
+			} else if (name.equals(AppConst.APP_FACADE_PERSONAL_SIGN_CLICK
+					+ getActivity().hashCode())) {
+				gotoUpdatedSignatureActivity();
+			} else if (name.equals(AppConst.APP_FACADE_PERSONAL_IMAGE_LAYOUT_CLICK
+					+ getActivity().hashCode())) {
+				gotoChangeHeadBgActivity();
+			} else if (name.equals(AppConst.APP_FACADE_PERSONAL_CHAT_CLICK
+					+ getActivity().hashCode())) {
+				Model_PersonalHeader perModel = (Model_PersonalHeader) notification.getBody();
+				gotoChatAct(perModel);
+			} else if (name.equals(AppConst.APP_FACADE_PERSONAL_SHOW_CHAT_BTN
+					+ getActivity().hashCode())) {
+				Model_PersonalHeader tempHeader = (Model_PersonalHeader) notification.getBody();
+				if (tempHeader != null) {
+					perModel = tempHeader;
+				}
+			}
+			super.handleNotification(notification);
+		}
+
+		@Override
+		public String[] listNotificationInterests() {
+			return new String[] {
+					AppConst.APP_FACADE_PERSONAL_HOMEFRAGMENT_BOTTOM + getActivity().hashCode(),
+					AppConst.APP_FACADE_PERSONAL_HEAD_ITEMVIEW + getActivity().hashCode(),
+					AppConst.APP_FACADE_PERSONAL_HEAD_ATTENBTN_MODEL + getActivity().hashCode(),
+					AppConst.APP_FACADE_PERSONAL_HEAD_ATTENBTN + getActivity().hashCode(),
+					AppConst.APP_FACADE_PERSONAL_SIGN_CLICK + getActivity().hashCode(),
+					AppConst.APP_FACADE_PERSONAL_IMAGE_LAYOUT_CLICK + getActivity().hashCode(),
+					AppConst.APP_FACADE_PERSONAL_CHAT_CLICK + getActivity().hashCode(),
+					AppConst.APP_FACADE_PERSONAL_SHOW_CHAT_BTN + getActivity().hashCode() };
+		}
+	}
+
+	private void gotoChatAct(Model_PersonalHeader perModel) {
+		Intent intent = new Intent(getActivity(), ChatDetailAct.class);
+		intent.putExtra(ChatDetailAct.NAME_KEY, perModel.getDisplay_name());
+		intent.putExtra(ChatDetailAct.USER_ID_KEY, mUserBean.getUid());
+		intent.putExtra(ChatDetailAct.TO_USER_ID_KEY, mVisitorId);
+		intent.putExtra(ChatDetailAct.TYPE_KEY, perModel.getType());
+		getActivity().startActivity(intent);
+	}
+}

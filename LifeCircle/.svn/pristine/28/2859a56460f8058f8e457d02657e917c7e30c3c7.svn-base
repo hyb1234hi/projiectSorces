@@ -1,0 +1,134 @@
+package com.sinaleju.lifecircle.app.customviews.picker.pickers;
+
+import java.util.List;
+
+import android.content.Context;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+
+import com.sinaleju.lifecircle.app.customviews.picker.OnWheelChangedListener;
+import com.sinaleju.lifecircle.app.customviews.picker.WheelAdapter;
+import com.sinaleju.lifecircle.app.customviews.picker.WheelView;
+import com.sinaleju.lifecircle.app.customviews.picker.pickerimpl.DoubleWheel;
+import com.sinaleju.lifecircle.app.customviews.picker.pickerimpl.WheelDialog.WheelActor;
+import com.sinaleju.lifecircle.app.customviews.picker.pickerimpl.WheelItem;
+import com.sinaleju.lifecircle.app.customviews.picker.pickerimpl.WheelItem.I_WheelItemModel;
+import com.sinaleju.lifecircle.app.customviews.picker.pickerimpl.WheelViewSetter;
+import com.sinaleju.lifecircle.app.customviews.picker.pickers.D_CommonImpl.D_Children;
+import com.sinaleju.lifecircle.app.customviews.picker.pickers.D_CommonImpl.D_Parent;
+import com.sinaleju.lifecircle.app.utils.ViewUtil;
+
+public class D_CommonImpl<P extends D_Parent<C>, C extends D_Children<P>>
+		implements WheelViewSetter {
+	private List<? extends D_Parent<C>> mParents = null;
+	private Context mContext;
+	private DoubleWheel mDoubleWheel;
+	private View mTargetView;
+	private WheelView mLeftWheel;
+	private WheelView mRightWheel;
+
+	public D_CommonImpl(Context context, DoubleWheel dw, View targetView,
+			List<? extends D_Parent<C>> p) {
+		this.mParents = p;
+		this.mTargetView = targetView;
+		this.mDoubleWheel = dw;
+		this.mContext = context;
+	}
+
+	@Override
+	public void setAdapters() {
+		/* left items */
+		List<WheelItem> leftItems = WheelItem.makeItemsFromObjects(mParents);
+		// make adapter
+		WheelAdapter leftWheelAdapter = new WheelAdapter(mContext, leftItems);
+		// setAdapter
+		mLeftWheel.setViewAdapter(leftWheelAdapter);
+
+		/* right items */
+		List<WheelItem> rightItems = WheelItem.makeItemsFromObjects(mParents
+				.get(0).getDChildren());
+		// make adapter
+		WheelAdapter rightWheelAdapter = new WheelAdapter(mContext, rightItems);
+		// setAdapter
+		mRightWheel.setViewAdapter(rightWheelAdapter);
+	}
+
+	@Override
+	public void addOnChangeListeners() {
+		mLeftWheel.addChangingListener(new OnWheelChangedListener() {
+
+			@Override
+			public void onChanged(WheelView wheel, int oldValue, int newValue) {
+
+				// * right items */
+				List<WheelItem> rightItems = WheelItem
+						.makeItemsFromObjects(mParents.get(newValue)
+								.getDChildren());
+				// make adapter
+				WheelAdapter rightWheelAdapter = new WheelAdapter(mContext,
+						rightItems);
+
+				// setAdapter
+				mRightWheel.setCurrentItem(0);
+				mRightWheel.setViewAdapter(rightWheelAdapter);
+
+			}
+		});
+	}
+
+	@Override
+	public void setOnClickListeners(View rootView, Button left, Button right) {
+		left.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				mDoubleWheel.dismiss();
+			}
+		});
+		right.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// dismiss
+				mDoubleWheel.dismiss();
+
+				// adapter
+				WheelAdapter leftAdapter = (WheelAdapter) mLeftWheel
+						.getViewAdapter();
+				WheelAdapter rightAdapter = (WheelAdapter) mRightWheel
+						.getViewAdapter();
+				// texts
+				String leftText = leftAdapter.getItemText(
+						mLeftWheel.getCurrentItem()).toString();
+				String rightText = rightAdapter.getItemText(
+						mRightWheel.getCurrentItem()).toString();
+
+				// update text
+				ViewUtil.textSetter(mTargetView, leftText + "-" + rightText);
+
+				// act
+				WheelActor actor = mDoubleWheel.getWheelActor();
+				actor.doActionWhenConfirm(
+						leftAdapter.getItem(mLeftWheel.getCurrentItem())
+								.getTag(),
+						rightAdapter.getItem(mRightWheel.getCurrentItem())
+								.getTag());
+			}
+		});
+	}
+
+	@Override
+	public void initWheels(WheelView... wheels) {
+		mLeftWheel = wheels[0];
+		mRightWheel = wheels[1];
+	}
+
+	public interface D_Parent<T> extends I_WheelItemModel {
+		List<T> getDChildren();
+	}
+
+	public interface D_Children<T> extends I_WheelItemModel {
+		T getDParent();
+	}
+}

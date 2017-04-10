@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_home_page_top_shishi_remen_bg_selected"
+    android:orientation="vertical" >
+	<com.handmark.pulltorefresh.library.PullToRefreshListView
+        xmlns:pull="http://schemas.android.com/apk/res-auto/com.handmark.pulltorefresh.library"
+        android:id="@+id/chat_and_notice_listview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#0000"
+        android:cacheColorHint="#0000"
+        android:divider="@drawable/line"
+        android:fadingEdge="none"
+        android:listSelector="#0000"
+        pull:ptrMode="both" />
+</LinearLayout>

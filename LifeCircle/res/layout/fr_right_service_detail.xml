@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4F4F4"
+    >
+    
+    <ScrollView android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <LinearLayout
+            android:id="@+id/service_detail_linear"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="gone"
+            android:orientation="vertical">
+            
+            <!-- 供电报修 -->
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <LinearLayout 
+                    android:id="@+id/searvice_detail_left_divider_linear1"
+                    android:layout_width="45dp"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal">
+                    <ImageView android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:background="@drawable/change_bottom_bg"/>
+                </LinearLayout>
+                
+                <LinearLayout android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="5dp"
+                    android:gravity="center">
+                    <LinearLayout android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="25dp"
+                        android:orientation="horizontal"
+                        android:padding="10dp"
+                        android:gravity="center">
+                        <TextView 
+                            android:id="@+id/service_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:textSize="16sp"
+                            android:textColor="@color/dark_black"/>
+                    </LinearLayout>
+                    <LinearLayout 
+                        android:id="@+id/service_dial_linear"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginLeft="10dp"
+                        android:orientation="horizontal"
+                        android:background="@drawable/bus_phone_bg"
+                        android:gravity="center_vertical">
+                        <TextView android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:text="服务热线"
+                            android:textSize="13sp"
+                            android:textColor="@color/color_home_page_top_shishi_remen_text_selected"/>
+                        <TextView android:id="@+id/service_detail_tel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_weight="1"
+                            android:textColor="@color/dark_black"
+                            android:textSize="16sp"/>
+                        <Button 
+                            android:id="@+id/service_detail_dial_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/dial_phone_btn"/>
+                    </LinearLayout>
+                    <TextView android:id="@+id/service_detail_dial_count"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_home_page_top_shishi_remen_text_selected"
+                        android:gravity="right"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="5dp"
+                        android:textSize="12sp"/>
+                    <ImageView android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/line"/>
+                </LinearLayout>
+            </LinearLayout>
+            
+            <!-- 服务评分 -->
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <LinearLayout 
+                    android:id="@+id/searvice_detail_left_divider_linear2"
+                    android:layout_width="45dp"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal">
+                    <ImageView android:layout_width="wrap_content"
+                        android:layout_height="4dp"
+                        android:background="@drawable/change_bottom_bg"/>
+                    <ImageView android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:scaleType="fitXY"
+                        android:background="@drawable/right_quality_icon"/>
+                    <ImageView android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:background="@drawable/change_bottom_bg"/>
+                </LinearLayout>
+                
+                <LinearLayout android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_toRightOf="@id/searvice_detail_left_divider_linear2"
+                    android:gravity="center">
+                    <TextView 
+                    	android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="星级评价"
+                        android:layout_marginTop="5dp"
+                        android:textSize="14sp"
+                        android:textColor="@color/color_home_page_top_shishi_remen_text_selected"/>
+                    
+                    <LinearLayout android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+                       <LinearLayout android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:orientation="horizontal"
+	                        android:layout_weight="1"
+	                        android:gravity="center_vertical">
+	                        <TextView android:layout_width="wrap_content"
+	                            android:layout_height="wrap_content"
+	                            android:text="质量"
+	                            android:textSize="14sp"
+	                            android:textColor="@color/dark_black"/>
+	                        <RatingBar android:id="@+id/service_detail_quality_rb"
+	                            android:layout_width="wrap_content"
+	                            android:layout_height="wrap_content"
+	                            android:layout_marginLeft="5dp"
+	                            android:isIndicator="true"
+	                            style="@style/foodRatingBar"/>
+                    	</LinearLayout>
+                    	<LinearLayout android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:layout_weight="1"
+	                        android:orientation="horizontal"
+	                        android:layout_marginRight="15dp"
+	                        android:gravity="center_vertical">
+	                        <TextView android:layout_width="wrap_content"
+	                            android:layout_height="wrap_content"
+	                            android:text="价格"
+	                            android:textSize="14sp"
+	                            android:textColor="@color/dark_black"/>
+	                        <RatingBar android:id="@+id/service_detail_price_rb"
+	                            android:layout_width="wrap_content"
+	                            android:layout_height="wrap_content"
+	                            android:layout_marginLeft="5dp"
+	                            android:isIndicator="true"
+	                            style="@style/foodRatingBar"/>
+                    	</LinearLayout>
+                    </LinearLayout>
+                    
+                    <LinearLayout android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+                       <LinearLayout android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:layout_weight="1"
+	                        android:orientation="horizontal"
+	                        android:gravity="center_vertical">
+	                        <TextView android:layout_width="wrap_content"
+	                            android:layout_height="wrap_content"
+	                            android:text="速度"
+	                            android:textSize="14sp"
+	                            android:textColor="@color/dark_black"/>
+	                        <RatingBar android:id="@+id/service_detail_velocity_rb"
+	                            android:layout_width="wrap_content"
+	                            android:layout_height="wrap_content"
+	                            android:layout_marginLeft="5dp"
+	                            android:isIndicator="true"
+	                            style="@style/foodRatingBar"/>
+                    	</LinearLayout>
+                    	<LinearLayout android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:layout_weight="1"
+	                        android:layout_marginRight="15dp"
+	                        android:orientation="horizontal"
+	                        android:gravity="center_vertical">
+	                        <TextView android:layout_width="wrap_content"
+	                            android:layout_height="wrap_content"
+	                            android:text="态度"
+	                            android:textSize="14sp"
+	                            android:textColor="@color/dark_black"/>
+	                        <RatingBar android:id="@+id/service_detail_attitude_rb"
+	                            android:layout_width="wrap_content"
+	                            android:layout_height="wrap_content"
+	                            android:layout_marginLeft="5dp"
+	                            android:isIndicator="true"
+	                            style="@style/foodRatingBar"/>
+                    	</LinearLayout>
+                    </LinearLayout>
+                    <ImageView android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/line"/>
+                </LinearLayout>
+            </LinearLayout>
+            
+            <!-- 详情 -->
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <LinearLayout 
+                    android:id="@+id/searvice_detail_left_divider_linear3"
+                    android:layout_width="45dp"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal">
+                    <ImageView android:layout_width="wrap_content"
+                        android:layout_height="5dp"
+                        android:background="@drawable/change_bottom_bg"/>
+                    <ImageView android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:background="@drawable/service_detail_left_icon"/>
+                    <ImageView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/change_bottom_bg"/>
+                </LinearLayout>
+                
+                <LinearLayout android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+                    <TextView android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="详情"
+                        android:textColor="@color/color_home_page_top_shishi_remen_text_selected"
+                        android:textSize="14sp"
+                        />
+                    <TextView 
+                        android:id="@+id/service_detail_tv"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="5dp"
+                        android:textColor="@color/dark_black"
+                        android:textSize="15sp"
+                        />
+                    
+                    <ImageView android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/line"/>
+                </LinearLayout>
+            </LinearLayout>
+            
+            <!-- 评论 -->
+             <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal">
+                <LinearLayout 
+                    android:id="@+id/searvice_detail_left_divider_linear4"
+                    android:layout_width="45dp"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal">
+                    <ImageView android:layout_width="wrap_content"
+                        android:layout_height="5dp"
+                        android:background="@drawable/change_bottom_bg"/>
+                    <ImageView android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:background="@drawable/left_eview_icon"/>
+                    <ImageView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/change_bottom_bg"/>
+                </LinearLayout>
+                
+                <LinearLayout android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="10dp"
+                    android:gravity="center">
+                    
+                    <LinearLayout android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp">
+	                    <TextView android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:text="评论"
+	                        android:textColor="@color/color_home_page_top_shishi_remen_text_selected"
+	                        android:textSize="14sp"
+	                        />
+	                    <TextView 
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:text="（共"
+	                        android:textColor="@color/color_home_page_top_shishi_remen_text_selected"
+	                        android:textSize="14sp"
+	                        />
+	                    <TextView 
+	                        android:id="@+id/service_detail_comment_count"
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:textColor="@color/color_home_page_top_shishi_remen_text_selected"
+	                        android:textSize="14sp"
+	                        />
+	                    <TextView 
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:text="条）"
+	                        android:textColor="@color/color_home_page_top_shishi_remen_text_selected"
+	                        android:textSize="14sp"
+	                        />
+                    </LinearLayout>
+                    
+                    <LinearLayout android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="3dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="2dp"
+                        android:background="@drawable/bus_eview_bg"
+                        android:orientation="vertical">
+                       <com.sinaleju.lifecircle.app.customviews.NoSlideListView android:id="@+id/service_detail_listview"
+	                        android:layout_width="fill_parent"
+	                        android:layout_height="wrap_content"
+	                        android:divider="@drawable/line"
+	                        android:listSelector="@color/transparent"
+	                        android:scrollingCache="false">
+	                   </com.sinaleju.lifecircle.app.customviews.NoSlideListView> 
+	                   <LinearLayout android:id="@+id/right_service_detail_more"
+	                       android:layout_width="fill_parent"
+	                       android:layout_height="wrap_content"
+	                       android:orientation="horizontal"
+	                       android:background="@drawable/list_item_selector"
+	                       android:padding="10dp"
+	                       android:gravity="center">
+	                       <TextView android:layout_width="wrap_content"
+	                           android:layout_height="wrap_content"
+	                           android:text="查看更多"
+	                           android:textSize="14sp"
+	                           android:textColor="@color/ac_regist_text_grey"/>
+	                       <ImageView android:layout_width="wrap_content"
+	                           android:layout_height="wrap_content"
+	                           android:layout_marginLeft="3dp"
+	                           android:background="@drawable/common_downarrow"/>
+	                   </LinearLayout>
+	                   
+	                   <TextView android:id="@+id/service_detail_no_comment_tv"
+	                       android:layout_width="fill_parent"
+	                       android:layout_height="wrap_content"
+	                       android:text="暂无评论"
+	                       android:gravity="center"
+	                       android:textColor="@color/color_home_page_top_shishi_remen_text_selected"
+	                       android:textSize="14sp"
+	                       android:visibility="gone"
+	                       android:padding="5dp"
+	                       />
+                    </LinearLayout>
+                    
+                    
+                </LinearLayout>
+            </LinearLayout>
+            
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

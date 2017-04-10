@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:orientation="horizontal">
+
+     <LinearLayout
+        android:id="@+id/ll_calendar"
+        android:layout_width="45dp"
+        android:layout_height="75dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="3dp"
+        android:gravity="center|top"
+        android:orientation="vertical">
+		<FrameLayout 
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    >
+        <ImageView
+            android:id="@+id/imgCalendarIcon"
+            android:layout_width="33dp"
+            android:layout_height="30dp"
+            android:scaleType="centerInside"
+            android:background="@drawable/bg_calendar" />
+        <TextView
+            android:id="@+id/tv_Calendar" 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="#848484"
+            android:layout_marginTop="3dp"
+            android:text="15"
+            android:textSize="18sp"
+            />
+		</FrameLayout>
+
+        <TextView
+            android:id="@+id/tv_home_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="#848484"
+            android:text="周一"
+            android:textSize="12sp"/>
+    </LinearLayout>
+    <!-- android:src="@drawable/ic_weather_duo_yun" -->
+
+	<LinearLayout 
+	    android:layout_width="wrap_content"
+	    android:layout_height="75dp"
+	    android:layout_marginTop="3dp"
+	    android:layout_marginLeft="23dp"
+	    android:gravity="center"
+	    android:orientation="horizontal"
+	    >
+	    <LinearLayout 
+		    android:layout_width="40dp"
+		    android:layout_height="75dp"
+		    android:layout_gravity="center_vertical|top"
+		    android:orientation="vertical"
+	        >
+	        <ImageView
+	            android:id="@+id/imgWeahterIcon"
+	            android:layout_width="35dp"
+	            android:layout_height="35dp"
+	            android:scaleType="centerInside" />
+	        <com.sinaleju.lifecircle.app.customviews.AlwaysMarqueeTextView
+	            android:id="@+id/txtWeatherDesc"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="3dp"
+	            android:singleLine="true"
+	            android:ellipsize="marquee"
+	            android:lines="1"
+				android:focusable="true"
+				android:focusableInTouchMode="true"
+				android:scrollHorizontally="true"
+				android:marqueeRepeatLimit="marquee_forever"
+				android:layout_gravity="center"
+				android:maxWidth="80dp"
+	            android:textColor="#848484"
+	            android:textSize="12sp"/>
+	    </LinearLayout>
+	    
+	    <LinearLayout
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_vertical|top"
+	        android:layout_marginLeft="9dp"
+	        android:orientation="vertical" >
+	        <LinearLayout 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="center"
+	            android:orientation="horizontal"
+	            >
+	            <TextView
+			        android:id="@+id/txtTemperatureValue"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:textColor="#848484"
+			        android:textSize="23sp" />
+			
+			    <FrameLayout
+			        android:id="@+id/fl_temperature"
+			        android:layout_width="wrap_content"
+			        android:layout_height="30dp" >
+			
+			        <ImageView
+			            android:layout_width="8dp"
+			            android:layout_height="8dp"
+			            android:layout_gravity="right"
+			            android:src="@drawable/ic_weather_temp_degree" />
+			    </FrameLayout>
+	        </LinearLayout>
+			
+	        <TextView
+	            android:id="@+id/txtTemperatureRange"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="2dp"
+	            android:textColor="#37E1D3"
+	            android:textSize="12sp" />
+	    </LinearLayout>
+	</LinearLayout>
+</LinearLayout>

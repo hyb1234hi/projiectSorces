@@ -1,0 +1,253 @@
+#
+# generated on 2013/07/18 11:31:24
+#
+# --table-start--
+dataClass=com.sinaleju.lifecircle.app.database.entity.UserBean
+tableName=userbean
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=uid
+# --field-end--
+# --field-start--
+fieldName=login_name
+# --field-end--
+# --field-start--
+fieldName=password
+# --field-end--
+# --field-start--
+fieldName=display_name
+# --field-end--
+# --field-start--
+fieldName=display_pinyin
+# --field-end--
+# --field-start--
+fieldName=signature
+# --field-end--
+# --field-start--
+fieldName=header
+# --field-end--
+# --field-start--
+fieldName=type
+# --field-end--
+# --field-start--
+fieldName=fans_num
+# --field-end--
+# --field-start--
+fieldName=follow_num
+# --field-end--
+# --field-start--
+fieldName=background
+# --field-end--
+# --field-start--
+fieldName=origin
+# --field-end--
+# --field-start--
+fieldName=fid
+# --field-end--
+# --field-start--
+fieldName=is_auth
+# --field-end--
+# --field-start--
+fieldName=sina_accesstoken
+# --field-end--
+# --field-start--
+fieldName=sex
+# --field-end--
+# --field-start--
+fieldName=birthday
+# --field-end--
+# --field-start--
+fieldName=astro
+# --field-end--
+# --field-start--
+fieldName=hometown
+# --field-end--
+# --field-start--
+fieldName=location
+# --field-end--
+# --field-start--
+fieldName=qq
+# --field-end--
+# --field-start--
+fieldName=mobile
+# --field-end--
+# --field-start--
+fieldName=identities
+# --field-end--
+# --field-start--
+fieldName=city_en
+# --field-end--
+# --field-start--
+fieldName=email
+# --field-end--
+# --field-start--
+fieldName=category
+# --field-end--
+# --field-start--
+fieldName=subcategory
+# --field-end--
+# --field-start--
+fieldName=biz_method
+# --field-end--
+# --field-start--
+fieldName=address
+# --field-end--
+# --field-start--
+fieldName=phone
+# --field-end--
+# --field-start--
+fieldName=normal_am_start
+# --field-end--
+# --field-start--
+fieldName=normal_am_end
+# --field-end--
+# --field-start--
+fieldName=normal_pm_start
+# --field-end--
+# --field-start--
+fieldName=normal_pm_end
+# --field-end--
+# --field-start--
+fieldName=halt_am_start
+# --field-end--
+# --field-start--
+fieldName=halt_am_end
+# --field-end--
+# --field-start--
+fieldName=halt_pm_start
+# --field-end--
+# --field-start--
+fieldName=halt_pm_end
+# --field-end--
+# --field-start--
+fieldName=traffic_routes
+# --field-end--
+# --field-start--
+fieldName=per_capita
+# --field-end--
+# --field-start--
+fieldName=city_id
+# --field-end--
+# --field-start--
+fieldName=area_id
+# --field-end--
+# --field-start--
+fieldName=circle_id
+# --field-end--
+# --field-start--
+fieldName=longitude
+# --field-end--
+# --field-start--
+fieldName=latitude
+# --field-end--
+# --field-start--
+fieldName=introduction
+# --field-end--
+# --field-start--
+fieldName=tel_hits
+# --field-end--
+# --field-start--
+fieldName=legal_person
+# --field-end--
+# --field-start--
+fieldName=license
+# --field-end--
+# --field-start--
+fieldName=tax
+# --field-end--
+# --field-start--
+fieldName=license_num
+# --field-end--
+# --field-start--
+fieldName=contact_person
+# --field-end--
+# --field-start--
+fieldName=contact_tel
+# --field-end--
+# --field-start--
+fieldName=image_info
+# --field-end--
+# --field-start--
+fieldName=category_id
+# --field-end--
+# --field-start--
+fieldName=companyName
+# --field-end--
+# --field-start--
+fieldName=subcategory_id
+# --field-end--
+# --field-start--
+fieldName=mCommunityCollection
+foreignCollection=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.sinaleju.lifecircle.app.database.entity.CommunityBean
+tableName=communitybean
+# --table-fields-start--
+# --field-start--
+fieldName=id
+generatedId=true
+# --field-end--
+# --field-start--
+fieldName=cid
+# --field-end--
+# --field-start--
+fieldName=name
+# --field-end--
+# --field-start--
+fieldName=parent
+canBeNull=false
+foreign=true
+foreignAutoRefresh=true
+foreignAutoCreate=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.sinaleju.lifecircle.app.database.entity.MerchantCategoryBean
+tableName=merchantcategorybean
+# --table-fields-start--
+# --field-start--
+fieldName=id
+id=true
+# --field-end--
+# --field-start--
+fieldName=name
+# --field-end--
+# --field-start--
+fieldName=mChildren
+foreignCollection=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.sinaleju.lifecircle.app.database.entity.MerchantSubcategoryBean
+tableName=merchantsubcategorybean
+# --table-fields-start--
+# --field-start--
+fieldName=id
+canBeNull=false
+id=true
+# --field-end--
+# --field-start--
+fieldName=name
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=parent
+canBeNull=false
+foreign=true
+foreignAutoRefresh=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################

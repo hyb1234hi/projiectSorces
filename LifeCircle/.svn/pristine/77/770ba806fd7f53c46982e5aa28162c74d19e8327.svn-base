@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="@drawable/switchbutton_bg"
+    android:layout_margin="1dp"
+    android:gravity="center"
+    android:paddingLeft="1dp"
+    android:paddingTop="2dp" 
+    android:paddingBottom="1sp">
+
+    <LinearLayout
+        android:id="@+id/backgroundll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center" >
+
+        <TextView
+            android:id="@+id/text_left"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="手机注册"
+            android:textColor="#CCCCF6"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/text_right"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="邮箱注册"
+            android:textColor="#CCCCF6"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/slipbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:background="@drawable/switchbutton_itembg" >
+
+        <TextView
+            android:id="@+id/textslipleft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="手机注册"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/textslipright"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="邮箱注册"
+            android:textColor="#ffffff"
+            android:visibility="gone"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+</RelativeLayout>

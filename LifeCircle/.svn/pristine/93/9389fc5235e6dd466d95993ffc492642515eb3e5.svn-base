@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical"
+        android:padding="3dp" >
+
+   <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:background="@drawable/bg_search_selector"
+        android:orientation="vertical" >
+
+        <RadioButton
+            android:id="@+id/radioMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:button="@drawable/selector_search_bar_message"
+            android:text="搜消息"
+            android:textColor="@color/selector_search_bar_text_color" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@drawable/line_search_bar" />
+
+        <RadioButton
+            android:id="@+id/radioPeople"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:button="@drawable/selector_search_bar_people"
+            android:text="搜用户"
+            android:textColor="@color/selector_search_bar_text_color" />
+    </RadioGroup>
+</RelativeLayout>

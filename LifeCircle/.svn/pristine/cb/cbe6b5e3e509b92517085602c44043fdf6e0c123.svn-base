@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+	<com.handmark.pulltorefresh.library.PullToRefreshListView
+        xmlns:pull="http://schemas.android.com/apk/res-auto/com.handmark.pulltorefresh.library"
+        android:id="@+id/chat_detail_listview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="#0000"
+        android:cacheColorHint="#0000"
+        android:divider="#0000"
+        android:fadingEdge="none"
+        android:listSelector="#0000"
+        pull:ptrMode="pullFromStart" />
+	
+	<LinearLayout android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:padding="5dp"
+	    android:focusable="true"
+	    android:focusableInTouchMode="true"
+	    android:background="@drawable/right_fragment_title_bg"
+	    android:gravity="center_vertical"
+	    android:orientation="horizontal">
+	    <!-- <Button android:id="@+id/chat_detail_more_btn"
+	        android:layout_width="40dp"
+	        android:layout_height="40dp"
+	        android:background="@drawable/ic_home_page_to_select"/> -->
+	    <EditText android:id="@+id/chat_detail_body_et"
+	        android:layout_width="wrap_content"
+	        android:layout_height="40dp"
+	        android:layout_marginLeft="5dp"
+	        android:background="@drawable/ac_eview_bg"
+	        android:layout_weight="1"
+	        android:textSize="13sp"
+	        android:textColor="@color/color_home_page_top_shishi_remen_text_selected"/>
+	    <Button android:id="@+id/chat_detail_send_btn"
+	        android:layout_width="60dp"
+	        android:layout_height="40dp"
+	        android:layout_marginLeft="5dp"
+	        android:text="发送"
+	        android:textSize="14sp"
+	        android:textColor="@color/dark_black"
+	        android:background="@drawable/search_btn"/>
+	</LinearLayout>
+</LinearLayout>

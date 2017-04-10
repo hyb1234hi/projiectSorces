@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="libs">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/IssBase_V1.1/libs/gson-2.2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/IssBase_V1.1/libs/httpmime-4.1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/IssBase_V1.1/libs/afinal-0.3.3-bin.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

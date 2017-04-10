@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4F4F4"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
+
+        <com.handmark.pulltorefresh.library.PullToRefreshListView
+            xmlns:pull="http://schemas.android.com/apk/res-auto/com.handmark.pulltorefresh.library"
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/mTitleBar"
+            android:background="#0000"
+            android:cacheColorHint="#0000"
+            android:divider="#0000"
+            android:fadingEdge="none"
+            android:listSelector="#0000"
+            pull:ptrMode="pullFromEnd" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_weight="0"
+        android:orientation="horizontal" >
+
+
+        <LinearLayout
+            android:id="@+id/imgbutton_trends_detail_bottom_bar_refresh"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/ic_trends_detail_bottom_bar_bg"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="6"
+                android:background="#0000"
+                android:paddingTop="3dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_trends_detail_bottom_bar_refresh" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginTop="2dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="2dp"
+                android:layout_weight="3"
+                android:text="刷新"
+                android:textColor="#fff"
+                android:textSize="11sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/imgbutton_trends_detail_bottom_bar_comment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/ic_trends_detail_bottom_bar_bg"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="6"
+                android:background="#0000"
+                android:paddingTop="6dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_trends_detail_bottom_bar_comment" />
+
+            <TextView
+                android:layout_marginTop="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="2dp"
+                android:layout_weight="3"
+                android:text="评论"
+                android:textColor="#fff"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/imgbutton_trends_detail_bottom_bar_devliver"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/ic_trends_detail_bottom_bar_bg"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="6"
+                android:background="#0000"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_trends_detail_bottom_bar_devliver" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="2dp"
+                android:layout_weight="3"
+                android:text="转发"
+                android:textColor="#fff"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/imgbutton_trends_detail_bottom_bar_more"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/ic_trends_detail_bottom_bar_bg"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="6"
+                android:background="#0000"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_trends_detail_bottom_bar_more" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="2dp"
+                android:layout_weight="3"
+                android:text="更多"
+                android:textColor="#fff"
+                android:textSize="11sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

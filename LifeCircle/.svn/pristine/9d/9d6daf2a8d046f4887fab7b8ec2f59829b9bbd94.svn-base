@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <TextView
+        android:id="@+id/txtFirstName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:maxWidth="100dp"
+        android:singleLine="true"
+        android:textColor="#bdbdbd" />
+
+    <TextView
+        android:id="@+id/view2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/txtFirstName"
+        android:text="关注了"
+        android:textColor="#bdbdbd" />
+
+    <ImageView
+        android:id="@+id/imgSecondHeader"
+        android:layout_width="23dp"
+        android:layout_height="23dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/view2"
+        android:padding="2dp"
+        android:background="@drawable/bg_frame_header"
+        android:contentDescription="@string/imageDescription"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/txtSecondName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/imgSecondHeader"
+        android:singleLine="true"
+        android:textColor="#bdbdbd" />
+
+</merge> 

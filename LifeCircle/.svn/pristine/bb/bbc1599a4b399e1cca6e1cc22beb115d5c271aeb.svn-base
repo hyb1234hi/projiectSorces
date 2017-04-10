@@ -1,0 +1,505 @@
+package com.sinaleju.lifecircle.app.activity;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.ArrayList;
+
+import org.json.JSONObject;
+
+import android.content.Intent;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.HttpUtils;
+import com.loopj.android.http.RequestParams;
+import com.sinaleju.lifecircle.R;
+import com.sinaleju.lifecircle.app.AppConst;
+import com.sinaleju.lifecircle.app.AppContext;
+import com.sinaleju.lifecircle.app.base_activity.BaseActivity;
+import com.sinaleju.lifecircle.app.camera.ADCamera;
+import com.sinaleju.lifecircle.app.customviews.bottommenu.BaseBottomMenu;
+import com.sinaleju.lifecircle.app.database.entity.UserBean;
+import com.sinaleju.lifecircle.app.service.remote_impl.RemoteConst;
+import com.sinaleju.lifecircle.app.utils.ADSoftInputUtils;
+
+/**
+ * 
+ * @ClassName: BusinessApplyAuthAct
+ * @Description: TODO(商家、物业认证界面)
+ * @author zhenwei
+ * @date 2013-8-23 上午11:58:56
+ * 
+ */
+public class BusinessApplyAuthAct extends BaseActivity implements OnClickListener {
+
+	private TextView name, loginAccount, accountStyle, authStatus, industryType, manageStyle;
+	private EditText companyName, licenseNo, contactPerson, telephone;
+	private ImageView vImage, serviceCategoryIcon;
+	private ImageView idScanImage, licenseImage, taxImage;
+	private Button idScanDeleteBtn, licenseDeleteBtn, taxDeleteBtn;
+
+	private Button companyEditIcon, licenseEditIcon, contactEditIcon, telephoneEditIcon;
+
+	private RelativeLayout serviceIndustryLayout, manageTypeLayout;
+	private ImageView serviceIndustryDivide, manageTypeDivide;
+
+	private ImageView mCurImage;
+	private String[] imagePath;
+	private int curIndex;
+
+	private String businessName;
+	private String industry;
+	private String managerStyleStr;
+
+	private int userId = 95;
+
+	private int isAuth;// 认证状态 0 未认证 1 待认证 2 已认证
+
+	private ADCamera mCamera = ADCamera.builder(this);
+
+	public static String INDUSTRY_TYPE_KEY = "industryType";
+	public static String MANAGER_STYLE_KEY = "managerStyle";
+
+	@Override
+	protected int getLayoutId() {
+		// TODO Auto-generated method stub
+		return R.layout.business_apply_auth;
+	}
+
+	@Override
+	protected void initView() {
+
+		name = (TextView) findViewById(R.id.apply_bus_name_edit);
+		loginAccount = (TextView) findViewById(R.id.apply_bus_login_number);
+		accountStyle = (TextView) findViewById(R.id.apply_bus_login_type);
+		authStatus = (TextView) findViewById(R.id.apply_identity_type);
+		manageStyle = (TextView) findViewById(R.id.apply_manage_type);
+		industryType = (TextView) findViewById(R.id.apply_industry_type);
+
+		companyName = (EditText) findViewById(R.id.apply_company_name_edit);
+		licenseNo = (EditText) findViewById(R.id.apply_bus_license_edit);
+		contactPerson = (EditText) findViewById(R.id.apply_contact_edit);
+		telephone = (EditText) findViewById(R.id.apply_telephone_edit);
+
+		serviceCategoryIcon = (ImageView) findViewById(R.id.apply_industry_type_icon);
+		vImage = (ImageView) findViewById(R.id.apply_identity_status_v);
+
+		idScanImage = (ImageView) findViewById(R.id.apply_id_card_scan_image);
+		licenseImage = (ImageView) findViewById(R.id.apply_business_licence_image);
+		taxImage = (ImageView) findViewById(R.id.apply_tax_image);
+
+		idScanDeleteBtn = (Button) findViewById(R.id.apply_id_card_scan_delete);
+		licenseDeleteBtn = (Button) findViewById(R.id.apply_business_licence_delete);
+		taxDeleteBtn = (Button) findViewById(R.id.apply_tax_delete);
+
+		companyEditIcon = (Button) findViewById(R.id.apply_company_name_icon);
+		licenseEditIcon = (Button) findViewById(R.id.apply_bus_license_icon);
+		contactEditIcon = (Button) findViewById(R.id.apply_contact_edit_icon);
+		telephoneEditIcon = (Button) findViewById(R.id.apply_telephone_icon);
+
+		serviceIndustryLayout = (RelativeLayout) findViewById(R.id.apply_industry_type_layout);
+		manageTypeLayout = (RelativeLayout) findViewById(R.id.apply_style_type_layout);
+		serviceIndustryDivide = (ImageView) findViewById(R.id.apply_industry_type_layout_divide);
+		manageTypeDivide = (ImageView) findViewById(R.id.apply_style_type_layout_divide);
+
+		mTitleBar.setTitleName(R.string.apply_auth);
+		mTitleBar.setLeftButtonShow(true);
+		mTitleBar.initLeftButtonTextOrResId("", R.drawable.selector_topbar_back_button);
+
+		mTitleBar.setLeftButtonListener(this);
+
+		imagePath = new String[3];
+
+		industry = getIntent().getStringExtra(INDUSTRY_TYPE_KEY);
+		managerStyleStr = getIntent().getStringExtra(MANAGER_STYLE_KEY);
+		fillData();
+	}
+
+	@Override
+	protected void initData() {
+
+	}
+
+	@Override
+	protected void initCallbacks() {
+	}
+
+	@Override
+	public void onClick(View v) {
+		int id = v.getId();
+		switch (id) {
+		case R.id.apply_id_card_scan_image:
+			mCurImage = (ImageView) v;
+			curIndex = 0;
+			selectPic(curIndex, mCurImage);
+			break;
+		case R.id.apply_business_licence_image:
+			mCurImage = (ImageView) v;
+			curIndex = 1;
+			selectPic(curIndex, mCurImage);
+			break;
+		case R.id.apply_tax_image:
+			mCurImage = (ImageView) v;
+			curIndex = 2;
+			selectPic(curIndex, mCurImage);
+			break;
+		case R.id.apply_id_card_scan_delete:
+			idScanImage.setImageResource(R.drawable.auth_apply_default);
+			idScanDeleteBtn.setVisibility(View.GONE);
+			deletePic(imagePath[0]);
+			imagePath[0] = "";
+			break;
+		case R.id.apply_business_licence_delete:
+			licenseImage.setImageResource(R.drawable.auth_apply_default);
+			licenseDeleteBtn.setVisibility(View.GONE);
+			deletePic(imagePath[1]);
+			imagePath[1] = "";
+			break;
+		case R.id.apply_tax_delete:
+			taxImage.setImageResource(R.drawable.auth_apply_default);
+			taxDeleteBtn.setVisibility(View.GONE);
+			deletePic(imagePath[2]);
+			imagePath[2] = "";
+			break;
+		case R.id.imavBack:
+			finish();
+			break;
+		case R.id.tvRightFunc1:
+			commitData();
+			break;
+		}
+	}
+
+	private UserBean userBean = null;
+
+	private void fillData() {
+
+		// mBottomMenu.addADeleteMenuButton("相机上传");//该方法有bug
+		// initBottomMenu(new String[] {
+		// BaseBottomMenu.TYPE_CANCEL+"相机上传","本地上传"});
+		initBottomMenu(BaseBottomMenu.TYPE_BG_RED + "相机上传", "本地上传");
+		setMySelfListener();
+
+		UserBean userBean = AppContext.curUser();
+
+		userId = userBean.getUid();
+
+		name.setText(userBean.getName());
+		loginAccount.setText(userBean.getLogin_name());
+
+		industryType.setText(industry);
+		manageStyle.setText(managerStyleStr);
+
+		isAuth = userBean.getIs_auth();
+		if (isAuth == 1 || isAuth == 2) {// 1待认证 2已认证
+			if (isAuth == 1)
+				authStatus.setText("审核中");
+			if (isAuth == 2)
+				authStatus.setText("已认证");
+
+			companyEditIcon.setVisibility(View.GONE);
+			licenseEditIcon.setVisibility(View.GONE);
+			contactEditIcon.setVisibility(View.GONE);
+			telephoneEditIcon.setVisibility(View.GONE);
+
+			companyName.setText(userBean.getCompanyName());
+			licenseNo.setText(userBean.getLicense_num());
+			contactPerson.setText(userBean.getContact_person());
+			telephone.setText(userBean.getContact_tel());
+
+			companyName.setEnabled(false);
+			licenseNo.setEnabled(false);
+			contactPerson.setEnabled(false);
+			telephone.setEnabled(false);
+
+		} else if (isAuth == 0) {
+			authStatus.setText("未认证");
+			mTitleBar.initRightButtonTextOrResId("", R.drawable.auth_apply_btn);
+			mTitleBar.setRightButton1Listener(this);
+
+			setScanImageViewListener();
+		} else if (isAuth == 2) {
+			authStatus.setText("已认证");
+
+		}
+
+		String accountType = null;
+		int type = userBean.getType(); // 用户类型（0个人、1商户、2物业）
+		if (type == 2) {
+			serviceIndustryLayout.setVisibility(View.GONE);
+			manageTypeLayout.setVisibility(View.GONE);
+			;
+			serviceIndustryDivide.setVisibility(View.GONE);
+			manageTypeDivide.setVisibility(View.GONE);
+
+			accountType = "物业";
+		}
+		if (userBean.getType() == 0)
+			accountType = "个人";
+		if (userBean.getType() == 1)
+			accountType = "商家";
+		accountStyle.setText(accountType);
+
+		int category_id = userBean.getCategory_id();
+		fillCategoryIcon(category_id);
+	}
+
+	private void setScanImageViewListener() {
+		idScanImage.setOnClickListener(this);
+		licenseImage.setOnClickListener(this);
+		taxImage.setOnClickListener(this);
+		idScanDeleteBtn.setOnClickListener(this);
+		licenseDeleteBtn.setOnClickListener(this);
+		taxDeleteBtn.setOnClickListener(this);
+	}
+
+	private ArrayList<Integer> delete = new ArrayList<Integer>();
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// mCamera.onImageActivityResult(requestCode, resultCode, data)
+
+		if (requestCode == 210 && resultCode == 200) {
+			delete = data.getIntegerArrayListExtra(AppConst.INTENT_IMAGE_PATH_INDEX_ARRAY);
+			if (delete != null && delete.size() != 0) {
+				mCurImage.setImageResource(R.drawable.auth_apply_default);
+				deletePic(imagePath[curIndex]);
+				imagePath[curIndex] = null;
+			}
+		}
+
+		if (mCamera.onActivityResult(mCurImage, requestCode, resultCode, data)) {
+			if (curIndex == 0)
+				idScanDeleteBtn.setVisibility(View.VISIBLE);
+			else if (curIndex == 1)
+				licenseDeleteBtn.setVisibility(View.VISIBLE);
+			else if (curIndex == 2)
+				taxDeleteBtn.setVisibility(View.VISIBLE);
+
+			imagePath[curIndex] = mCamera.getPath();
+		}
+	}
+
+	private void selectPic(int index, ImageView imageView) {
+		try {
+			ADSoftInputUtils.hide(this);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		if (!TextUtils.isEmpty(imagePath[index])) {// 有图片了 去大图页
+			ArrayList<String> pathList = new ArrayList<String>();
+			pathList.add(imagePath[index]);
+			Intent intent = new Intent();
+			intent.setClass(this, ShowBigPhotoActivity.class);
+			intent.putStringArrayListExtra(AppConst.INTENT_IMAGE_PATH_ARRAY, pathList);
+			intent.putExtra("is_url_image", false);
+			startActivityForResult(intent, 210);
+		} else {
+			showBottomMenu();
+		}
+	}
+
+	private int aspectX = 170, aspectY = 110, outputX = 400, outputY = 300;
+	private boolean scale = true, returndata = false, noFaceDetection = true;
+
+	private void gotoGallery() {
+		mCamera.setDefultSmallImageUri(String.valueOf(System.currentTimeMillis()));
+		mCamera.startGalleryForPhoto(aspectX, aspectY, outputX, outputY, scale, returndata,
+				noFaceDetection);
+	}
+
+	private void gotoCamera() {
+		mCamera.setDefultSmallImageUri(String.valueOf(System.currentTimeMillis()));
+		// mCamera.startCameraForBigPhoto();
+		mCamera.startCameraForPhoto(ADCamera.TAKE_CAMERA_PICTURE, aspectX, aspectY, outputX,
+				outputY, scale, returndata, noFaceDetection);
+	}
+
+	private void commitData() {
+		if (TextUtils.isEmpty(companyName.getText().toString())) {
+			showToast("公司名称不能为空！");
+			return;
+		}
+		if (TextUtils.isEmpty(licenseNo.getText().toString())) {
+			showToast("营业执照编号不能为空！");
+			return;
+		}
+		if (TextUtils.isEmpty(contactPerson.getText().toString())) {
+			showToast("联系人不能为空！");
+			return;
+		}
+		if (TextUtils.isEmpty(telephone.getText().toString())) {
+			showToast("联系人电话不能为空！");
+			return;
+		}
+		if (TextUtils.isEmpty(imagePath[0])) {
+			showToast("法人身份证扫描件不能为空！");
+			return;
+		}
+		if (TextUtils.isEmpty(imagePath[1])) {
+			showToast("营业执照扫描件不能为空！");
+			return;
+		}
+		if (TextUtils.isEmpty(imagePath[2])) {
+			showToast("税务登记扫描件不能为空！");
+			return;
+		}
+
+		showProgressDialog("正在提交申请，请稍后", false);
+
+		RequestParams params = new RequestParams();
+		params.put("user_id", String.valueOf(userId));
+		params.put("name", companyName.getText().toString());
+		params.put("license_num", licenseNo.getText().toString());
+		params.put("contact_person", contactPerson.getText().toString());
+		params.put("contact_tel", telephone.getText().toString());
+		params.put("legal_person", getInputStream(imagePath[0]), imagePath[0], "image/jpg");
+		params.put("license", getInputStream(imagePath[1]), imagePath[1], "image/jpg");
+		params.put("tax", getInputStream(imagePath[2]), imagePath[2], "image/jpg");
+		HttpUtils.post(RemoteConst.URL_BASIC + RemoteConst.URL_BUSINESS_AUTH_APPLY, params,
+				new AsyncHttpResponseHandler() {
+
+					@Override
+					protected void handleSuccessMessage(int statusCode, String responseBody) {
+						hideProgressDialog();
+						if (!TextUtils.isEmpty(responseBody)) {
+							try {
+								JSONObject object = new JSONObject(responseBody);
+								int result = object.optInt("result", -1);
+								if (result == 1) {
+									showToast("认证申请提交成功！");
+									setResult(601);
+									userBean.setIs_auth(1);
+									finish();
+								} else {
+									showToast("认证申请提交失败！");
+								}
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+								showToast("认证申请提交失败！");
+							}
+						}
+					}
+
+					@Override
+					protected void handleFailureMessage(Throwable e, String responseBody) {
+						hideProgressDialog();
+						showToast("认证申请提交失败！");
+					}
+				});
+	}
+
+	private InputStream getInputStream(String path) {
+		FileInputStream fis = null;
+		try {
+			fis = new FileInputStream(path);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return fis;
+	}
+
+	private void setMySelfListener() {
+		setBottomMenuButtonListener(0, new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				gotoCamera();
+				dismissBottomMenu();
+			}
+		});
+
+		setBottomMenuButtonListener(1, new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				gotoGallery();
+				dismissBottomMenu();
+			}
+		});
+		setBottomMenuButtonListener(2, new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				dismissBottomMenu();
+			}
+		});
+
+	}
+
+	private void fillCategoryIcon(int categoryId) {
+		switch (categoryId) {
+		case 1:
+			serviceCategoryIcon.setBackgroundResource(R.drawable.fr_right_view_icon12);
+			break;
+		case 2:
+			serviceCategoryIcon.setBackgroundResource(R.drawable.fr_right_view_icon13);
+			break;
+		case 3:
+			serviceCategoryIcon.setBackgroundResource(R.drawable.fr_right_view_icon14);
+			break;
+		case 4:
+			serviceCategoryIcon.setBackgroundResource(R.drawable.fr_right_view_icon15);
+			break;
+		case 5:
+			serviceCategoryIcon.setBackgroundResource(R.drawable.fr_right_view_icon16);
+			break;
+		case 6:
+			serviceCategoryIcon.setBackgroundResource(R.drawable.fr_right_view_icon17);
+			break;
+		case 7:
+			serviceCategoryIcon.setBackgroundResource(R.drawable.fr_right_view_icon18);
+			break;
+		case 8:
+			serviceCategoryIcon.setBackgroundResource(R.drawable.fr_right_view_icon19);
+			break;
+		case 9:
+			serviceCategoryIcon.setBackgroundResource(R.drawable.fr_right_view_icon20);
+			break;
+		}
+	}
+
+	@Override
+	public void finish() {
+		deleteAllPic();
+		super.finish();
+	}
+
+	private void deleteAllPic() {
+		for (int i = 0; i < imagePath.length; i++) {
+			deletePic(imagePath[i]);
+		}
+	}
+
+	private void deletePic(final String path) {
+
+		new Thread() {
+
+			@Override
+			public void run() {
+				if (!TextUtils.isEmpty(path)) {
+					try {
+						new File(path).delete();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+
+		}.start();
+	}
+
+}

@@ -1,0 +1,282 @@
+package com.sinaleju.lifecircle.app.dialog;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Rect;
+import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.animation.TranslateAnimation;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.iss.imageloader.core.ImageLoader;
+import com.sinaleju.lifecircle.R;
+import com.sinaleju.lifecircle.app.AppContext;
+import com.sinaleju.lifecircle.app.activity.ChatDetailAct;
+import com.sinaleju.lifecircle.app.service.Service.OnFaultHandler;
+import com.sinaleju.lifecircle.app.service.Service.OnSuccessHandler;
+import com.sinaleju.lifecircle.app.service.remote_impl.entity.RSVisitingCard;
+import com.sinaleju.lifecircle.app.utils.ADAnimationUtils;
+import com.sinaleju.lifecircle.app.utils.FadeInImageLoadingListener;
+import com.sinaleju.lifecircle.app.utils.LogUtils;
+import com.sinaleju.lifecircle.app.utils.PublicUtils;
+import com.sinaleju.lifecircle.app.utils.SimpleImageLoaderOptions;
+
+public class VisitingCardDialog extends Dialog {
+	protected static final String TAG = "VisitingCardDialog";
+	private View mCancelView;
+	private int mUid;
+	private int mUser_type;
+	private ImageView mHeaderImage;
+	private ImageView mBackgroundImage;
+	private TextView mTxtName;
+	private View mSendView;
+	private View mVisitView;
+	private String mName = null;
+	private static final int STYLE = android.os.Build.VERSION.SDK_INT < 11 ? R.style.style_dialog_visiting_card_low_api
+			: R.style.style_dialog_visiting_card;
+	// for api 2.3/2.2
+	private View mContentView;
+
+	private VisitingCardDialog(Context context, int uid, int user_type) {
+		super(context, STYLE);
+		this.mUid = uid;
+		this.mUser_type = user_type;
+	}
+
+	private VisitingCardDialog(Context context, int theme) {
+		super(context, theme);
+	}
+
+	public static void pop(Context context, int uid, int user_type) {
+		new VisitingCardDialog(context, uid, user_type).show();
+	}
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		setContentView(R.layout.view_visiting_card);
+
+		initViews();
+
+		setListeners();
+
+		initData();
+
+	}
+
+	private void initData() {
+
+		mHeaderImage.setImageResource(PublicUtils.getUserDefaultHeadImage(mUser_type));
+	}
+
+	private void initViews() {
+		mCancelView = findViewById(R.id.viewCancel);
+		mBackgroundImage = (ImageView) findViewById(R.id.imgBackground);
+		mHeaderImage = (ImageView) findViewById(R.id.header);
+		mTxtName = (TextView) findViewById(R.id.txtName);
+		mSendView = findViewById(R.id.btnSendMsg);
+		mVisitView = findViewById(R.id.btnVisit);
+
+		// for api 2.3/2.2
+		mContentView = findViewById(R.id.contentView);
+
+	}
+
+	private void setListeners() {
+		mCancelView.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				dismiss();
+			}
+		});
+		mSendView.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				setOnDismissListener(new OnDismissListener() {
+
+					@Override
+					public void onDismiss(DialogInterface arg0) {
+						Intent intent = new Intent(getContext(), ChatDetailAct.class);
+						intent.putExtra(ChatDetailAct.NAME_KEY, mName);
+						intent.putExtra(ChatDetailAct.USER_ID_KEY, AppContext.curUser().getUid());
+						intent.putExtra(ChatDetailAct.TO_USER_ID_KEY, mUid);
+						intent.putExtra(ChatDetailAct.TYPE_KEY, mUser_type);
+						getContext().startActivity(intent);
+					}
+				});
+				dismiss();
+			}
+		});
+		mVisitView.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				setOnDismissListener(new OnDismissListener() {
+
+					@Override
+					public void onDismiss(DialogInterface arg0) {
+						AppContext.gotoIndexActivity(getContext(), mUser_type, mUid);
+					}
+				});
+				dismiss();
+			}
+		});
+		setOnShowListener(new OnShowListener() {
+
+			@Override
+			public void onShow(DialogInterface dialog) {
+				requestData();
+			}
+		});
+
+	}
+
+	/**
+	 * For API 2.3/2.2/2.1
+	 */
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			int px = (int) event.getRawX();
+			int py = (int) event.getRawY();
+			int[] l = new int[2];
+			mContentView.getLocationOnScreen(l);
+			int x = l[0];
+			int y = l[1];
+			int w = mContentView.getMeasuredWidth();
+			int h = mContentView.getMeasuredHeight();
+			Rect r = new Rect(x, y, x + w, y + h);
+			if (!r.contains(px, py)) {
+				dismiss();
+				return true;
+			}
+		}
+		return super.onTouchEvent(event);
+	}
+
+	public void requestData() {
+		RSVisitingCard rs = new RSVisitingCard(AppContext.curUser().getUid(), mUid);
+		rs.setOnSuccessHandler(new OnSuccessHandler() {
+
+			@Override
+			public void onSuccess(Object result) {
+				String json = result.toString();
+
+				if (json.equals(""))
+					return;
+
+				try {
+					JSONObject obj = new JSONObject(json);
+
+					// send button
+					int sendMessageEnable = obj.getInt("send_status");
+					if (sendMessageEnable == 1) {
+						showSendButton();
+					}
+
+					// display name
+					setName(obj.optString("display_name"));
+					// background
+					setBackground(obj.optString("background"));
+					// header
+					setHeader(obj.optString("header"));
+
+				} catch (JSONException e) {
+					LogUtils.e(TAG, "", e);
+				}
+
+			}
+		});
+		rs.setOnFaultHandler(new OnFaultHandler() {
+
+			@Override
+			public void onFault(Exception ex) {
+
+			}
+		});
+		rs.asyncExecute(getContext());
+	}
+
+	protected void showSendButton() {
+
+		mSendView.setVisibility(View.INVISIBLE);
+
+		// transform visiting button
+		DisplayMetrics dm = new DisplayMetrics();
+		getWindow().getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+		int fromXDelta = (int) (-46 * dm.density);
+		int toXDelta = 0;
+		int fromYDelta = 0;
+		int toYDelta = 0;
+		TranslateAnimation t = new TranslateAnimation(fromXDelta, toXDelta, fromYDelta, toYDelta);
+		t.setDuration(300);
+		mVisitView.startAnimation(t);
+
+		// show Send button
+		ADAnimationUtils.fadeIn(mSendView);
+	}
+
+	/**
+	 * @param headerUrl
+	 */
+	private void setHeader(String headerUrl) {
+		if (headerUrl != null && !headerUrl.equals(""))
+			ImageLoader.getInstance(null).displayImage(headerUrl, mHeaderImage,
+					SimpleImageLoaderOptions.getRoundImageOptions(0, 100),
+					new FadeInImageLoadingListener(mHeaderImage));
+	}
+
+	/**
+	 * @param backgroundUrl
+	 */
+	private void setBackground(String backgroundUrl) {
+		if (backgroundUrl != null && !backgroundUrl.equals(""))
+			ImageLoader.getInstance(null).displayImage(backgroundUrl, mBackgroundImage,
+					SimpleImageLoaderOptions.getRoundImageOptions(0, 15),
+					new FadeInImageLoadingListener(mBackgroundImage));
+	}
+
+	/**
+	 * @param name
+	 */
+	private void setName(String name) {
+		mName = name;
+		if (mName == null || mName.equals(""))
+			mName = "未知";
+		mTxtName.setText(mName);
+	}
+
+	public static class VisitingCardPopListener implements View.OnClickListener {
+
+		private int l_uid;
+		private int l_user_type;
+		private Context l_context;
+
+		public VisitingCardPopListener(Context context, int uid, int type) {
+			this.l_context = context;
+			this.l_uid = uid;
+			this.l_user_type = type;
+		}
+
+		@Override
+		public void onClick(View v) {
+			if (!AppContext.isValid(this.l_context))
+				return;
+			pop(l_context, l_uid, l_user_type);
+		}
+
+	}
+
+}

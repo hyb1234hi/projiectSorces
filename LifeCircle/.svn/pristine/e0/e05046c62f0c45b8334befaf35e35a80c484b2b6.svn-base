@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F4F4F4"
+    android:gravity="right" >
+    
+    <EditText android:id="@+id/suggestion_commit_edittext"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left|top"
+        android:textSize="15sp"
+        android:lineSpacingExtra="5dp"
+        android:textColor="@color/dark_black"
+        android:hint="提提意见，让好吗做的更好！"
+        android:minHeight="300dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:maxLength="400"
+        android:background="@drawable/ac_eview_bg"/>
+
+    <TextView android:id="@+id/suggestion_commit_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:text="400"
+        android:textColor="@color/ac_regist_text_grey"
+        android:textSize="14sp"/>
+</LinearLayout>

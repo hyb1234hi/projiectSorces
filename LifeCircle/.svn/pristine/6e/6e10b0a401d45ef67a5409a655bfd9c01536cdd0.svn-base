@@ -1,0 +1,582 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4F4F4"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    tools:context=".RegistActivity" >
+
+    <LinearLayout
+        android:id="@+id/regist_ll_switchbutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/topbar_bg"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <com.sinaleju.lifecircle.app.customviews.SwitchButton
+            android:id="@+id/regist_registtype"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="5dp"
+            android:background="#00000000" />
+    </LinearLayout>
+    <!-- 注册详情 -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true"
+        android:padding="5dp"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/login_background_white"
+                android:orientation="vertical"
+                >
+
+                <!-- 手机号码 -->
+
+                <RelativeLayout
+                    android:id="@+id/regist_rl_phonenumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="5dp" >
+
+                    <TextView
+                        android:id="@+id/phontext"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:text="@string/phonenumber"
+                        android:textColor="#000000"
+                        android:textSize="18sp" />
+
+                    <EditText
+                        android:id="@+id/regist_phonenumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/phontext"
+                        android:background="@null"
+                        android:ellipsize="end"
+                        android:hint="@string/edittext_phontnumber_hint"
+                        android:inputType="phone"
+                        android:maxLength="11"
+                        android:singleLine="true"
+                        android:textSize="16sp" />
+
+                    <Button
+                        android:id="@+id/regist_getcheckednumber"
+                        android:layout_width="105dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="2dp"
+                        android:background="@drawable/selector_regist_button"
+                        android:paddingBottom="2dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="2dp"
+                        android:lineSpacingExtra="1dp"
+                        android:text="@string/button_getcheckednumber"
+                        android:textColor="#2CA3CE" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/regist_iv_phonenumberline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+                <!-- 验证码 -->
+
+                <RelativeLayout
+                    android:id="@+id/regist_rl_checknumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="5dp" >
+
+                    <TextView
+                        android:id="@+id/checkednumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:text="@string/text_checknumber"
+                        android:textColor="#000000"
+                        android:textSize="18sp" />
+
+                    <EditText
+                        android:id="@+id/regist_checknumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/checkednumber"
+                        android:background="@null"
+                        android:hint="@string/edittext_checknumber_hint"
+                        android:singleLine="true"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/regist_iv_checknumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+
+                <!-- 所在小区 -->
+
+                <LinearLayout
+                    android:id="@+id/regist_ll_selectlivearea"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="5dp" >
+
+                    <TextView
+                        android:id="@+id/livearea"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="@string/livearea"
+                        android:textColor="#000000"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/regist_livearea"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="1dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:hint="@string/edittext_livearea_hint"
+                        android:singleLine="true"
+                        android:textColor="@color/ac_regist_text_grey"
+                        android:textSize="16sp" />
+
+                    <ImageView
+                        android:id="@+id/regist_selectlivearea"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="5dp"
+                        android:contentDescription="@string/imageDescription"
+                        android:src="@drawable/common_rigtharrow_normal" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+                <!-- 您是 -->
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dp" >
+
+                    <TextView
+                        android:id="@+id/whoareyou"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="40dp"
+                        android:text="@string/whoareyou"
+                        android:textColor="#000000"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:id="@+id/regist_fengexian"
+                        android:layout_width="1dp"
+                        android:layout_height="92dp"
+                        android:layout_toRightOf="@id/whoareyou"
+                        android:background="@drawable/common_fengexian_vertical" />
+
+                    <RadioGroup
+                        android:id="@+id/regist_whoareyou"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/whoareyou"
+                        android:orientation="vertical"
+                        android:textSize="16sp" >
+
+                        
+                        <RadioButton
+                            android:id="@+id/regist_whoareyou_person"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="5dp"
+                             android:visibility="gone"
+                            android:button="@drawable/selector_regist_radiobutton"
+                            android:checked="true" />
+
+                        <RadioButton
+                            android:id="@+id/regist_whoareyou_merchant"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="5dp"
+                            android:visibility="gone"
+                            android:button="@drawable/selector_regist_radiobutton" />
+                       
+
+
+                        <!--
+                             <RadioButton
+                            android:id="@+id/regist_whoareyou_tenement"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginTop="5dp"
+                            android:button="@drawable/selector_regist_radiobutton" />
+                        -->
+
+
+                        <!-- 个人 -->
+
+                        <LinearLayout
+                            android:id="@+id/regist_ll_person"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:layout_marginLeft="2dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:paddingRight="8dp" >
+
+                            <TextView
+                                android:id="@+id/regist_tv_person"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:text="@string/radiobutton_textperson"
+                                android:textColor="#000000"
+                                android:textSize="18sp" />
+
+                            <LinearLayout
+                                android:id="@+id/regist_ll_persontype"
+                                android:layout_width="fill_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="5dp"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:gravity="center"
+                                android:padding="2dp" >
+
+                                <TextView
+                                    android:id="@+id/regist_whoareyou_persontype"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_marginTop="1dp"
+                                    android:layout_weight="1"
+                                    android:clickable="false"
+                                    android:focusable="false"
+                                    android:gravity="right"
+                                    android:singleLine="true"
+                                    android:text="@string/edittext_whoareyou_person_hint"
+                                    android:textColor="#2CA3CE"
+                                    android:textSize="18sp" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="5dp"
+                                    android:background="@drawable/regist_downarrow"
+                                    android:contentDescription="@string/imageDescription" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginLeft="2dp"
+                            android:background="@drawable/common_dividerline" />
+
+                        <!-- 商家 -->
+
+                        <LinearLayout
+                            android:id="@+id/regist_ll_merchant"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:layout_marginLeft="2dp"
+                            android:background="#EFEFEF"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:paddingRight="8dp" >
+
+                            <TextView
+                                android:id="@+id/regist_tv_merchant"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:text="@string/radiobutton_textmerchant"
+                                android:textColor="#888888"
+                                android:textSize="18sp" />
+
+                            <LinearLayout
+                                android:id="@+id/regist_ll_merchanttype"
+                                android:layout_width="fill_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="2dp"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:gravity="center"
+                                android:padding="2dp" >
+
+                                <TextView
+                                    android:id="@+id/regist_whoareyou_merchanttype"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_marginTop="1dp"
+                                    android:layout_weight="1"
+                                    android:clickable="false"
+                                    android:focusable="false"
+                                    android:gravity="right"
+                                    android:singleLine="true"
+                                    android:text="@string/edittext_whoareyou_merchant_hint"
+                                    android:textColor="#989898"
+                                    android:textSize="16sp" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginRight="5dp"
+                                    android:background="@drawable/regist_downarrow"
+                                    android:contentDescription="@string/imageDescription" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                      <!--   <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginLeft="2dp"
+                            android:background="@drawable/common_dividerline" /> -->
+                        <!-- 物业公司 -->
+
+                       <!--  <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:background="#EFEFEF"
+                            android:layout_marginLeft="2dp"
+                            android:gravity="center_vertical" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:text="@string/radiobutton_texttenement"
+                                android:textColor="#888888"
+                                android:textSize="18sp" />
+                        </LinearLayout> -->
+                    </RadioGroup>
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+
+                <!-- 服务电话 -->
+
+                <RelativeLayout
+                    android:id="@+id/regist_rl_servicephone"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="5dp"
+                    android:visibility="gone" >
+
+                    <TextView
+                        android:id="@+id/serivcephonenumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:text="@string/text_servicephone"
+                        android:textColor="#000000"
+                        android:textSize="18sp" />
+
+                    <EditText
+                        android:id="@+id/regist_servicephone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/serivcephonenumber"
+                        android:background="@null"
+                        android:hint="@string/edittext_servicephone_hint"
+                        android:inputType="phone"
+                        android:singleLine="true"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/regist_iv_servicephoneline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription"
+                    android:visibility="gone" />
+                <!-- 名称 -->
+
+                <RelativeLayout
+                    android:id="@+id/regist_rl_nickname"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="5dp" >
+
+                    <TextView
+                        android:id="@+id/username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:text="@string/text_username"
+                        android:textColor="#000000"
+                        android:textSize="18sp" />
+
+                    <EditText
+                        android:id="@+id/regist_username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/username"
+                        android:background="@null"
+                        android:ellipsize="end"
+                        android:hint="@string/edittext_username_hint"
+                        android:maxLength="10"
+                        android:singleLine="true"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/regist_iv_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+                <!-- 登录密码 -->
+
+                <RelativeLayout
+                    android:id="@+id/regist_rl_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="5dp" >
+
+                    <TextView
+                        android:id="@+id/password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:text="@string/text_password"
+                        android:textColor="#000000"
+                        android:textSize="18sp" />
+
+                    <EditText
+                        android:id="@+id/regist_password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/password"
+                        android:background="@null"
+                        android:ellipsize="end"
+                        android:hint="@string/edittext_password_hint"
+                        android:inputType="textPassword"
+                        android:singleLine="true"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/regist_iv_repeatpassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+                <!-- 确认密码 -->
+
+                <RelativeLayout
+                    android:id="@+id/regist_rl_repeatpassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="5dp" >
+
+                    <TextView
+                        android:id="@+id/confirmpassword"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:text="@string/text_confirmpassword"
+                        android:textColor="#000000"
+                        android:textSize="18sp" />
+
+                    <EditText
+                        android:id="@+id/regist_confirmpassword"
+                        android:layout_width="180dp"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/confirmpassword"
+                        android:background="@null"
+                        android:hint="@string/edittext_confirmpassword_hint"
+                        android:inputType="textPassword"
+                        android:singleLine="true"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/regist_submit"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_margin="15dp"
+                android:background="@drawable/login_normal"
+                android:text="@string/regist_submit"
+                android:textColor="#ffffff"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

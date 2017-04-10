@@ -1,0 +1,789 @@
+package com.sinaleju.lifecircle.app.activity;
+
+import java.util.List;
+
+import org.apache.http.conn.ConnectTimeoutException;
+import org.json.JSONException;
+
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.location.Location;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
+import android.view.View;
+import android.view.View.MeasureSpec;
+import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
+import com.amap.api.location.LocationManagerProxy;
+import com.amap.api.location.LocationProviderProxy;
+import com.amap.api.maps.AMap;
+import com.amap.api.maps.AMap.CancelableCallback;
+import com.amap.api.maps.AMap.InfoWindowAdapter;
+import com.amap.api.maps.AMap.OnInfoWindowClickListener;
+import com.amap.api.maps.AMap.OnMapLoadedListener;
+import com.amap.api.maps.AMap.OnMarkerClickListener;
+import com.amap.api.maps.AMap.OnMarkerDragListener;
+import com.amap.api.maps.CameraUpdateFactory;
+import com.amap.api.maps.LocationSource;
+import com.amap.api.maps.SupportMapFragment;
+import com.amap.api.maps.model.BitmapDescriptor;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.CameraPosition;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.LatLngBounds;
+import com.amap.api.maps.model.LatLngBounds.Builder;
+import com.amap.api.maps.model.Marker;
+import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.maps.model.MyLocationStyle;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.iss.view.common.ToastAlone;
+import com.sinaleju.lifecircle.R;
+import com.sinaleju.lifecircle.app.adapter.LocationSearchAdapter;
+import com.sinaleju.lifecircle.app.adapter.MultiTypesAdapter;
+import com.sinaleju.lifecircle.app.exception.ADRemoteException;
+import com.sinaleju.lifecircle.app.map.AMapUtil;
+import com.sinaleju.lifecircle.app.model.Model_AroundInfo;
+import com.sinaleju.lifecircle.app.model.impl.MultiModelBase;
+import com.sinaleju.lifecircle.app.model.impl.MultiModelsSet;
+import com.sinaleju.lifecircle.app.model.impl.MultiModelsSet.NodeList;
+import com.sinaleju.lifecircle.app.model.json.JSONParser_AroundInfo;
+import com.sinaleju.lifecircle.app.service.Service.OnFaultHandler;
+import com.sinaleju.lifecircle.app.service.Service.OnSuccessHandler;
+import com.sinaleju.lifecircle.app.service.remote_impl.entity.RSFindAroundMapData;
+import com.sinaleju.lifecircle.app.service.remote_impl.entity.RSSearchAroundMapData;
+import com.sinaleju.lifecircle.app.utils.LogUtils;
+import com.sinaleju.lifecircle.app.utils.PublicUtils;
+
+/**
+ * 我的位置
+ */
+public class LocationMapActivity extends FragmentActivity implements
+		OnClickListener, LocationSource, AMapLocationListener,
+		OnMarkerClickListener, OnInfoWindowClickListener, OnMarkerDragListener,
+		OnMapLoadedListener, InfoWindowAdapter {
+	private static final String TAG = "LocationMapActivity";
+	public static final String MYLOCATION_NAME = "MYLOCATION_NAME";
+	public static final String MYLOCATION_LONGITUDE = "MYLOCATION_LONGITUDE";
+	public static final String MYLOCATION_LATITUDE = "MYLOCATION_LATITUDE";
+	private View mTitleView;
+	private Button mBt_back;
+	private Button mBt_cancel;
+	private View mV_search;
+	private View mV_delete;
+	private EditText mEt_searchContent;
+	private TextView mTv_titleName;
+	private ListView searchListView;
+	private LocationSearchAdapter searchAdapter;
+	private PullToRefreshListView mListView;
+	private Button searchButton;
+	private View normalInfoView;
+	private View mProgressBar;
+
+	// private RadioGroup rOptions;
+	private View mWindow;
+	private View mContents;
+	private AMap aMap;
+	private List<MultiModelBase> dataList;
+	private MarkerOptions[] markerArray;
+	private OnLocationChangedListener mListener;
+	private LocationManagerProxy mAMapLocationManager;
+	// private List<CommunityBean> addedCommunity =
+	// MyCommunitiesFragment.mAddedCellModels;
+	private MultiModelsSet mSet;
+	private JSONParser_AroundInfo jsonParser = null;
+	private NodeList<MultiModelBase> aroundList = null;
+	private List<MultiModelBase> searchList = null;
+	private double longitude;
+	private double latitude;
+	private String currentLocationName;
+	private int currentPage = 1; // 当前页数
+	private String distance = "5000";// 周边半径
+	private String perPageCount = "10"; // 每页显示条数
+	private int totalCount;
+	private MultiTypesAdapter mAroundInfoAdapter = null;
+	protected boolean isMore = false;
+	private boolean isFirst = true;
+
+	private View mapView;
+	private Marker firstMarker = null;
+	public static Intent callInent;
+	private float height;
+	private Animation animation_show;
+	private Animation animation_hide;
+	private ProgressDialog mProgressDialog = null;;
+
+	
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.ac_location_map);
+		LogUtils.v(TAG, "-------------onCreate--------------");
+		initView();
+		initData();
+		setListener();
+		if (aMap == null) {
+			aMap = ((SupportMapFragment) getSupportFragmentManager()
+					.findFragmentById(R.id.location_map)).getMap();
+			if (AMapUtil.checkReady(this, aMap)) {
+				setUpMap();
+			}
+		}
+	}
+
+	private void initView() {
+		mapView = findViewById(R.id.location_map);
+		mTitleView = findViewById(R.id.location_titlebar);
+		mBt_back = (Button) mTitleView.findViewById(R.id.title_left);
+		mBt_cancel = (Button) mTitleView.findViewById(R.id.title_right);
+		mBt_cancel.setVisibility(View.VISIBLE);
+		mV_search = findViewById(R.id.location_search);
+		mV_delete = findViewById(R.id.location_delete);
+		mEt_searchContent = (EditText) findViewById(R.id.location_searchcontent);
+		searchButton = (Button) findViewById(R.id.location_search_btn);
+		mListView = (PullToRefreshListView) findViewById(R.id.location_list);
+		height = mListView.getLeft();
+		LogUtils.i(TAG, "ListView left: " + height);
+		normalInfoView = findViewById(R.id.location_norminfo);
+		mProgressBar = findViewById(R.id.location_progressbar);
+		// mListView.setMode(Mode.PULL_UP_TO_REFRESH);
+		// mTv_titleName = (TextView) mTitleView.findViewById(R.id.title_name);
+		// mTv_titleName.setText("地图选择");
+		// mMarkerLitenerText = (TextView)
+		// findViewById(R.id.mark_listenter_text);
+		mWindow = getLayoutInflater().inflate(
+				R.layout.view_map_custom_info_window, null);
+		// int screenWidth=getWindowManager().getDefaultDisplay().getWidth();
+		// LinearLayout textLayout=(LinearLayout)
+		// mWindow.findViewById(R.id.mapwidndow_text);
+		// textLayout.setLayoutParams(new LinearLayout.LayoutParams((int)
+		// (screenWidth*0.6), LinearLayout.LayoutParams.WRAP_CONTENT));
+		mContents = getLayoutInflater().inflate(
+				R.layout.view_map_custom_info_contents, null);
+		// rOptions = (RadioGroup)
+		// findViewById(R.id.custom_info_window_options);
+
+		searchListView = (ListView) findViewById(R.id.location_searchlist);
+
+	}
+
+	/**
+	 * 初始化AMap对象
+	 */
+	private void initData() {
+		animation_show=AnimationUtils.loadAnimation(this, R.anim.anim_mapwindow_show);
+		animation_hide=AnimationUtils.loadAnimation(this, R.anim.anim_mapwindow_hide);
+		callInent = getIntent();
+		jsonParser = new JSONParser_AroundInfo();
+		jsonParser.initFirstMarker(getIntent());
+		mSet = new MultiModelsSet(jsonParser);
+		aroundList = new NodeList<MultiModelBase>();
+		// "longitude":"116.472064","add_time":"1374573976","latitude":"39.996339"
+		latitude = callInent.getDoubleExtra("lat", -1);
+		longitude = callInent.getDoubleExtra("lon", -1);
+		currentLocationName = callInent.getStringExtra("location");
+		// 从服务器获取周边商家、物业信息。
+		getAroundInfo();
+
+	}
+
+	private void generaryMarker() {
+		MarkerOptions markerOptions = null;
+		BitmapDescriptor otherIcon = BitmapDescriptorFactory
+				.fromResource(R.drawable.common_location_icon);
+		BitmapDescriptor curIcon = BitmapDescriptorFactory
+				.fromResource(R.drawable.msg_main_location_press);
+		BitmapDescriptor markerIcon = null;
+		markerArray = new MarkerOptions[dataList.size()];
+		// 取当前城市下的商家、小区信息数据
+		int j = 0;
+		for (int i = 0; i < dataList.size(); i++) {
+			markerIcon = otherIcon;
+			MultiModelBase modelBase = dataList.get(i);
+			if (modelBase instanceof Model_AroundInfo) {
+				Model_AroundInfo aroundInfoModel = (Model_AroundInfo) modelBase;
+				double latitude = aroundInfoModel.getLatitude();
+				double longitude = aroundInfoModel.getLongitude();
+				LatLng marker = new LatLng(latitude, longitude);
+				String name = aroundInfoModel.getName();
+				LogUtils.i(TAG, "generaryMark.longitude: "+longitude +"name: "+name+"getMarkerLongitude: "+marker.longitude);
+				String address = aroundInfoModel.getAddress();
+				if (isFirst && i == 0) {
+					markerIcon = curIcon;
+					isFirst = false;
+				}
+				markerOptions = new MarkerOptions().title(name)
+						.snippet(address).position(marker).icon(markerIcon);
+				markerArray[j] = markerOptions;
+				j++;
+			}
+		}
+		addMarkersToMap();
+
+	}
+
+	private void getAroundInfo() {
+		RSFindAroundMapData rsAround = new RSFindAroundMapData(longitude + "",
+				latitude + "", distance, currentPage + "", perPageCount);
+		rsAround.setOnSuccessHandler(new OnSuccessHandler() {
+
+			@Override
+			public void onSuccess(Object result) {
+				// 解析数据
+				mProgressBar.setVisibility(View.GONE);
+				mSet.add(result.toString());
+				if (isMore) {
+					mListView.onRefreshComplete();
+					isMore = false;
+					aroundList.addAll(mSet.getTempList());
+					mAroundInfoAdapter.notifyDataSetChanged();
+
+				} else {
+					mSet.lockNode();
+					mSet.changeNodeList(aroundList);
+					mAroundInfoAdapter = new MultiTypesAdapter(mSet,
+							LocationMapActivity.this);
+					mListView.setAdapter(mAroundInfoAdapter);
+					totalCount = JSONParser_AroundInfo.pageCount;
+				}
+				dataList = JSONParser_AroundInfo.data;
+				generaryMarker();
+			}
+		});
+		rsAround.setOnFaultHandler(new OnFaultHandler() {
+
+			@Override
+			public void onFault(Exception ex) {
+				if (isMore) {
+					mListView.onRefreshComplete();
+				}
+				if (ex instanceof ADRemoteException) {
+					showToast(((ADRemoteException) ex).msg());
+				} else if (ex instanceof ConnectTimeoutException) {
+					showToast("请求超时，请重试");
+				}
+
+			}
+		});
+
+		if (PublicUtils.isNetworkAvailable(this)) {
+			rsAround.asyncExecute(this);
+		} else {
+			showToast("网络连接异常，请检查后重试");
+		}
+
+	}
+
+	private void showToast(String text) {
+		ToastAlone.makeText(this, text, Toast.LENGTH_SHORT).show();
+	}
+	
+	private void setListener() {
+		mBt_back.setOnClickListener(this);
+		mBt_cancel.setOnClickListener(this);
+		searchButton.setOnClickListener(this);
+		mV_delete.setOnClickListener(this);
+	
+		mEt_searchContent.setOnFocusChangeListener(new OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (hasFocus) {
+					searchButton.setText("搜索");
+					searchButton.setVisibility(View.VISIBLE);
+				} else {
+					searchButton.setText("取消");
+				}
+
+			}
+		});
+		mListView.setOnRefreshListener(new OnRefreshListener2<ListView>() {
+
+			@Override
+			public void onPullDownToRefresh(
+					PullToRefreshBase<ListView> refreshView) {
+				return;
+			}
+
+			@Override
+			public void onPullUpToRefresh(
+					PullToRefreshBase<ListView> refreshView) {
+				// 加载更多
+				currentPage++;
+				if (currentPage <= totalCount) {
+					isMore = true;
+					getAroundInfo();
+				} else {
+					showToast("没有更多了...");
+					new Handler().postDelayed(new Runnable() {
+						
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							mListView.onRefreshComplete();
+						}
+					}, 100);
+				}
+			}
+		});
+
+		searchListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				// showToast("click item: " + arg2);
+				Model_AroundInfo aroundModel = (Model_AroundInfo) searchList
+						.get(arg2);
+				Intent data = new Intent();
+				data.putExtra(MYLOCATION_NAME, aroundModel.getName());
+				data.putExtra(MYLOCATION_LONGITUDE, aroundModel.getLongitude());
+				data.putExtra(MYLOCATION_LATITUDE, aroundModel.getLatitude());
+				setResult(RESULT_OK, data);
+				finish();
+			}
+		});
+
+	}
+
+	private void setUpMap() {
+		// aMap.addMarker(new MarkerOptions().position(Constants.BEIJING));
+		MyLocationStyle myLocationStyle = new MyLocationStyle();
+		myLocationStyle.myLocationIcon(BitmapDescriptorFactory
+				.fromResource(R.drawable.location_marker));
+		myLocationStyle.strokeColor(Color.BLACK);
+		myLocationStyle.strokeWidth(1);
+
+		aMap.setMyLocationStyle(myLocationStyle);
+		mAMapLocationManager = LocationManagerProxy
+				.getInstance(LocationMapActivity.this);
+		aMap.setLocationSource(this);
+		aMap.setMyLocationEnabled(true);// 设置为true表示系统定位按钮显示并响应点击，false表示隐藏，默认是false
+
+		// aMap.getUiSettings().setZoomControlsEnabled(true);// 隐藏缩放按钮
+		// aMap.getUiSettings().setMyLocationButtonEnabled(true);// 我的位置
+		aMap.getUiSettings().setCompassEnabled(true);// 指南针
+		aMap.setOnMarkerClickListener(this);// 设置点击marker事件监听器
+		aMap.setOnInfoWindowClickListener(this);// 设置点击infoWindow事件监听器
+		aMap.setInfoWindowAdapter(this);// 设置自定义InfoWindow样式
+
+		aMap.setOnMarkerDragListener(this);// 设置marker可拖拽事件监听器
+		aMap.setOnMapLoadedListener(this);// 设置amap加载成功事件监听器
+		// 往地图上添加当前位置marker
+		LogUtils.e(TAG, "经度： " + longitude + " 纬度： " + latitude);
+		// firstMarker=aMap.addMarker(new
+		// MarkerOptions().title(currentLocationName).snippet("当前区域").position(new
+		// LatLng(longitude, latitude)).icon(BitmapDescriptorFactory
+		// .fromResource(R.drawable.msg_main_location_press)));
+		// aMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(longitude,
+		// latitude)));
+	}
+
+	// 添加marker
+	private void addMarkersToMap() {
+
+		Builder builder = new LatLngBounds.Builder();
+		for (int i = 0; i < markerArray.length; i++) {
+			if (markerArray[i] != null) {
+				if (i == 0) {
+					firstMarker = aMap.addMarker(markerArray[0]);
+				} else {
+					aMap.addMarker(markerArray[i]);
+				}
+				builder.include(markerArray[i].getPosition());
+				// LogUtils.e(TAG, "marker number " + i);
+			}
+		}
+
+		// firstMarker.showInfoWindow();
+		CameraPosition position = new CameraPosition.Builder()
+				.target(firstMarker.getPosition()).zoom(16).bearing(0).tilt(0)
+				.build();
+		aMap.animateCamera(CameraUpdateFactory.newCameraPosition(position),
+				1000, new CancelableCallback() {
+					@Override
+					public void onFinish() {
+						// TODO Auto-generated method stub
+						firstMarker.showInfoWindow();
+					}
+
+					@Override
+					public void onCancel() {
+						// TODO Auto-generated method stub
+
+					}
+				});
+		// aMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(),
+		// 30),1000,null);
+
+		// aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(),
+		// 20));
+	}
+
+	/**
+	 * 绘制系统默认的10种marker背景图片
+	 */
+	public void drawMarkers() {
+
+	}
+
+	/**
+	 * 把一个xml布局文件转化成view
+	 */
+	public View getView(String title, String text) {
+		View view = getLayoutInflater().inflate(R.layout.view_map_marker, null);
+		TextView text_title = (TextView) view.findViewById(R.id.marker_title);
+		TextView text_text = (TextView) view.findViewById(R.id.marker_text);
+		text_title.setText(title);
+		text_text.setText(text);
+		return view;
+	}
+
+	/**
+	 * 把一个view转化成bitmap对象
+	 */
+	public static Bitmap getViewBitmap(View view) {
+		view.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
+				MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+		view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+		view.buildDrawingCache();
+		Bitmap bitmap = view.getDrawingCache();
+		return bitmap;
+	}
+
+	/**
+	 * 清空地图上所有已经标注的marker
+	 */
+	public void onClearMap(View view) {
+		if (AMapUtil.checkReady(this, aMap)) {
+			aMap.clear();
+		}
+	}
+
+	/**
+	 * 重新标注所有的marker
+	 */
+	public void onResetMap(View view) {
+		if (AMapUtil.checkReady(this, aMap)) {
+			aMap.clear();
+			addMarkersToMap();
+
+		}
+	}
+
+	/**
+	 * 对marker标注点点击响应事件
+	 */
+	@Override
+	public boolean onMarkerClick(final Marker marker) {
+		return false;
+
+	}
+
+	// 单击marker信息框。
+	@Override
+	public void onInfoWindowClick(Marker marker) {
+
+	}
+
+	@Override
+	public void onMarkerDrag(Marker arg0) {
+	}
+
+	@Override
+	public void onMarkerDragEnd(Marker arg0) {
+
+	}
+
+	@Override
+	public void onMarkerDragStart(Marker arg0) {
+		// mMarkerLitenerText.setText(arg0.getTitle() + "DragStart");
+	}
+
+	@Override
+	public void onMapLoaded() {
+		// 加载成功后设置所有maker显示在View中
+		// Builder builder = new LatLngBounds.Builder();
+		// for (int i = 0; i < markerArray.length; i++) {
+		// if (markerArray[i] != null) {
+		// LogUtils.i(TAG, "name: " + markerArray[i].getSnippet());
+		// builder.include(markerArray[i].getPosition());
+		// }
+		// }
+		// aMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(),
+		// 20));
+	}
+
+	@Override
+	public View getInfoContents(Marker marker) {
+		render(marker, mContents);
+		return mContents;
+	}
+
+	@Override
+	public View getInfoWindow(Marker marker) {
+		render(marker, mWindow);
+		mWindow.startAnimation(animation_show);
+		return mWindow;
+	}
+
+	public void render(final Marker marker, View view) {
+
+		int badge = R.drawable.location_goto;
+		View textView = view.findViewById(R.id.mapwidndow_text);
+		textView.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mWindow.startAnimation(animation_hide);
+				marker.hideInfoWindow();
+			}
+		});
+		ImageView rightIcon = ((ImageView) view.findViewById(R.id.badge));
+		rightIcon.setImageResource(badge);
+
+		final String title = marker.getTitle();
+		TextView titleUi = ((TextView) view.findViewById(R.id.title));
+		titleUi.setVisibility(View.VISIBLE);
+		if (title != null) {
+			// SpannableString titleText = new SpannableString(title);
+			// titleText.setSpan(new ForegroundColorSpan(Color.WHITE),
+			// 0,titleText.length(), 0);
+			titleUi.setText(title);
+		} else {
+			titleUi.setText("");
+		}
+		String snippet = marker.getSnippet();
+		TextView snippetUi = ((TextView) view.findViewById(R.id.snippet));
+		if (snippet != null) {
+			// SpannableString snippetText = new SpannableString(snippet);
+			// snippetText.setSpan(new ForegroundColorSpan(Color.MAGENTA), 0,
+			// 10,0);
+			// snippetText.setSpan(new ForegroundColorSpan(Color.WHITE),
+			// 0,snippetText.length(), 0);
+			snippetUi.setText(snippet);
+		} else {
+			snippetUi.setText("");
+		}
+
+		rightIcon.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO:返回发送信息页面。
+				Intent data = new Intent();
+				data.putExtra("name", title);
+				data.putExtra(MYLOCATION_NAME, title);
+				data.putExtra(MYLOCATION_LONGITUDE,
+						marker.getPosition().longitude);
+				data.putExtra(MYLOCATION_LATITUDE,
+						marker.getPosition().latitude);
+				LogUtils.i(TAG, "marker.longitude: "+marker.getPosition().longitude);
+				setResult(RESULT_OK, data);
+				finish();
+			}
+		});
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		deactivate();
+	}
+
+	/**
+	 * 此方法已经废弃
+	 */
+	@Override
+	public void onLocationChanged(Location location) {
+	}
+
+	@Override
+	public void onProviderDisabled(String provider) {
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+	}
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+	}
+
+	/**
+	 * 定位成功后回调函数
+	 */
+	@Override
+	public void onLocationChanged(AMapLocation aLocation) {
+		if (mListener != null) {
+			mListener.onLocationChanged(aLocation);
+		}
+	}
+
+	/**
+	 * 激活定位
+	 */
+	@Override
+	public void activate(OnLocationChangedListener listener) {
+		mListener = listener;
+		if (mAMapLocationManager == null) {
+			mAMapLocationManager = LocationManagerProxy.getInstance(this);
+		}
+		/*
+		 * mAMapLocManager.setGpsEnable(false);//
+		 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
+		 */
+		// Location API定位采用GPS和网络混合定位方式，时间最短是5000毫秒
+		mAMapLocationManager.requestLocationUpdates(
+				LocationProviderProxy.AMapNetwork, 5000, 10, this);
+
+	}
+
+	/**
+	 * 停止定位
+	 */
+	@Override
+	public void deactivate() {
+		mListener = null;
+		if (mAMapLocationManager != null) {
+			mAMapLocationManager.removeUpdates(this);
+			mAMapLocationManager.destory();
+		}
+		mAMapLocationManager = null;
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.title_left: // 返回
+			finish();
+			break;
+		case R.id.title_right: // 取消位置
+			setResult(1002);
+			finish();
+			break;
+		case R.id.location_search_btn: // 搜索
+
+			if ("搜索".equals(searchButton.getText().toString())) {
+				String keyWord = mEt_searchContent.getText().toString().trim();
+				if (!"".equals(keyWord)) {
+					// mapView.setVisibility(View.GONE);
+					// mListView.setVisibility(View.GONE);
+					normalInfoView.setVisibility(View.GONE);
+					searchListView.setVisibility(View.VISIBLE);
+					if (searchList != null) {
+						searchList.clear();
+						searchAdapter.notifyDataSetChanged();
+					}
+					searchAroundInfo(keyWord);
+				} else {
+					showToast("请输入搜索内容");
+				}
+
+			} else {
+				searchListView.setVisibility(View.GONE);
+				normalInfoView.setVisibility(View.VISIBLE);
+				searchButton.setVisibility(View.GONE);
+				// searchButton.setText("搜索");
+			}
+			mEt_searchContent.clearFocus();
+			break;
+		case R.id.location_delete:// 删除
+			mEt_searchContent.setText("");
+			break;
+
+		default:
+			break;
+		}
+
+	}
+
+	// 搜索周边信息。
+	private void searchAroundInfo(String keyWord) {
+
+		RSSearchAroundMapData rsAround = new RSSearchAroundMapData(longitude
+				+ "", latitude + "", keyWord, "1", "");
+		rsAround.setOnSuccessHandler(new OnSuccessHandler() {
+
+			@Override
+			public void onSuccess(Object result) {
+				hideProgressDialog();
+				try {
+					searchList = new JSONParser_AroundInfo().parseJSON(
+							result.toString(), null);
+					searchAdapter = new LocationSearchAdapter(
+							LocationMapActivity.this, searchList);
+					searchListView.setAdapter(searchAdapter);
+					LogUtils.i(TAG, "搜索成功");
+
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		rsAround.setOnFaultHandler(new OnFaultHandler() {
+
+			@Override
+			public void onFault(Exception ex) {
+				hideProgressDialog();
+				if (ex instanceof ADRemoteException) {
+					showToast(((ADRemoteException) ex).msg());
+				} else if (ex instanceof ConnectTimeoutException) {
+					showToast("请求超时，请重试");
+				}
+
+			}
+		});
+
+		if (PublicUtils.isNetworkAvailable(this)) {
+			showProgressDialog("数据加载中...", true);
+			rsAround.asyncExecute(this);
+		} else {
+			showToast("网络连接异常，请检查后重试");
+		}
+
+	}
+	
+	public void showProgressDialog(String msg, boolean isCancel) {
+		if (null == mProgressDialog)
+			mProgressDialog = new ProgressDialog(this);
+		mProgressDialog.setMessage(msg != null ? msg : "");
+		mProgressDialog.setCancelable(isCancel);
+		mProgressDialog.setCanceledOnTouchOutside(false);
+		mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+			
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				//cancelTask();
+			}
+		});
+		mProgressDialog.show();
+	}
+
+	public void hideProgressDialog() {
+		if (mProgressDialog != null && mProgressDialog.isShowing())
+			mProgressDialog.dismiss();
+	}
+	
+}

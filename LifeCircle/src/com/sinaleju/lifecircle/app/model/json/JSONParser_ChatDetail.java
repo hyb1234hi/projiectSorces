@@ -1,0 +1,80 @@
+package com.sinaleju.lifecircle.app.model.json;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.sinaleju.lifecircle.app.model.ChatDetailBean;
+import com.sinaleju.lifecircle.app.model.PersonalChatBean.UserInfo;
+
+public class JSONParser_ChatDetail {
+
+	public static HashMap<String, Object> parser(String json){
+
+		JSONObject object;
+		HashMap<String, Object> map = null;
+		try {
+			object = new JSONObject(json);
+			if(null != object){
+				map = new HashMap<String, Object>();
+				map.put("smallest_id", object.optInt("smallest_id", 0));
+				map.put("surplus", object.optInt("surplus", 0));
+				UserInfo info = null;
+				//userinfo
+				JSONObject userInfoObject = object.optJSONObject("user_info");
+				if(null != userInfoObject){
+					info = new UserInfo();
+					info.setId(userInfoObject.optInt("id"));
+					info.setHeader(userInfoObject.optString("header"));
+					info.setDisplay_name(userInfoObject.optString("display_name"));
+				}
+				map.put("user_info", info);
+				
+				//to_user_info
+				JSONObject toUserInfoObject = object.optJSONObject("to_user_info");
+				if(null != userInfoObject){
+					info = new UserInfo();
+					info.setId(toUserInfoObject.optInt("id"));
+					info.setHeader(toUserInfoObject.optString("header"));
+					info.setDisplay_name(toUserInfoObject.optString("display_name"));
+				}
+				map.put("to_user_info", info);
+				
+				JSONArray array = object.optJSONArray("list");
+				ArrayList<ChatDetailBean> listData = null;
+				ChatDetailBean model;
+				if(null != array){
+					listData = new ArrayList<ChatDetailBean>();
+					
+					for(int i=0; i<array.length(); i++){
+						JSONObject o = array.getJSONObject(i);
+						model = new ChatDetailBean();
+						model.setId(o.optInt("id"));
+						model.setAdd_time(o.optInt("add_time"));
+						model.setContent(o.optString("content"));
+						model.setHave_read(o.optInt("have_read"));
+						model.setIs_del(o.optInt("is_del"));
+						model.setOwner_id(o.optInt("owner_id"));
+						model.setTo_user_id(o.optInt("to_user_id"));
+						model.setUser_id(o.optInt("user_id"));
+						listData.add(model);
+					}
+				}
+				
+				map.put("list", listData);
+			}
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+				
+		return map;
+	
+	}
+	
+}

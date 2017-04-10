@@ -1,0 +1,102 @@
+<resources>
+
+    <!-- start -->
+    <string name="app_name">好吗</string>
+    <string name="main_firstpagetext">第一页</string>
+    <string name="main_secondpagetext">第二页</string>
+    <string name="main_thirdpagetext">第三页</string>
+    <string name="main_fourthpagetext">第四页</string>
+    <string name="main_fifthpagetext">第五页</string>
+    <string name="main_button_regist">注册</string>
+    <string name="main_button_login">登录</string>
+    <string name="main_button_visitorbrowse">游客浏览</string>
+
+    <!-- login -->
+    <string name="login_username_hint">手机号码/Email</string>
+    <string name="login_password_hint">密码</string>
+    <string name="imageDescription">图片</string>
+    <string name="loginbuttontext">登录</string>
+    <string name="cooperationaccounttext">使用合作网站账号登录</string>
+    <string name="login_sina">新浪微博</string>
+    <string name="login_qq">腾讯QQ</string>
+    <string name="login_qqweibo">腾讯微博</string>
+    <string name="login_renren">人人网</string>
+    <string name="login_kaixin">开心网</string>
+    <string name="buttonclose">关闭</string>
+    <string name="textlogin">登录</string>
+    <string name="buttonregist">注册</string>
+    <string name="registnewuser">注册新用户</string>
+    <string name="phonenumber">手机号码</string>
+    <string name="retrivepasswordphonehint">请输入手机号码</string>
+    <string name="retrivepasswordemailhint">请输入注册邮箱</string>
+
+    <!-- regist -->
+    <string name="edittext_phontnumber_hint">11位手机号码</string>
+    <string name="button_getcheckednumber">获取验证码</string>
+    <string name="text_checknumber">验 \u0020证 \u0020码</string>
+    <string name="edittext_checknumber_hint">请输入短信验证码</string>
+    <string name="livearea">所在小区</string>
+    <string name="edittext_livearea_hint">选择所在小区</string>
+    <string name="whoareyou">您是</string>
+    <string name="radiobutton_textperson">个人</string>
+    <string name="edittext_whoareyou_person_hint">业主</string>
+    <string name="radiobutton_textmerchant">商家</string>
+    <string name="edittext_whoareyou_merchant_hint">家政服务-家政</string>
+    <string name="radiobutton_texttenement">物业公司</string>
+    <string name="text_username">名　　称</string>
+    <string name="edittext_username_hint">昵称/公司名称（10个字符以内）</string>
+    <string name="text_password">登录密码</string>
+    <string name="edittext_password_hint">请输入密码（6&#8211;12位）</string>
+    <string name="text_confirmpassword">确认密码</string>
+    <string name="edittext_confirmpassword_hint">再次输入密码</string>
+    <string name="regist_submit">提交</string>
+    <string name="text_servicephone">服务电话</string>
+    <string name="edittext_servicephone_hint">手机、座机或400电话</string>
+    <string name="tv_regist_email">邮　　箱</string>
+    <string name="et_regist_email_hint">example@mail.com</string>
+    <string name="map_not_ready">SupportMapFragment初始化失败</string>
+
+    <!-- leftView -->
+    <string name="left_index_text">首页</string>
+    <string name="left_added_text">已加入小区</string>
+    <string name="left_events_square_text">活动广场</string>
+    <string name="left_atten_text">关注列表</string>
+    <string name="left_msg_text">消息</string>
+    <string name="left_friend_text">寻找好友</string>
+    <string name="left_setting_text">设置</string>
+    <string name="left_ticket_manager">券管理</string>
+    <string name="selectcity_search_hint">输入城市名称或首字母</string>
+    <string name="findfriends_explain">和周边的小区朋友一起使用新浪乐居好吗，更能让你们的生活充满话题与乐趣。通过下方选择姓名以邀请他们加您为好友。</string>
+    <string name="sina_weibo">新浪微博</string>
+    <string name="contact_friends">通讯录</string>
+    <string name="invite_friends">邀请</string>
+    <string name="added">已添加</string>
+
+    <!-- 關於 -->
+    <string name="about_us">关于好吗</string>
+    <string name="about_us_body">此版本适用于Android系列操作系统的手机、平板等设备，如在其它品牌或型号的设备上使用本软件，对于出现的任何问题，本公司不承担任何责任。\n\n本软件的下载、安装完全免费，使用过程中产生的数据流量费用，由运营商收取。\n\nApple.Inc未以任何形式赞助或参与好吗所举办的各种比赛、抽奖等活动。\n\n本软件使用了部分开源代码和公共领域，本软件遵循相应的协议。</string>
+    <string name="about_us_company">新浪乐居公司版权所有</string>
+    <string name="about_us_copyright">Copyright © 2013 leju.com\r\nAll Rights Reserved</string>
+
+    <!-- 意见反馈 -->
+    <string name="suggestion_commit">意见反馈</string>
+
+    <!-- 发微博邀请好友 -->
+    <string name="send_weibo_at">Hi， %1$s ！你的手机应用好吗？我正在用一个以小区为核心，将人、商家、物业聚集为圆形社区中心的手机应用——好吗！这是一个移动端的BBS，好吗！这是一个移动的社区服务应用，好吗！这是一个围绕小区的轻社交应用，好吗！快来关注我，一起用，好吗？！</string>
+    <string name="maybe_recognize_person">你可能认识的人</string>
+    <!-- 右侧 -->
+    <string name="right_service_title">服务详情</string>
+    <string name="comment_title">评价</string>
+    <string name="hot_topic">热门话题</string>
+    <string name="apply_auth">认证申请</string>
+    <string name="invite_sms_body">Hi， %1$s ！你的手机应用好吗？我正在用一个以小区为核心，将人、商家、物业聚集为圆形社区中心的手机应用——好吗！这是一个移动端的BBS，好吗！这是一个移动的社区服务应用，好吗！这是一个围绕小区的轻社交应用，好吗！快来关注我，一起用，好吗？！</string>
+    <string name="dialog_ok">确定</string>
+    <string name="dialog_cancle">取消</string>
+    <string name="loading_more">加载更多</string>
+    <string name="no_more">没有更多了</string>
+    <string name="loading_data">正在加载数据...</string>
+    <string name="empty_data">没有搜索到数据！</string>
+    <string name="searching_data">正在搜索数据！</string>
+    <string name="net_error">网络连接异常！</string>
+
+</resources>

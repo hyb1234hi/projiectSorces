@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EEEBE5"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:padding="10dp"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="0px"
+                android:layout_height="0px"
+                android:focusable="true"
+                android:focusableInTouchMode="true" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/login_background_grey"
+                android:orientation="vertical"
+                android:padding="2dp" >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="5dp" >
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="昵称"
+                        style="@style/business_apply_auth_textview_style"/>
+
+                    <TextView
+                        android:id="@+id/apply_bus_name_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="90dp"
+                        android:gravity="center_vertical"
+                        android:background="@null"
+                        android:maxLength="15"
+                        android:singleLine="true"
+                        style="@style/business_apply_auth_textview_style"/>
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="5dp" >
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="登陆账号"
+                        style="@style/business_apply_auth_textview_style"/>
+
+                    <TextView
+                        android:id="@+id/apply_bus_login_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="90dp"
+                        style="@style/business_apply_auth_textview_style"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/login_background_grey"
+                android:orientation="vertical"
+                android:padding="2dp" >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="5dp" >
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="账号类别"
+                        style="@style/business_apply_auth_textview_style"/>
+
+                    <TextView
+                        android:id="@+id/apply_bus_login_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="90dp"
+                        style="@style/business_apply_auth_textview_style"/>
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="5dp" >
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="认证状态"
+                        style="@style/business_apply_auth_textview_style"/>
+
+                    <TextView
+                        android:id="@+id/apply_identity_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="90dp"
+                        android:singleLine="true"
+                        style="@style/business_apply_auth_textview_style"/>
+                    <ImageView android:id="@+id/apply_identity_status_v"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="3dp"
+                        android:visibility="gone"
+                        android:layout_toRightOf="@id/apply_identity_type"
+                        android:background="@drawable/icon_vip"/>
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/apply_industry_type_layout_divide"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+
+                <RelativeLayout
+                    android:id="@+id/apply_industry_type_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="5dp" >
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="服务行业"
+                        style="@style/business_apply_auth_textview_style"/>
+
+                    <TextView
+                        android:id="@+id/apply_industry_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="90dp"
+                        android:singleLine="true"
+                        style="@style/business_apply_auth_textview_style"/>
+
+                    <ImageView
+                        android:id="@+id/apply_industry_type_icon"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/apply_style_type_layout_divide"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+
+                <RelativeLayout
+                    android:id="@+id/apply_style_type_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="5dp" >
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="经营方式"
+                        style="@style/business_apply_auth_textview_style"/>
+
+                    <TextView
+                        android:id="@+id/apply_manage_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="90dp"
+                        android:singleLine="true"
+                        style="@style/business_apply_auth_textview_style"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/login_background_grey"
+                android:orientation="vertical"
+                android:padding="2dp" >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="5dp" >
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="公司名称"
+                        style="@style/business_apply_auth_textview_style"/>
+
+                    <EditText
+                        android:id="@+id/apply_company_name_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="90dp"
+                        android:background="@null"
+                        android:hint="请输入公司名称"
+                        android:singleLine="true"
+                        style="@style/business_apply_auth_textview_style"/>
+
+                    <Button
+                        android:id="@+id/apply_company_name_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/comm_edit_icon"
+                        android:gravity="center"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="50dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="5dp" >
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="营业执照"
+                        style="@style/business_apply_auth_textview_style"/>
+
+                    <EditText
+                        android:id="@+id/apply_bus_license_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="90dp"
+                        android:layout_marginRight="30dp"
+                        android:background="@null"
+                        android:hint="请输入营业执照编号"
+                        android:maxLength="30"
+                        android:singleLine="false"
+                        style="@style/business_apply_auth_textview_style" />
+
+                    <Button
+                        android:id="@+id/apply_bus_license_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/comm_edit_icon"
+                        android:gravity="center"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+
+                <RelativeLayout
+                    android:id="@+id/apply_map_address_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="5dp" >
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="联系人"
+                        style="@style/business_apply_auth_textview_style"/>
+
+                    <EditText
+                        android:id="@+id/apply_contact_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="90dp"
+                        android:layout_marginRight="30dp"
+                        android:background="@null"
+                        android:hint="请输入联系人姓名"
+                        android:maxLength="30"
+                        android:singleLine="false"
+                        style="@style/business_apply_auth_textview_style" />
+
+                    <Button
+                        android:id="@+id/apply_contact_edit_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/comm_edit_icon"
+                        android:gravity="center"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp" />
+                    
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="50dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="5dp" >
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="联系电话"
+                        style="@style/business_apply_auth_textview_style"/>
+
+                    <EditText
+                        android:id="@+id/apply_telephone_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="90dp"
+                        android:layout_marginRight="30dp"
+                        android:background="@null"
+                        android:hint="请输入联系电话"
+                        android:maxLength="18"
+                        android:phoneNumber="true"
+                        android:singleLine="false"
+                        style="@style/business_apply_auth_textview_style"/>
+
+                    <Button
+                        android:id="@+id/apply_telephone_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/comm_edit_icon"
+                        android:gravity="center"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="5dp" >
+
+                    <TextView
+                        android:id="@+id/apply_id_card_scan_tv"
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:lineSpacingExtra="5dp"
+                        android:text="法人身份\n证件扫描"
+                        style="@style/business_apply_auth_textview_style"/>
+                    
+					<RelativeLayout android:id="@+id/apply_id_card_scan_relative"
+					    android:layout_width="fill_parent"
+					    android:layout_height="fill_parent"
+					    android:layout_toRightOf="@id/apply_id_card_scan_tv"
+					    android:layout_centerInParent="true">
+					    <ImageView android:id="@+id/apply_id_card_scan_image"
+					        android:layout_width="170dp"
+					        android:layout_height="110dp"
+					        android:layout_marginTop="5dp"
+					        android:layout_marginRight="5dp"
+					        android:src="@drawable/auth_apply_default"
+					        android:layout_centerVertical="true"
+					        android:layout_alignParentRight="true"
+					        android:scaleType="fitXY"
+					        />
+					    <Button android:id="@+id/apply_id_card_scan_delete"
+					        android:layout_width="wrap_content"
+					        android:layout_height="wrap_content"
+					        android:background="@drawable/ic_visiting_card_cancel"
+					        android:visibility="gone"
+					        android:layout_alignParentTop="true"
+					        android:layout_alignParentRight="true"/>
+					</RelativeLayout>
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="5dp" >
+
+                    <TextView
+                        android:id="@+id/apply_license_scan_tv"
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="5dp"
+                        android:layout_centerVertical="true"
+                        android:text="营业执照\n扫描件"
+                        style="@style/business_apply_auth_textview_style"/>
+                    
+					<RelativeLayout android:id="@+id/apply_business_licence_relative"
+					    android:layout_width="fill_parent"
+					    android:layout_height="fill_parent"
+					    android:layout_toRightOf="@id/apply_license_scan_tv"
+					    android:layout_centerInParent="true">
+					    <ImageView android:id="@+id/apply_business_licence_image"
+					        android:layout_width="170dp"
+					        android:layout_height="110dp"
+					        android:layout_marginTop="5dp"
+					        android:layout_marginRight="5dp"
+					        android:layout_centerVertical="true"
+					        android:layout_alignParentRight="true"
+					        android:scaleType="fitXY"
+					        android:src="@drawable/auth_apply_default"
+					        android:layout_centerInParent="true"/>
+					    <Button android:id="@+id/apply_business_licence_delete"
+					        android:layout_width="wrap_content"
+					        android:layout_height="wrap_content"
+					        android:background="@drawable/ic_visiting_card_cancel"
+					        android:visibility="gone"
+					        android:layout_alignParentTop="true"
+					        android:layout_alignParentRight="true"/>
+					</RelativeLayout>
+
+                </RelativeLayout>
+                
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+                
+                
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="5dp" >
+
+                    <TextView
+                        android:id="@+id/apply_tax_scan_tv"
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="5dp"
+                        android:layout_centerVertical="true"
+                        android:text="税务登记\n扫描件"
+                        style="@style/business_apply_auth_textview_style"/>
+					<RelativeLayout android:id="@+id/tax_relative"
+					    android:layout_width="fill_parent"
+					    android:layout_centerInParent="true"
+					    android:layout_toRightOf="@id/apply_tax_scan_tv"
+					    android:layout_height="fill_parent">
+					    <ImageView android:id="@+id/apply_tax_image"
+					        android:layout_width="170dp"
+					        android:layout_height="110dp"
+					        android:layout_marginTop="5dp"
+					        android:layout_marginRight="5dp"
+					        android:layout_centerVertical="true"
+					        android:scaleType="fitXY"
+					        android:layout_alignParentRight="true"
+					        android:src="@drawable/auth_apply_default"
+					        android:layout_centerInParent="true"/>
+					    <Button android:id="@+id/apply_tax_delete"
+					        android:layout_width="wrap_content"
+					        android:layout_height="wrap_content"
+					        android:background="@drawable/ic_visiting_card_cancel"
+					        android:visibility="gone"
+					        android:layout_alignParentTop="true"
+					        android:layout_alignParentRight="true"/>
+					</RelativeLayout>
+
+                </RelativeLayout>
+                
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

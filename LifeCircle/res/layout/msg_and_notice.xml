@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4F4F4"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/title_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/topbar_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="5dp" >
+
+        <Button
+            android:id="@+id/msg_and_notice_left_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_home_page_top_bar_left_button" >
+        </Button>
+
+        <com.sinaleju.lifecircle.app.chatandnotice.TabView
+            android:id="@+id/msg_and_notice_tabview"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1" >
+        </com.sinaleju.lifecircle.app.chatandnotice.TabView>
+
+        <Button
+            android:id="@+id/msg_and_notice_right_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/write_msg_btn" >
+        </Button>
+    </LinearLayout>
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        xmlns:pull="http://schemas.android.com/apk/res-auto/com.handmark.pulltorefresh.library"
+        android:id="@+id/notice_listview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#0000"
+        android:cacheColorHint="#0000"
+        android:choiceMode="singleChoice"
+        android:divider="#0000"
+        android:fadingEdge="none"
+        android:listSelector="#0000"
+        pull:ptrMode="both"
+        pull:scrollBarPanelInAnimation="@anim/anim_pathlist_in"
+        pull:scrollBarPanelOutAnimation="@anim/anim_pathlist_out" />
+
+</LinearLayout>

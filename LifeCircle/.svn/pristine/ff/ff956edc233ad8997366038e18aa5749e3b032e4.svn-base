@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#F4F4F4"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingBottom="15dp"
+     >
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="4px"
+        android:background="@drawable/line" />
+    
+    <ImageView
+        android:layout_below="@id/line"
+        android:id="@+id/imgHeadPortrait"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_frame_header"
+        android:padding="2dp"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/txtName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/imgHeadPortrait"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/imgHeadPortrait"
+        android:textColor="#504f4f"
+        android:text="愤怒的小鸟2"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/txtTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/txtName"
+        android:text="3小时"
+        android:layout_alignParentRight="true"
+        android:textColor="#D4D2D0"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/txtContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/txtName"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/txtName"
+        android:textColor="#5C5C59"
+        android:text="味道还不错，就是等位时间太久，声音有点噪杂"
+        android:lineSpacingExtra="2sp"
+        android:textSize="16sp" />
+</RelativeLayout>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ACABA9"
+    android:gravity="center_vertical"
+    android:orientation="vertical" >
+    
+    <RelativeLayout android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/findfriend_search_bg"
+            android:layout_margin="5dp"
+            android:focusable="false"
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal">
+            <ImageView 
+                android:id="@+id/nearby_search_image1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/common_search1"/>
+            <Button 
+                android:id="@+id/nearby_business_delete_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/common_delete"/>
+            
+            <EditText android:id="@+id/nearby_business_search_tv"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_home_page_top_shishi_remen_text_selected"
+                android:layout_centerVertical="true"
+                android:textSize="15sp"
+                android:imeOptions="actionSearch"
+                android:layout_toRightOf="@id/nearby_search_image1"
+                android:layout_toLeftOf="@id/nearby_business_delete_btn"
+                android:singleLine="true"
+                android:background="@color/transparent"
+                android:hint="搜索商家关键词"/>
+            
+        </RelativeLayout>
+</LinearLayout>

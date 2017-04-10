@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4F4F4"
+    android:orientation="vertical" >
+
+    <com.sinaleju.lifecircle.app.customviews.TitleBar
+        android:id="@+id/mSquareTitleBar"
+        android:layout_width="match_parent"
+        android:layout_height="55dp" />
+
+    <ListView
+        android:id="@+id/ticket_list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#0000"
+        android:scrollbars="none"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="#0000"
+        android:fadingEdge="none"
+        android:listSelector="#0000" >
+    </ListView>
+
+</LinearLayout>

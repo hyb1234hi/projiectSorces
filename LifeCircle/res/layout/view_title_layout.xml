@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/titlebar"
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    android:background="@drawable/topbar_bg"
+    android:focusable="true" >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" >
+
+        <LinearLayout
+            android:id="@+id/lyotTitleName"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <com.sinaleju.lifecircle.app.customviews.AlwaysMarqueeTextView
+                android:id="@+id/tvTitleName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:lines="1"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:textColor="#FFFFFF"
+                android:textSize="21sp" />
+
+            <ImageView
+                android:id="@+id/imgSpinnerDownArrow"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_home_page_spinner_arrow"
+                android:contentDescription="@string/imageDescription"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <RadioGroup
+            android:id="@+id/topBarRadioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone" >
+
+            <RadioButton
+                android:id="@+id/rdioLeft"
+                android:layout_width="70dp"
+                android:layout_height="38dp"
+                android:background="#f00"
+                android:button="@null"
+                android:gravity="center"
+                android:textSize="21sp" />
+
+            <RadioButton
+                android:id="@+id/rdioRight"
+                android:layout_width="70dp"
+                android:layout_height="38dp"
+                android:background="#0f0"
+                android:button="@null"
+                android:gravity="center"
+                android:textSize="21sp" />
+        </RadioGroup>
+    </FrameLayout>
+
+    <!-- <ImageView -->
+    <!-- android:id="@+id/imavBack" -->
+    <!-- android:layout_width="58dp" -->
+    <!-- android:layout_height="40dp" -->
+    <!-- android:layout_alignParentLeft="true" -->
+    <!-- android:layout_centerVertical="true" -->
+    <!-- android:layout_marginLeft="5dp" -->
+    <!-- android:scaleType="centerInside" -->
+    <!-- android:src="@drawable/topbar_back_button_normal" /> -->
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true" >
+
+        <TextView
+            android:id="@+id/imavBack"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:background="@null"
+            android:gravity="center"
+            android:textColor="#fff"
+            android:textSize="18sp"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true" >
+
+        <FrameLayout
+            android:id="@+id/frame2"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:visibility="gone" >
+
+            <TextView
+                android:id="@+id/tvRightFunc2"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:background="@null"
+                android:gravity="center"
+                android:textColor="#fff"
+                android:textSize="18sp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/frame1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp" >
+
+            <TextView
+                android:id="@+id/tvRightFunc1"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:background="@null"
+                android:gravity="center"
+                android:textColor="#fff"
+                android:textSize="18sp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/frame3"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginLeft="5dp"
+            android:background="@null"
+            android:visibility="gone" >
+
+            <TextView
+                android:id="@+id/tvRightFunc1"
+                android:layout_width="46dp"
+                android:layout_height="fill_parent"
+                android:background="@null"
+                android:gravity="center"
+                android:text="完成"
+                android:textColor="#fff"
+                android:textSize="18sp" />
+        </FrameLayout>
+    </LinearLayout>
+
+</RelativeLayout>

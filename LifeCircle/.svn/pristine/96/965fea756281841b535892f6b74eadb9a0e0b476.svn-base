@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/drawer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_y="50dip"
+        android:background="@drawable/cell_item_xiala_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone" >
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#F4F4F4"
+        android:gravity="center_vertical" >
+
+        <!-- <ImageView
+            android:id="@+id/addcell_button_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="5dp"
+            android:src="@drawable/addcell_delete_normal"
+            android:visibility="gone" /> -->
+
+        <TextView
+            android:id="@+id/added_cell_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:text="京城雅居"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            />
+
+        <LinearLayout
+            android:id="@+id/added_cell_button"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:src="@drawable/item_add_cell_right_button" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/item_added_cell_editlayout"
+            android:layout_width="180dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true" >
+
+            <Button
+                android:id="@+id/editlayout_exit"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/selector_addcell_exitbutton"
+                android:drawableTop="@drawable/addedcommunity_quiticon"
+                android:paddingTop="10dp"
+                android:textColor="#ffffff"
+                android:textSize="16sp"
+                android:text="退出" >
+            </Button>
+
+            <Button
+                android:id="@+id/editlayout_enter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/selector_addcell_enterbutton"
+                android:drawableTop="@drawable/addedcommunity_entericon"
+                android:paddingTop="10dp"
+                android:textColor="#ffffff"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:text="进入" >
+            </Button>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</AbsoluteLayout>

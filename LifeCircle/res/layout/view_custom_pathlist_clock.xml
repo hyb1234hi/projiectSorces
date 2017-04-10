@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" -->
+<!-- android:layout_width="100dip" -->
+<!-- android:layout_height="40dip" -->
+<!-- android:background="@drawable/pathlist_clock_overlay" -->
+<!-- android:visibility="visible"> -->
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+
+<!--     <RelativeLayout -->
+<!--         android:layout_width="wrap_content" -->
+<!--         android:layout_height="wrap_content" -->
+<!--         android:background="#444" > -->
+
+        <View
+            android:id="@+id/clock_target"
+            android:layout_width="85.0dip"
+            android:layout_height="2.0dip"
+            android:layout_gravity="top|left|center"
+            android:layout_marginTop="14.0dip" />
+
+        <View
+            android:id="@+id/clock_face"
+            android:layout_width="24.0dip"
+            android:layout_height="24.0dip"
+            android:layout_gravity="top|left|center"
+            android:layout_marginLeft="3.0dip"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/pathlist_clock_frame_bg" />
+
+        <ImageView
+            android:id="@+id/clock_face_minute"
+            android:layout_width="24.0dip"
+            android:layout_height="24.0dip"
+            android:layout_gravity="top|left|center"
+            android:layout_marginLeft="3.0dip"
+            android:layout_marginTop="4dp"
+            android:src="@drawable/pathlist_clock_minutes_pointer" />
+
+        <ImageView
+            android:id="@+id/clock_face_hour"
+            android:layout_width="24.0dip"
+            android:layout_height="24.0dip"
+            android:layout_gravity="top|left|center"
+            android:layout_marginLeft="3.0dip"
+            android:layout_marginTop="4dp"
+            android:src="@drawable/pathlist_clock_hour_pointer" />
+
+        <View
+            android:id="@+id/clock_center"
+            android:layout_width="24.0dip"
+            android:layout_height="24.0dip"
+            android:layout_gravity="top|left|center"
+            android:layout_marginLeft="3.0dip"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/pathlist_clock_center" />
+
+        <TextView
+            android:id="@+id/clock_digital_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:gravity="bottom"
+            android:text="12:11"
+            android:textColor="#fff"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/clock_digital_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/clock_digital_time"
+            android:layout_marginLeft="30dp"
+            android:gravity="top"
+            android:text="6月5日"
+            android:textColor="#ccc"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+<!--     </RelativeLayout> -->
+
+</merge> <!-- </FrameLayout> -->

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/headView_Main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="right"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/viewpager_text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="#步步惊情#"
+        android:textColor="#33639A"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/viewpager_text2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="与您的小区朋友分享生活与小区聊天"
+        android:singleLine="true"
+        android:textColor="#33639A"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/viewpager_text3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:singleLine="true"
+        android:text="条讨论"
+        android:textColor="#33639A"
+        android:textSize="18sp" />
+
+</LinearLayout>

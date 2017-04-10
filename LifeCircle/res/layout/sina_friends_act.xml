@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:pull="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/friends_search_bar"
+        android:layout_width="match_parent"
+        android:layout_marginTop="0dp"
+        android:layout_height="wrap_content"
+        layout="@layout/search_bar_with_searchbtn" 
+        />
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+	        android:id="@+id/sina_friends_listview"
+	        android:layout_marginTop="0dp"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:background="#0000"
+	        android:cacheColorHint="#0000"
+	        android:divider="@drawable/common_dividerline"
+	        android:fadingEdge="none"
+	        android:listSelector="#0000"
+	        pull:ptrMode="pullFromEnd" />
+    
+<!--     <ListView
+        android:id="@+id/sina_friends_listview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:divider="@drawable/line"
+        android:listSelector="@color/transparent"
+        android:scrollingCache="false" >
+    </ListView> -->
+
+</LinearLayout>

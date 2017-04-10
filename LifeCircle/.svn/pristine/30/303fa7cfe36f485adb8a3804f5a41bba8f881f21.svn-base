@@ -1,0 +1,393 @@
+package com.sinaleju.lifecircle.app.model;
+
+import java.io.Serializable;
+
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.sinaleju.lifecircle.app.model.impl.MultiModelBase;
+
+public abstract class Model_TrendsBase extends MultiModelBase {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1698587675640472443L;
+	private String mHeadPortraitUrl;// 主头像
+	private String mFlagUrl;// 时间轴圆形图片url 如果是空则通过类型判断加载相应的本地png
+	private TrendsType mTrendsType;// 动态类型
+	private SpanText[] mSpanTexts;// 消息或者文本span类型
+	private boolean mHideTimeLine;
+	private boolean mHideDividLine;
+	private long mAddTime;
+	
+	private int trends_id;// 整条动态或者消息的id
+	private int community_id;// 小区id
+	private String community_name;//小区名字
+
+	private boolean showHeader = true;
+	private boolean showFlag = true;
+
+	private int uid;
+	private int flagUid = -1;
+	private int u_type;
+	private int flag_type = -1;
+	private String mTag;
+
+	public boolean isShowHeader() {
+		return showHeader;
+	}
+
+	public void setShowHeader(boolean showHeader) {
+		this.showHeader = showHeader;
+	}
+
+	public boolean isShowFlag() {
+		return showFlag;
+	}
+
+	public void setShowFlag(boolean showFlag) {
+		this.showFlag = showFlag;
+	}
+
+	public String getHeadPortraitUrl() {
+		return mHeadPortraitUrl;
+	}
+
+	public void setHeadPortraitUrl(String mHeadPortraitUrl) {
+		this.mHeadPortraitUrl = mHeadPortraitUrl;
+	}
+
+	public String getFlagUrl() {
+		return mFlagUrl;
+	}
+
+	public void setFlagUrl(String mFlagUrl) {
+		this.mFlagUrl = mFlagUrl;
+	}
+
+	public SpanText[] getMSpanTexts() {
+		return mSpanTexts;
+	}
+
+	public void setSpanTexts(SpanText[] mContentTypes) {
+		this.mSpanTexts = mContentTypes;
+	}
+
+	public String getCommunity_name() {
+		return community_name;
+	}
+
+	public void setCommunity_name(String community_name) {
+		this.community_name = community_name;
+	}
+
+	public static class SpanText implements Parcelable, Serializable {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 6624762301640813797L;
+		private SpanType mType;
+		private int mItem_id;
+		private String mText;
+		private int mUserType;
+		private Object tag;
+
+		public SpanText() {
+			// no-args constructor
+		}
+
+		public SpanText(SpanType type, int item_id, String text) {
+			this(type, item_id, text, 0);
+		}
+
+		public SpanText(SpanType type, int item_id, String text, int user_type) {
+			this.mType = type;
+			this.mItem_id = item_id;
+			this.mText = text;
+			this.mUserType = user_type;
+		}
+
+		public String getText() {
+			return mText;
+		}
+
+		public void setText(String text) {
+			this.mText = text;
+		}
+
+		public int getItem_id() {
+			return mItem_id;
+		}
+
+		public void setItem_id(int item_id) {
+			this.mItem_id = item_id;
+		}
+
+		public SpanType getSpanType() {
+			return mType;
+		}
+
+		public void setSpanType(SpanType type) {
+			this.mType = type;
+		}
+
+		public void setSpanType(int type) {
+
+			SpanType[] types = SpanType.values();
+
+			for (int i = 0; i < types.length; ++i) {
+				if (type == types[i].value()) {
+					setSpanType(types[i]);
+					return;
+				}
+			}
+
+			setSpanType(SpanType.TEXT);
+		}
+
+		public int getUserType() {
+			return mUserType;
+		}
+
+		public void setUserType(int mUserType) {
+			this.mUserType = mUserType;
+		}
+
+		@Override
+		public int describeContents() {
+			return 0;
+		}
+
+		@Override
+		public void writeToParcel(Parcel dest, int flags) {
+			Bundle b = new Bundle();
+			b.putInt("span_type", mType.value);
+			b.putInt("user_type", mUserType);
+			b.putString("text", mText);
+			b.putInt("item_id", mItem_id);
+			dest.writeBundle(b);
+		}
+
+		public Object getTag() {
+			return tag;
+		}
+
+		public void setTag(Object tag) {
+			this.tag = tag;
+		}
+
+		public static final Parcelable.Creator<SpanText> CREATOR = new Parcelable.Creator<SpanText>() {
+			// 重写Creator
+
+			@Override
+			public SpanText createFromParcel(Parcel source) {
+				SpanText s = new SpanText();
+				Bundle b = source.readBundle();
+				s.setItem_id(b.getInt("item_id"));
+				s.setSpanType(b.getInt("span_type"));
+				s.setText(b.getString("text"));
+				s.setUserType(b.getInt("user_type"));
+				return s;
+			}
+
+			@Override
+			public SpanText[] newArray(int size) {
+				return new SpanText[size];
+			}
+		};
+	}
+
+	public static enum SpanType implements Serializable {
+		TEXT(0x1), TOPIC(0x2), AT(0x3), EMOTION(0x4), NAME(0x5), COMMUNITY(0x6), URL(
+				0x7), TICKET(0x8);
+		private int value;
+
+		private SpanType(int value) {
+			this.value = value;
+		}
+
+		public int value() {
+			return value;
+		}
+	}
+
+	public static enum TrendsType implements Serializable {
+		// 0 普通消息
+		// 1 美食 美食
+		// 2 休闲娱乐
+		// 3 购物
+		// 4 丽人
+		// 5 结婚
+		// 6 亲子
+		// 7 运动健身
+		// 8 酒店
+		// 9 生活服务
+		//
+		// 10 加入小区
+		// 11 关注
+		// 12 打电话
+		// 13 评价
+		// 14 退出
+		// 15 加入好吗
+		// 16 头像
+		// 17 签名
+		//
+		// 18 被评论
+		// 19 被@到
+		// 20 被关注
+		// 21 被攒(喜欢)
+		// 22 系统通知
+		MSG("xiaoxi"), FOOD("meishi"), ENTIRMENT("yule"), SHOP("gouwu"), BEAUTY("meirong"), MARRAGE(
+				"hunqing"), CHILDREN("qinzi"), GYM("yundong"), HOTEL("jiudian"), LIFE("jiazheng"), JOIN("jiaxiaoqu"), FOLLOW(
+				"guanzhu"), DIAL("dianhua"), COMMENT("pingjia"), QUIT("tuichu"), JION_LC("jiaquanzi"), CHANG_HEADER(
+				"touxiang"), CHANGE_SIGN("qianming"),FANGCHAN("fangchan"),JIAJIAO("jiajiao"), NOTICE_COMM(0x12), NOTICE_AT(0x13), NOTICE_ATTEN(
+				0x14), NOTICE_LIKE(0x15), NOTICE_SYSTEM(0x16);
+
+		private int value;
+		private String strValue;
+		
+		public String getStrValue() {
+			return strValue;
+		}
+
+		public void setStrValue(String strValue) {
+			this.strValue = strValue;
+		}
+
+		private TrendsType(String strValue) {
+			// TODO Auto-generated constructor stub
+			this.strValue = strValue;
+		}
+		
+		private TrendsType(int value) {
+			this.value = value;
+		}
+
+		public int getValue() {
+			return value;
+		}
+	}
+
+	public TrendsType getTrendsType() {
+		return mTrendsType;
+	}
+
+	public void setTrendsType(TrendsType mTrendsType) {
+		this.mTrendsType = mTrendsType;
+	}
+
+	public void setTrendsType(int type) {
+		TrendsType[] types = TrendsType.class.getEnumConstants();
+
+		for (int i = 0; i < types.length; ++i) {
+			if (type==types[i].getValue()) {
+				setTrendsType(types[i]);
+				return;
+			}
+		}
+
+		setTrendsType(TrendsType.MSG.getStrValue());
+	}
+	public void setTrendsType(String type) {
+		TrendsType[] types = TrendsType.class.getEnumConstants();
+		
+		for (int i = 0; i < types.length; ++i) {
+			if (type.equals(types[i].getStrValue())) {
+				setTrendsType(types[i]);
+				return;
+			}
+		}
+		
+		setTrendsType(TrendsType.MSG.getStrValue());
+	}
+
+	public int getTrends_id() {
+		return trends_id;
+	}
+
+	public void setTrends_id(int trends_id) {
+		this.trends_id = trends_id;
+	}
+
+	public int getCommunity_id() {
+		return community_id;
+	}
+
+	public void setCommunity_id(int community_id) {
+		this.community_id = community_id;
+	}
+
+	public boolean isHideTimeLine() {
+		return mHideTimeLine;
+	}
+
+	public void setHideTimeLine(boolean mHideLine) {
+		this.mHideTimeLine = mHideLine;
+	}
+
+	public String getText() {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < mSpanTexts.length; i++) {
+			sb.append(mSpanTexts[i].getText());
+		}
+		return sb.toString();
+	}
+
+	public int getUid() {
+		return uid;
+	}
+
+	public void setUid(int uid) {
+		this.uid = uid;
+	}
+
+	public int getFlagUid() {
+		return flagUid;
+	}
+
+	public void setFlagUid(int flagUid) {
+		this.flagUid = flagUid;
+	}
+
+	public int getU_type() {
+		return u_type;
+	}
+
+	public void setU_type(int u_type) {
+		this.u_type = u_type;
+	}
+
+	public int getFlag_type() {
+		return flag_type;
+	}
+
+	public void setFlag_type(int flag_type) {
+		this.flag_type = flag_type;
+	}
+
+	public boolean isHideDividLine() {
+		return mHideDividLine;
+	}
+
+	public void setHideDividLine(boolean mHideDividLine) {
+		this.mHideDividLine = mHideDividLine;
+	}
+
+	public long getAddTime() {
+		return mAddTime;
+	}
+
+	public void setAddTime(long mAddTime) {
+		this.mAddTime = mAddTime;
+	}
+	
+	public String getmTag() {
+		return mTag;
+	}
+
+	public void setmTag(String mTag) {
+		this.mTag = mTag;
+	}
+
+}

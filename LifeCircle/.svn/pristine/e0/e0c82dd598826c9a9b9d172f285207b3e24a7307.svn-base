@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/list_item_selector"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="5dp" >
+
+    <com.sinaleju.lifecircle.app.customviews.RoundCornerImageView
+        android:id="@+id/sina_friends_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/findfriends_contact"
+        android:contentDescription="@string/imageDescription"
+        android:padding="2dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/sina_friends_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textSize="17sp"
+            />
+            <!-- android:textStyle="bold"  -->
+
+        <TextView
+            android:id="@+id/sina_friends_contact_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="查找联系人中的好友"
+            android:textColor="#A8A8A8"
+            android:textSize="15sp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/sina_friend_invite_regist_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/invite_friends_btn"
+            android:focusable="false"
+            android:focusableInTouchMode="true"
+            android:text="@string/invite_friends"
+            android:textColor="@color/ac_left_comm_white"
+            android:textSize="17sp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/sina_friend_invite_add_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/friend_add_btn"
+            android:focusable="false"
+            android:focusableInTouchMode="true"
+            android:visibility="gone"
+             />
+
+        <TextView
+            android:id="@+id/sina_friend_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/added"
+            android:textColor="@color/ac_regist_text_grey"
+            android:textSize="16sp"
+            android:visibility="gone" >
+        </TextView>
+    </LinearLayout>
+
+</LinearLayout>

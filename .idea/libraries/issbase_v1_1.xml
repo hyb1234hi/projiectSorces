@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="issbase_v1.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/IssBase_V1.1/bin/issbase_v1.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

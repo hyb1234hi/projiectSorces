@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="MissingPrefix" severity="ignore" />
+    <issue id="MissingTranslation" severity="ignore" />
+    <issue id="NewApi" severity="ignore" />
+    <issue id="ResourceAsColor" severity="ignore" />
+    <issue id="ValidFragment" severity="ignore">
+        <ignore path="src/com/sinaleju/lifecircle/app/fragment/FindFriendsFragment.java" />
+    </issue>
+</lint>

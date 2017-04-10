@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/selectlivearea_map"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_selectlivearea_maplayout"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="10dp" >
+
+    <LinearLayout
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:background="@drawable/bg_frame_header"
+        android:gravity="center"
+        android:padding="1dp" >
+
+        <com.sinaleju.lifecircle.app.customviews.RoundCornerImageView
+            android:id="@+id/item_merchantlist_logoimage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:contentDescription="@string/imageDescription"
+            android:background="@drawable/bus_index_default_head_image"
+            android:scaleType="fitXY"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/item_merchantlist_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="张大力"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+          <TextView
+            android:id="@+id/item_merchantlist_intro"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:text="一汔大众北京总代理一汔大众北京总代理一汔大众北京总代理一汔大众北京总代理一汔大众北京总代理一汔大众北京总代理一汔大众北京总代理"
+            android:textColor="#ADADAD"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</LinearLayout>

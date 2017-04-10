@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/list_item_selector"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/topbar_bg" >
+
+            <TextView
+                android:id="@+id/topic"
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:background="@drawable/nearby_topicbg"
+                android:gravity="center"
+                android:paddingTop="3dp"
+                android:text="#美食#"
+                android:textColor="#FE8F66"
+                android:textSize="18dp" >
+            </TextView>
+        </LinearLayout>
+
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/search_bar_with_searchbtn" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp" >
+
+            <com.sinaleju.lifecircle.app.customviews.BusinessDistanceView
+                android:id="@+id/nearby_business_distance_view"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
+            </com.sinaleju.lifecircle.app.customviews.BusinessDistanceView>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/common_dividerline" />
+
+        <ListView
+            android:id="@+id/nearby_business_listview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:divider="@drawable/common_dividerline"
+            android:scrollingCache="false" >
+        </ListView>
+    </LinearLayout>
+</FrameLayout>

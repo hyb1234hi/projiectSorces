@@ -1,0 +1,19 @@
+<component name="libraryTable">
+  <library name="libs1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/LifeCircle/libs/android-support-v4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/LifeCircle/libs/Android_Map_V2.0.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/LifeCircle/libs/pinyin4j-2.5.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/LifeCircle/libs/MapApiLocation.jar!/" />
+      <root url="jar://$PROJECT_DIR$/LifeCircle/libs/weibo.sdk.android.sso.jar!/" />
+      <root url="jar://$PROJECT_DIR$/LifeCircle/libs/umeng_sdk.jar!/" />
+      <root url="jar://$PROJECT_DIR$/LifeCircle/libs/pureMVC.jar!/" />
+      <root url="jar://$PROJECT_DIR$/LifeCircle/libs/MapApiSearch.jar!/" />
+      <root url="jar://$PROJECT_DIR$/LifeCircle/libs/http.jar!/" />
+      <root url="jar://$PROJECT_DIR$/LifeCircle/libs/ormlite-android-4.45.jar!/" />
+      <root url="jar://$PROJECT_DIR$/LifeCircle/libs/ormlite-core-4.45.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

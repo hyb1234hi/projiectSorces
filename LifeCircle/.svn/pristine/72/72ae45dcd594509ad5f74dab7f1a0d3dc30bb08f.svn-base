@@ -1,0 +1,1087 @@
+package com.sinaleju.lifecircle.app.activity;
+
+import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.location.Location;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
+import android.text.Editable;
+import android.text.Selection;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
+import com.amap.api.location.LocationManagerProxy;
+import com.amap.api.location.LocationProviderProxy;
+import com.iss.imageloader.core.ImageLoader;
+import com.sinaleju.lifecircle.R;
+import com.sinaleju.lifecircle.app.AppConst;
+import com.sinaleju.lifecircle.app.AppContext;
+import com.sinaleju.lifecircle.app.adapter.SendMsgImageAdapter;
+import com.sinaleju.lifecircle.app.base_activity.BaseActivity;
+import com.sinaleju.lifecircle.app.camera.ADCamera;
+import com.sinaleju.lifecircle.app.customviews.NoSlideGridView;
+import com.sinaleju.lifecircle.app.database.entity.UserBean;
+import com.sinaleju.lifecircle.app.fragment.HomeFragment;
+import com.sinaleju.lifecircle.app.model.SendMsgImageModel;
+import com.sinaleju.lifecircle.app.model.TopicOrAtModel;
+import com.sinaleju.lifecircle.app.service.Service.OnFaultHandler;
+import com.sinaleju.lifecircle.app.service.Service.OnSuccessHandler;
+import com.sinaleju.lifecircle.app.service.remote_impl.entity.RSSendMainMsg;
+import com.sinaleju.lifecircle.app.utils.ADFileUploadUtil;
+import com.sinaleju.lifecircle.app.utils.LogUtils;
+import com.sinaleju.lifecircle.app.utils.PublicUtils;
+import com.sinaleju.lifecircle.app.utils.SimpleImageLoaderOptions;
+import com.weibo.sdk.android.Oauth2AccessToken;
+import com.weibo.sdk.android.WeiboException;
+import com.weibo.sdk.android.api.StatusesAPI;
+import com.weibo.sdk.android.net.RequestListener;
+
+public class SendMsgMainActivity extends BaseActivity implements TextWatcher, AMapLocationListener {
+
+	private static final String TAG = "SendMsgMainActivity";
+
+	private static final int MSG_LOCATION_DONE = 20;
+
+	private NoSlideGridView mSendMsGridView = null;
+	private SendMsgImageAdapter adapter = null;
+	private List<SendMsgImageModel> mImageModels = new ArrayList<SendMsgImageModel>();
+	private String mImagePath = null;
+
+	private ImageView mHeadImage;
+	private LinearLayout mLocationLayout;
+	private TextView mLocationText, mLastNum;
+	private CheckBox mShareBtn, mShareWeiBo;
+	private LinearLayout mShareLayout;
+	private EditText mMianEdit;
+	private Button mBtnCamera, mBtnGallery, mBtnLocation, mBtnAt, mBtnTopic;
+	private LinearLayout mTagLayout, mTagIconLayout;
+	private TextView mTagText;
+	private Button mMeiShi, mYuLe, mGouWu, mMeiFa, mJieHun, mFangChan, mJianShen, mJiuDian,
+			mJiaZheng, mPuTongBox, mJiaJiao, mQinZi, mMsgTag;
+	private ImageView mBaseImageView;
+
+	private ADCamera mCamera = ADCamera.builder(this);
+	private int mImageIndex = 0;
+	private boolean mIsWeiBoShareClick = false;
+	private boolean mIsShowPop = false;
+	private boolean isShowLocation = true;
+
+	List<TopicOrAtModel> mTopicModels = new ArrayList<TopicOrAtModel>();
+	List<TopicOrAtModel> mAtModels = new ArrayList<TopicOrAtModel>();
+
+	private int mMsgId = -1;
+	private UserBean mUserBean = null;
+	private RSSendMainMsg rs = null;
+
+	private ExecutorService executor = Executors.newSingleThreadExecutor();
+
+	private double mLon = -1;
+	private double mLat = -1;
+	private static final int WEIBO_MAX_LENGTH = 140;
+	private int mTag = 0;
+	private String mTagString = "";
+
+	private int[] boxDrawables = { R.drawable.checkbox_msg_putong_selector,
+			R.drawable.checkbox_msg_jiazheng_selector, R.drawable.checkbox_msg_fangchan_selector,
+			R.drawable.checkbox_msg_jianshen_selector, R.drawable.checkbox_msg_meifa_selector,
+			R.drawable.checkbox_msg_meishi_selector, R.drawable.checkbox_msg_yule_selector,
+			R.drawable.checkbox_msg_jiajiao_selector, R.drawable.checkbox_msg_jiudian_selector,
+			R.drawable.checkbox_msg_gouwu_selector, R.drawable.checkbox_msg_jiehun_selector,
+			R.drawable.checkbox_msg_qinzi_selector };
+	private String[] mTagTextStrings = { "普通", "家政", "房产", "健身", "美容美发", "美食", "娱乐", "家教", "酒店",
+			"购物", "结婚", "亲子" };
+	private int[] whiteBox = { R.drawable.message_putong, R.drawable.message_jiazheng,
+			R.drawable.message_fangchan, R.drawable.message_jianshen, R.drawable.message_meifa,
+			R.drawable.message_meishi, R.drawable.message_yule, R.drawable.message_jiajiao,
+			R.drawable.message_jiudian, R.drawable.message_gouwu, R.drawable.message_jiehun,
+			R.drawable.message_qinzi };
+	private String[] mTagPingYin = { "xiaoxi", "jiazheng", "fangchan", "yundong", "meirong",
+			"meishi", "yule", "jiajiao", "jiudian", "购物", "hunqing", "qinzi" };
+
+	@Override
+	protected int getLayoutId() {
+		return R.layout.ac_send_msg_main;
+	}
+
+	@Override
+	protected void initView() {
+		// TODO Auto-generated method stub
+		LogUtils.v(TAG, "------------initViews");
+		if(HomeFragment.dialog != null && HomeFragment.dialog.isShowing()){
+			HomeFragment.dialog.dismiss();
+			HomeFragment.dialog = null;
+		}
+		mHeadImage = (ImageView) findViewById(R.id.msg_head_image);
+		mSendMsGridView = (NoSlideGridView) findViewById(R.id.msg_image_grid);
+		mLocationLayout = (LinearLayout) findViewById(R.id.msg_location_layout);
+		mLocationText = (TextView) findViewById(R.id.msg_location_text);
+		mLastNum = (TextView) findViewById(R.id.msg_last_num);
+		mShareBtn = (CheckBox) findViewById(R.id.msg_share_btn);
+		mShareWeiBo = (CheckBox) findViewById(R.id.msg_share_weibo_btn);
+		mShareLayout = (LinearLayout) findViewById(R.id.msg_share_layout);
+		mMianEdit = (EditText) findViewById(R.id.msg_main_edit);
+
+		mBtnCamera = (Button) findViewById(R.id.msg_camera_btn_layout);
+		mBtnGallery = (Button) findViewById(R.id.msg_gallery_btn_layout);
+		mBtnLocation = (Button) findViewById(R.id.msg_location_btn_layout);
+		mBtnAt = (Button) findViewById(R.id.msg_at_btn_layout);
+		mBtnTopic = (Button) findViewById(R.id.msg_topic_btn_layout);
+
+		mTagLayout = (LinearLayout) findViewById(R.id.msg_tag_layout);
+		mTagIconLayout = (LinearLayout) findViewById(R.id.msg_tag_icon_layout);
+		mTagText = (TextView) findViewById(R.id.msg_tag_text);
+		mMsgTag = (Button) findViewById(R.id.msg_tag_btn);
+		mMeiShi = (Button) findViewById(R.id.msg_tag_icon_meishi);
+		mYuLe = (Button) findViewById(R.id.msg_tag_icon_yule);
+		mGouWu = (Button) findViewById(R.id.msg_tag_icon_gouwu);
+		mMeiFa = (Button) findViewById(R.id.msg_tag_icon_meifa);
+		mJieHun = (Button) findViewById(R.id.msg_tag_icon_jiehun);
+		mFangChan = (Button) findViewById(R.id.msg_tag_icon_fangchan);
+		mJianShen = (Button) findViewById(R.id.msg_tag_icon_jianshen);
+		mJiuDian = (Button) findViewById(R.id.msg_tag_icon_jiudian);
+		mJiaZheng = (Button) findViewById(R.id.msg_tag_icon_jiazheng);
+		mJiaJiao = (Button) findViewById(R.id.msg_tag_icon_jiajiao);
+		mQinZi = (Button) findViewById(R.id.msg_tag_icon_qinzi);
+		mPuTongBox = (Button) findViewById(R.id.msg_tag_icon_putong);
+		mBaseImageView = (ImageView) findViewById(R.id.base_fudong_image);
+
+		mSendMsGridView.setVisibility(View.GONE);
+		setTitleBarData();
+		mMianEdit.addTextChangedListener(this);
+		setTopicIfNeedy();
+
+		if (((AppContext) getApplication()).ismNeedShowSendMsg()) {
+			((AppContext) getApplication()).setmNeedShowSendMsg(false);
+			((AppContext) getApplication()).updateNeedShowSendMsg();
+			showFuDongView(R.drawable.fu_dong_send_msg);
+		}
+
+		mUserBean = AppContext.curUser();
+		if (mUserBean != null) {
+			if (!TextUtils.isEmpty(mUserBean.getHeaderUrl())) {
+				mHeadImage.setBackgroundResource(R.drawable.bg_frame_header);
+				ImageLoader.getInstance(SendMsgMainActivity.this)
+						.displayImage(
+								mUserBean.getHeaderUrl(),
+								mHeadImage,
+								SimpleImageLoaderOptions.getRoundImageOptions(PublicUtils
+										.getUserIndexDefaultHeadImage(mUserBean.getType()), 100));
+			} else {
+				mHeadImage.setImageResource(PublicUtils.getUserIndexDefaultHeadImage(mUserBean
+						.getType()));
+			}
+			String token = mUserBean.getToken();
+			String expires_in = mUserBean.getExpiresTime();
+			if (!TextUtils.isEmpty(token) && !TextUtils.isEmpty(expires_in)) {
+				accessToken = new Oauth2AccessToken(token, expires_in);
+			}
+		}
+
+		setImageAdapterData();
+		enableMyLocation();
+		setMsgTagIcon();
+	}
+
+	private void setMsgTagIcon() {
+		mMsgTag.setBackgroundResource(boxDrawables[0]);
+		mTagText.setText(mTagTextStrings[0]);
+		if (mUserBean.getType() == 0 || mUserBean.getType() == 2) {
+			mMsgTag.setBackgroundResource(boxDrawables[0]);
+			mTagText.setText(mTagTextStrings[0]);
+			mTag = 0;
+			mTagString = mTagPingYin[0];
+		} else if (mUserBean.getType() == 1) {
+			if (mUserBean.getCategory_id() > 0 && mUserBean.getCategory_id() < 10) {
+				mMsgTag.setBackgroundResource(boxDrawables[mUserBean.getCategory_id()]);
+				mTagText.setText(mTagTextStrings[mUserBean.getCategory_id()]);
+				mTag = mUserBean.getCategory_id();
+				mTagString = mTagPingYin[mUserBean.getCategory_id()];
+			}
+		}
+		mMsgTag.setSelected(true);
+	}
+
+	private void setTopicIfNeedy() {
+		setTopicArray(mTopicModels, getIntent());
+	}
+
+	private void dealRightTitleBarIcon() {
+		String text = mMianEdit.getText().toString();
+		String temp = text.trim();
+		if (temp.length() > 0 && text.length() <= WEIBO_MAX_LENGTH) {
+			mTitleBar.initRightButtonTextOrResId(0, R.drawable.selector_topbar_submit_button);
+		} else if (mImageModels.size() > 1 && text.length() <= WEIBO_MAX_LENGTH) {
+			mTitleBar.initRightButtonTextOrResId(0, R.drawable.selector_topbar_submit_button);
+		} else {
+			mTitleBar.initRightButtonTextOrResId(0, R.drawable.common_submit_press);
+		}
+	}
+
+	private void setImageAdapterData() {
+		for (int i = 0; i < 1; i++) {
+			SendMsgImageModel model = new SendMsgImageModel();
+			mImageModels.add(model);
+		}
+		adapter = new SendMsgImageAdapter(this, mImageModels, mCamera) {
+
+			@Override
+			public void clickToCamera(int position) {
+				// TODO Auto-generated method stub
+				mImageIndex = position;
+			}
+
+			@Override
+			public void clickToDelete(int position) {
+				// TODO Auto-generated method stub
+				if (mImageModels.size() == 9) {
+					SendMsgImageModel model = new SendMsgImageModel();
+					mImageModels.add(model);
+				}
+				mImageModels.remove(position);
+				adapter.notifyDataSetChanged();
+				dealRightTitleBarIcon();
+			}
+
+		};
+		mSendMsGridView.setAdapter(adapter);
+	}
+
+	OnClickListener boxClickListener = new OnClickListener() {
+
+		@Override
+		public void onClick(View view) {
+			Button[] boxs = { mPuTongBox, mJiaZheng, mFangChan, mJianShen, mMeiFa, mMeiShi, mYuLe,
+					mJiaJiao, mJiuDian, mGouWu, mJieHun, mQinZi };
+			for (int i = 0; i < boxs.length; i++) {
+				if (view != null && view.getId() != boxs[i].getId()) {
+					boxs[i].setSelected(false);
+				} else if (view != null && view.getId() == boxs[i].getId()) {
+					boxs[i].setSelected(true);
+					mMsgTag.setBackgroundResource(whiteBox[i]);
+					mTagText.setText(mTagTextStrings[i]);
+					mTag = i;
+					mTagString = mTagPingYin[i];
+				}
+			}
+			if (mTagIconLayout.getVisibility() == View.VISIBLE) {
+				mMsgTag.setSelected(true);
+				mTagLayout.setBackgroundResource(0);
+				mTagIconLayout.setVisibility(View.GONE);
+				mTagText.setVisibility(View.VISIBLE);
+				mMsgTag.setBackgroundResource(boxDrawables[mTag]);
+			}
+		}
+	};
+
+	OnClickListener clickListener = new OnClickListener() {
+
+		@Override
+		public void onClick(View view) {
+			// TODO Auto-generated method stub
+			Intent intent = new Intent();
+			switch (view.getId()) {
+			case R.id.msg_camera_btn_layout:
+				if (mImageModels.size() < 9) {
+					gotoCamera();
+					mImageIndex = mImageModels.size() - 1;
+				} else {
+					showToast("您最多只能添加九张图片");
+				}
+				break;
+			case R.id.msg_gallery_btn_layout:
+				if (mImageModels.size() < 9) {
+					gotoGallery(1, 1);
+					mImageIndex = mImageModels.size() - 1;
+				} else {
+					showToast("您最多只能添加九张图片");
+				}
+				break;
+			case R.id.msg_location_btn_layout:
+				setShowOrHideLocation(isShowLocation);
+				break;
+			case R.id.msg_at_btn_layout:
+				intent.setClass(SendMsgMainActivity.this, AttentionUserActivity.class);
+				intent.putExtra(AppConst.INTENT_MSG_USER_ID, mUserBean.getUid());
+				intent.putExtra(AppConst.INTENT_MSG_COMMUNITY_ID, mUserBean.getCurrentCommunityId());
+				startActivityForResult(intent, 401);
+				break;
+			case R.id.msg_topic_btn_layout:
+				intent.setClass(SendMsgMainActivity.this, TopicsActivity.class);
+				intent.putExtra(AppConst.INTENT_MSG_COMMUNITY_ID, mUserBean.getCurrentCommunityId());
+				startActivityForResult(intent, 301);
+				break;
+			default:
+				break;
+			}
+		}
+	};
+
+	private void setShowOrHideLocation(boolean isLocation) {
+		if (isLocation) {
+			isShowLocation = false;
+			mLocationLayout.setVisibility(View.GONE);
+			mBtnLocation.setBackgroundResource(R.drawable.msg_location_btn);
+			disableMyLocation();
+		} else {
+			isShowLocation = true;
+			mLocationLayout.setVisibility(View.VISIBLE);
+			mBtnLocation.setBackgroundResource(R.drawable.msg_location_btn_press);
+			enableMyLocation();
+		}
+	}
+
+	private void setTitleBarData() {
+		mTitleBar.setLeftButtonShow(true);
+		mTitleBar.initLeftButtonTextOrResId(0, R.drawable.selector_topbar_back_button);
+		mTitleBar.initRightButtonTextOrResId(0, R.drawable.common_submit_press);
+		mTitleBar.setTitleName("发信息");
+	}
+
+	@Override
+	protected void initData() {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void gotoCamera() {
+		mCamera.setDefultSmallImageUri(String.valueOf(System.currentTimeMillis()));
+		mCamera.startCameraForBigPhoto();
+	}
+
+	private int outputX = 400, outputY = 400;
+	private boolean scale = true, returndata = false, noFaceDetection = false;
+
+	private void gotoGallery(int aspectX, int aspectY) {
+		mCamera.setDefultSmallImageUri(String.valueOf(System.currentTimeMillis()));
+		mCamera.startGalleryForPhoto(aspectX, aspectY, outputX, outputY, scale, returndata,
+				noFaceDetection);
+	}
+
+	private void setTopicArray(List<TopicOrAtModel> mModels, Intent intent) {
+		if (intent == null)
+			return;
+
+		String topic = intent.getStringExtra(AppConst.INTENT_MSG_TOPIC_TEXT);
+
+		if (topic == null)
+			return;
+		int id = intent.getIntExtra(AppConst.INTENT_MSG_TOPIC_ID, -1);
+		String text = mMianEdit.getText().toString();
+		mMianEdit.setText(text + " " + topic + " ");
+		Editable etext = mMianEdit.getText();
+		int position = etext.length();
+		Selection.setSelection(etext, position);
+		TopicOrAtModel model = new TopicOrAtModel();
+		model.setId(id);
+		model.setText(topic);
+		mModels.add(model);
+	}
+
+	private void setAtArray(List<TopicOrAtModel> mModels, Intent intent) {
+		String at = intent.getStringExtra(AppConst.INTENT_MSG_AT_TEXT);
+		int id = intent.getIntExtra(AppConst.INTENT_MSG_AT_ID, -1);
+		String type = intent.getStringExtra(AppConst.INTENT_MSG_AT_TYPE);
+		String text = mMianEdit.getText().toString();
+		mMianEdit.setText(text + " " + at + " ");
+		Editable etext = mMianEdit.getText();
+		int position = etext.length();
+		Selection.setSelection(etext, position);
+		TopicOrAtModel model = new TopicOrAtModel();
+		model.setId(id);
+		model.setText(at);
+		model.setType(type);
+		mModels.add(model);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == 201 && resultCode == 200) {
+			removeModel(data);
+			return;
+		}
+
+		if (requestCode == 301 && resultCode == 300) {
+			setTopicArray(mTopicModels, data);
+			return;
+		}
+
+		if (requestCode == 401 && resultCode == 400) {
+			setAtArray(mAtModels, data);
+			return;
+		}
+
+		if (requestCode == 1000 && resultCode == RESULT_OK) {
+			if (!TextUtils.isEmpty(data.getStringExtra(LocationMapActivity.MYLOCATION_NAME))) {
+				mLocationText.setText(data.getStringExtra(LocationMapActivity.MYLOCATION_NAME));
+			}
+			if (data.getDoubleExtra(LocationMapActivity.MYLOCATION_LATITUDE, -1) != -1
+					&& data.getDoubleExtra(LocationMapActivity.MYLOCATION_LONGITUDE, -1) != -1) {
+				mLat = data.getDoubleExtra(LocationMapActivity.MYLOCATION_LATITUDE, -1);
+				mLon = data.getDoubleExtra(LocationMapActivity.MYLOCATION_LONGITUDE, -1);
+			}
+			return;
+		}
+
+		if (requestCode == 1000 && resultCode == 1002) {
+			setShowOrHideLocation(true);
+		}
+
+		BitmapDrawable drawable = mCamera.onImageActivityResult(requestCode, resultCode, data);
+		if (drawable != null) {
+			mSendMsGridView.setVisibility(View.VISIBLE);
+			SendMsgImageModel model = new SendMsgImageModel();
+			model.setDrawable(drawable);
+			model.setImagePath(mCamera.getPath());
+			if (mImageModels.size() == 9) {
+				mImageModels.remove(8);
+			}
+			mImageModels.add(mImageIndex, model);
+			adapter.notifyDataSetChanged();
+			dealRightTitleBarIcon();
+
+			sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"
+					+ Environment.getExternalStorageDirectory())));
+		}
+	}
+
+	private ArrayList<Integer> delete = new ArrayList<Integer>();
+
+	private void removeModel(Intent data) {
+		delete = data.getIntegerArrayListExtra(AppConst.INTENT_IMAGE_PATH_INDEX_ARRAY);
+		if (delete != null && delete.size() != 0) {
+			for (int i = 0; i < delete.size(); i++) {
+				int index = delete.get(i);
+				if (mImageModels.size() == 9) {
+					if (mImageModels.get(8).getDrawable() != null) {
+						SendMsgImageModel model = new SendMsgImageModel();
+						mImageModels.add(model);
+					}
+				}
+				mImageModels.remove(index);
+			}
+			adapter.notifyDataSetChanged();
+			dealRightTitleBarIcon();
+		}
+	}
+
+	private boolean isValidTextLength(String text) {
+		return text.length() <= WEIBO_MAX_LENGTH;
+	}
+
+	@Override
+	protected void initCallbacks() {
+		mLocationLayout.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (mLat == -1 || mLon == -1) {
+					return;
+				}
+				Intent intent = new Intent(mContext, LocationMapActivity.class);
+				intent.putExtra("lon", mLon);
+				intent.putExtra("lat", mLat);
+				intent.putExtra("location", mLocationText.getText().toString());
+				startActivityForResult(intent, 1000);
+			}
+		});
+
+		mTitleBar.setLeftButtonListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				PublicUtils.hideSoftInputMethod(SendMsgMainActivity.this);
+				finish();
+			}
+		});
+
+		mTitleBar.setRightButton1Listener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				String content = mMianEdit.getText().toString();
+				if (TextUtils.isEmpty(content.trim()) && mImageModels.size() <= 1) {
+					showToast("您还未填写内容");
+				} else {
+					if (isValidTextLength(content)) {
+						sendMainMsgText();
+					} else {
+						showToast("内容不能超过140个字");
+					}
+				}
+			}
+		});
+
+		mShareBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (!mIsShowPop) {
+					if (mIsWeiBoShareClick) {
+						mShareBtn.setChecked(true);
+					} else {
+						mShareBtn.setChecked(false);
+					}
+					mShareWeiBo.setVisibility(View.VISIBLE);
+					mShareBtn.setButtonDrawable(R.drawable.checkbox_share_show_btn_selector);
+					mShareLayout.setBackgroundResource(R.drawable.send_msg_share_bg);
+					mIsShowPop = true;
+				} else {
+					mShareWeiBo.setVisibility(View.GONE);
+					mShareBtn.setButtonDrawable(R.drawable.checkbox_share_btn_selector);
+					mShareLayout.setBackgroundResource(0);
+					if (mIsWeiBoShareClick) {
+						mShareBtn.setChecked(true);
+					} else {
+						mShareBtn.setChecked(false);
+					}
+					mIsShowPop = false;
+				}
+			}
+		});
+
+		mShareWeiBo.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (((CheckBox) v).isChecked()) {
+					if (mUserBean.getIsBindingSina() && accessToken != null) {
+						if (accessToken.isSessionValid()) {
+							mIsWeiBoShareClick = true;
+							mShareBtn.setChecked(true);
+						} else {
+							showToast("你绑定的新浪微博账户已经过期,请重新到设置页面绑定。");
+						}
+					} else {
+						showToast("您还未绑定新浪微博账户,请到设置页面绑定。");
+						mIsWeiBoShareClick = false;
+						mShareBtn.setChecked(false);
+						mShareWeiBo.setChecked(false);
+					}
+				} else {
+					mIsWeiBoShareClick = false;
+					mShareBtn.setChecked(false);
+				}
+			}
+		});
+
+		mMsgTag.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mMsgTag.setSelected(true);
+				if (mTagIconLayout.getVisibility() == View.VISIBLE) {
+					mTagLayout.setBackgroundResource(0);
+					mTagIconLayout.setVisibility(View.GONE);
+					mTagText.setVisibility(View.VISIBLE);
+					mMsgTag.setBackgroundResource(boxDrawables[mTag]);
+				} else if (mTagIconLayout.getVisibility() == View.GONE) {
+					mTagLayout.setBackgroundResource(R.drawable.send_msg_share_bg);
+					mTagIconLayout.setVisibility(View.VISIBLE);
+					mTagText.setVisibility(View.GONE);
+					mMsgTag.setBackgroundResource(whiteBox[mTag]);
+				}
+			}
+
+		});
+
+		mMianEdit.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (mTagIconLayout.getVisibility() == View.VISIBLE) {
+					mMsgTag.setSelected(true);
+					mTagLayout.setBackgroundResource(0);
+					mTagIconLayout.setVisibility(View.GONE);
+					mTagText.setVisibility(View.VISIBLE);
+					mMsgTag.setBackgroundResource(boxDrawables[mTag]);
+				}
+				if (mIsShowPop) {
+					mShareWeiBo.setVisibility(View.GONE);
+					mShareBtn.setButtonDrawable(R.drawable.checkbox_share_btn_selector);
+					mShareLayout.setBackgroundResource(0);
+					if (mIsWeiBoShareClick) {
+						mShareBtn.setChecked(true);
+					} else {
+						mShareBtn.setChecked(false);
+					}
+					mIsShowPop = false;
+				}
+			}
+
+		});
+
+		mBtnCamera.setOnClickListener(clickListener);
+		mBtnGallery.setOnClickListener(clickListener);
+		mBtnLocation.setOnClickListener(clickListener);
+		mBtnAt.setOnClickListener(clickListener);
+		mBtnTopic.setOnClickListener(clickListener);
+
+		mMeiShi.setOnClickListener(boxClickListener);
+		mYuLe.setOnClickListener(boxClickListener);
+		mGouWu.setOnClickListener(boxClickListener);
+		mMeiFa.setOnClickListener(boxClickListener);
+		mJieHun.setOnClickListener(boxClickListener);
+		mFangChan.setOnClickListener(boxClickListener);
+		mJianShen.setOnClickListener(boxClickListener);
+		mJiuDian.setOnClickListener(boxClickListener);
+		mJiaZheng.setOnClickListener(boxClickListener);
+		mPuTongBox.setOnClickListener(boxClickListener);
+		mJiaJiao.setOnClickListener(boxClickListener);
+		mQinZi.setOnClickListener(boxClickListener);
+	}
+
+	private String getTopicOrAtJsonString(List<TopicOrAtModel> mModels, String content) {
+		JSONObject obj = new JSONObject();
+		for (int i = 0; i < mModels.size(); i++) {
+			TopicOrAtModel model = mModels.get(i);
+			if (model.getId() != -1) {
+				if (content.indexOf(model.getText()) != -1) {
+					try {
+						obj.put(model.getId() + "", model.getText());
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		return obj.toString();
+	}
+
+	private String getUserTypeJsonString(List<TopicOrAtModel> mModels, String content) {
+		JSONObject obj = new JSONObject();
+		for (int i = 0; i < mModels.size(); i++) {
+			TopicOrAtModel model = mModels.get(i);
+			if (model.getId() != -1) {
+				if (content.indexOf(model.getText()) != -1) {
+					try {
+						if (model.getType() != null) {
+							obj.put(model.getId() + "", model.getType());
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		return obj.toString();
+	}
+
+	private void doShareWeibo() {
+		if (mIsWeiBoShareClick && accessToken != null) {
+			if (accessToken.isSessionValid()) {
+				if (mImageModels.size() > 1) {
+					sendWithImageMsgToWeiBo();
+				} else {
+					sendNoImageMsgToWeiBo();
+				}
+			} else {
+				showToast("你绑定的新浪微博账户已经过期,请重新到设置页面绑定。");
+			}
+		}
+	}
+
+	private void sendMainMsgText() {
+		String content = mMianEdit.getText().toString();
+		String topic = getTopicOrAtJsonString(mTopicModels, content);
+		String at = getTopicOrAtJsonString(mAtModels, content);
+		String userType = getUserTypeJsonString(mAtModels, content);
+		String location = mLocationText.getText().toString();
+		if (!isShowLocation) {
+			location = null;
+			mLon = -1;
+			mLat = -1;
+		}
+		if (TextUtils.isEmpty(location) || location.equals("定位中...") || mLon == -1 || mLat == -1) {
+			location = null;
+			mLon = -1;
+			mLat = -1;
+		}
+		content = content.replaceAll("\n", " ");
+		if (rs == null) {
+			rs = new RSSendMainMsg(mUserBean.getCurrentCommunityId(), mLat, mLon, location,
+					mUserBean.getUid(), content, topic, at, userType, mTagString);
+
+			rs.setOnSuccessHandler(new OnSuccessHandler() {
+
+				@Override
+				public void onSuccess(Object result) {
+					System.out.print("onSuccess: \n" + result);
+					mMsgId = Integer.parseInt(result.toString());
+					if (mImageModels.size() > 1) {
+						mImagePath = mImageModels.get(index).getImagePath();
+						excuteUploadImageFile();
+					} else {
+						hideProgressDialog();
+						showToast("发布消息成功");
+						PublicUtils.hideSoftInputMethod(SendMsgMainActivity.this);
+						finish();
+					}
+					rs = null;
+				}
+
+			});
+
+			rs.setOnFaultHandler(new OnFaultHandler() {
+
+				@Override
+				public void onFault(Exception ex) {
+					index = 0;
+					hideProgressDialog();
+					showToast("发布消息失败");
+					rs = null;
+				}
+
+			});
+			showProgressDialog("正在发布消息...", true);
+			doShareWeibo();
+			rs.asyncExecute(this);
+		}
+
+	}
+
+	private Object lock = new Object();
+	private int index = 0;
+
+	private void excuteUploadImageFile() {
+		synchronized (lock) {
+			if (null == executor || executor.isShutdown()) {
+				executor = Executors.newSingleThreadExecutor();
+			}
+		}
+		executor.execute(new Runnable() {
+			@Override
+			public void run() {
+				Thread.currentThread().setName("excuteDoUploadImageFile");
+				int result = ADFileUploadUtil.upload(mImagePath, index, mMsgId);
+				index++;
+				if (result == 1) {
+					if (index < mImageModels.size()
+							&& mImageModels.get(index).getImagePath() != null) {
+						mImagePath = mImageModels.get(index).getImagePath();
+						excuteUploadImageFile();
+					} else {
+						hideProgressDialog();
+						sendMsgToHandle("消息发布成功");
+						PublicUtils.hideSoftInputMethod(SendMsgMainActivity.this);
+						finish();
+					}
+				} else if (result == 0) {
+					index = 0;
+					hideProgressDialog();
+					sendMsgToHandle("消息发布失败");
+				}
+			}
+		});
+	}
+
+	private MainHandler mHandler = new MainHandler(this);
+
+	private static class MainHandler extends Handler {
+
+		public static final int MSG_SHOW_TOAST = 100;
+
+		private WeakReference<SendMsgMainActivity> mActivity = null;
+
+		public MainHandler(SendMsgMainActivity act) {
+			mActivity = new WeakReference<SendMsgMainActivity>(act);
+		}
+
+		@Override
+		public void handleMessage(Message msg) {
+
+			SendMsgMainActivity act = mActivity.get();
+			if (act == null) {
+				removeCallbacksAndMessages(null);
+				return;
+			}
+
+			if (msg.what == MSG_SHOW_TOAST) {
+				act.showToast(msg.obj.toString());
+			}
+
+			if (msg.what == MSG_LOCATION_DONE) {
+				act.setLocation(msg.getData());
+				act.disableMyLocation();
+			}
+		}
+	}
+
+	private void setLocation(Bundle b) {
+		mLocationText.setText(b.getString("location"));
+		mLat = b.getDouble("lat");
+		mLon = b.getDouble("lon");
+	}
+
+	private void sendMsgToHandle(String text) {
+		Message msg = new Message();
+		msg.what = MainHandler.MSG_SHOW_TOAST;
+		msg.obj = text;
+		mHandler.sendMessage(msg);
+	}
+
+	private void setLastNumber() {
+		String text = mMianEdit.getText().toString();
+		// color set
+		mLastNum.setTextColor(isValidTextLength(text) ? getResources().getColor(
+				R.color.msg_last_number) : Color.RED);
+		int destLen = text.toCharArray().length;
+		int len = WEIBO_MAX_LENGTH - destLen;
+		mLastNum.setText(String.valueOf(len));
+
+		dealRightTitleBarIcon();
+	}
+
+	@Override
+	public void afterTextChanged(Editable s) {
+		// TODO Auto-generated method stub
+		setLastNumber();
+	}
+
+	@Override
+	public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onTextChanged(CharSequence s, int start, int before, int count) {
+		// TODO Auto-generated method stub
+
+	}
+
+	private Oauth2AccessToken accessToken = null;
+
+	private void sendWithImageMsgToWeiBo() {
+		String coordXString = String.valueOf(mLon);
+		String coordYString = String.valueOf(mLat);
+		StatusesAPI weiBo = new StatusesAPI(accessToken);
+
+		weiBo.upload(mMianEdit.getText().toString(), mImageModels.get(0).getImagePath(),
+				coordXString, coordYString, new RequestListener() {
+
+					@Override
+					public void onIOException(IOException arg0) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onError(WeiboException arg0) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onComplete(String arg0) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+	}
+
+	private void sendNoImageMsgToWeiBo() {
+		String coordXString = String.valueOf(mLat);
+		String coordYString = String.valueOf(mLon);
+		StatusesAPI weiBo = new StatusesAPI(accessToken);
+
+		weiBo.update(mMianEdit.getText().toString(), coordXString, coordYString,
+				new RequestListener() {
+
+					@Override
+					public void onIOException(IOException arg0) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onError(WeiboException arg0) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onComplete(String arg0) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+	}
+
+	@Override
+	protected void onDestroy() {
+		hideProgressDialog();
+		locationDestory();
+		PublicUtils.hideSoftInputMethod(this);
+		BitmapDrawable bdOne = (BitmapDrawable) mBaseImageView.getBackground();
+		// 别忘了把背景设为null，避免onDraw刷新背景时候出现used a recycled bitmap错误
+		mBaseImageView.setBackgroundResource(0);
+		if (bdOne != null) {
+			bdOne.setCallback(null);
+			bdOne.getBitmap().recycle();
+		}
+		super.onDestroy();
+	}
+
+	private void showFuDongView(int imageId) {
+		mBaseImageView.setVisibility(View.VISIBLE);
+		Bitmap bm = BitmapFactory.decodeResource(this.getResources(), imageId);
+		BitmapDrawable bd = new BitmapDrawable(this.getResources(), bm);
+		mBaseImageView.setBackgroundDrawable(bd);
+		mBaseImageView.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				mBaseImageView.setVisibility(View.GONE);
+			}
+		});
+	}
+
+	@Override
+	public void onLocationChanged(Location arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onProviderDisabled(String arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onProviderEnabled(String arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onLocationChanged(AMapLocation location) {
+
+		if (location != null) {
+			Double geoLat = location.getLatitude();
+			Double geoLng = location.getLongitude();
+			// String cityCode = "";
+			String desc = "";
+			Bundle locBundle = location.getExtras();
+			if (locBundle != null) {
+				// cityCode = locBundle.getString("citycode");
+				desc = locBundle.getString("desc");
+			}
+			// String str = ("定位成功:(" + geoLng + "," + geoLat + ")"
+			// + "\n精    度    :" + location.getAccuracy() + "米"
+			// + "\n定位方式:" + location.getProvider() + "\n定位时间:"
+			// + AMapUtil.convertToTime(location.getTime()) + "\n城市编码:"
+			// + cityCode + "\n位置描述:" + desc + "\n省:"
+			// + location.getProvince() + "\n市：" + location.getCity()
+			// + "\n区(县)：" + location.getDistrict() +"\n街道："+ "\n城市编码："
+			// + location.getCityCode() + "\n区域编码：" + location.getAdCode());
+
+			String str = "";
+			if (desc != null) {
+				String[] l = desc.split(" ");
+				int index = 3;
+				if (location.getProvince() == null) {
+					index--;
+				}
+				if (location.getCity() == null) {
+					index--;
+				}
+				if (location.getDistrict() == null) {
+					index--;
+				}
+
+				if (l.length > index) {
+					str = l[index];
+				}
+
+			}
+
+			Message msg = new Message();
+			Bundle b = new Bundle();
+			b.putString("location", str);
+			b.putDouble("lon", geoLng);
+			b.putDouble("lat", geoLat);
+			msg.setData(b);
+			msg.what = MSG_LOCATION_DONE;
+			if (mHandler != null) {
+				mHandler.sendMessage(msg);
+			}
+		}
+
+	}
+
+	private LocationManagerProxy mAMapLocManager = null;
+
+	public void enableMyLocation() {
+		// Location API定位采用GPS和网络混合定位方式，时间最短是5000毫秒
+		/*
+		 * mAMapLocManager.setGpsEnable(false);//
+		 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
+		 */
+		mAMapLocManager = LocationManagerProxy.getInstance(this);
+		mAMapLocManager.requestLocationUpdates(LocationProviderProxy.AMapNetwork, 5000, 10, this);
+	}
+
+	public void disableMyLocation() {
+		if (mAMapLocManager != null) {
+			mAMapLocManager.removeUpdates(this);
+		}
+	}
+
+	private void locationDestory() {
+		if (mAMapLocManager != null) {
+			mAMapLocManager.removeUpdates(this);
+			mAMapLocManager.destory();
+		}
+
+		mAMapLocManager = null;
+	}
+
+	public void onResume() {
+		super.onResume();
+	}
+
+	public void onPause() {
+		super.onPause();
+		disableMyLocation();
+	}
+
+}

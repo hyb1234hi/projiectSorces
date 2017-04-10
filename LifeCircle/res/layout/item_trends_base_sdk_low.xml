@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="2.5dp"
+        android:background="@drawable/line" />
+
+    <!-- 系统bug 下面的relative必须wrap并且这里的两个view必须在外面包一层 frmaeLayout 不这么写就match_parent 竖线绘制不了全屏 -->
+
+    <View
+        android:id="@+id/time_line"
+        android:layout_width="1.5dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="62.5dp"
+        android:background="@drawable/bg_time_line" />
+
+    <!-- android:background="@drawable/bg_time_line" -->
+
+    <LinearLayout
+        android:id="@+id/contentRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/imgHeadPortrait"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="7dp"
+            android:background="@drawable/bg_frame_header"
+            android:padding="2dp"
+            android:scaleType="centerCrop" />
+
+        <ImageView
+            android:id="@+id/imgFlag"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="14.5dp"
+            android:background="@drawable/bg_frame_header"
+            android:padding="2dp"
+            android:scaleType="centerCrop" />
+
+        <!-- android:background="@drawable/bg_home_page_flag" -->
+
+        <RelativeLayout
+            android:id="@+id/lyotContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="5dp"
+            android:paddingTop="16dp" >
+        </RelativeLayout>
+    </LinearLayout>
+
+</merge>

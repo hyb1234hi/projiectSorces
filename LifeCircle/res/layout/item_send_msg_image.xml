@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:id="@+id/msg_image_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp" >
+
+        <ImageView
+            android:id="@+id/msg_image"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:padding="1dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/bus_infor_add_image" />
+
+        <ImageView
+            android:id="@+id/msg_image_icon"
+            android:layout_width="21dp"
+            android:layout_height="21dp"
+            android:layout_gravity="right"
+            android:scaleType="fitXY"
+            android:src="@drawable/bus_infor_delete_image_icon"
+            android:visibility="gone" />
+    </FrameLayout>
+
+</LinearLayout>

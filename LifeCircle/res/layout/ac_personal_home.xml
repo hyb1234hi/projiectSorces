@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4F4F4"
+    android:orientation="vertical" >
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        xmlns:pull="http://schemas.android.com/apk/res-auto/com.handmark.pulltorefresh.library"
+        android:id="@+id/personal_home_list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#0000"
+        android:cacheColorHint="@android:color/transparent"
+        android:choiceMode="singleChoice"
+        android:divider="#0000"
+        android:fadingEdge="none"
+        android:listSelector="#0000"
+        pull:scrollBarPanelInAnimation="@anim/anim_pathlist_in"
+        pull:scrollBarPanelOutAnimation="@anim/anim_pathlist_out"
+        pull:ptrMode="both" />
+
+    <com.sinaleju.lifecircle.app.customviews.TitleBar
+        android:id="@+id/mTitleBar"
+        android:layout_width="match_parent"
+        android:layout_height="55dp" />
+
+    <com.sinaleju.lifecircle.app.customviews.bottommenu.BaseBottomMenu
+        android:id="@+id/mBottomMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bottom_menu_bg"
+        android:orientation="vertical"
+        android:paddingBottom="10dip"
+        android:paddingLeft="20dip"
+        android:paddingRight="20dip"
+        android:paddingTop="20dip"
+        android:visibility="gone" />
+
+</RelativeLayout>

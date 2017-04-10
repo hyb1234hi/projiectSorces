@@ -1,0 +1,98 @@
+package com.sinaleju.lifecircle.app.customviews.itemview;
+
+import android.content.Context;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
+
+import com.sinaleju.lifecircle.R;
+import com.sinaleju.lifecircle.app.model.Model_TrendsBase;
+import com.sinaleju.lifecircle.app.model.Model_TrendsSimple;
+import com.sinaleju.lifecircle.app.model.Model_TrendsBase.SpanType;
+import com.sinaleju.lifecircle.app.model.Model_TrendsBase.TrendsType;
+import com.sinaleju.lifecircle.app.model.impl.BaseModel;
+import com.sinaleju.lifecircle.app.utils.LogUtils;
+
+public class Item_TrendsSimple extends AbsTrendsItem {
+	private static final String TAG = "Item_SimpleTrend";
+	protected TextView mTextTrend;
+
+	public Item_TrendsSimple(Context context) {
+		super(context);
+	}
+
+	@Override
+	protected View initContentView() {
+
+		LayoutInflater.from(getContext()).inflate(
+				R.layout.item_trends_simple, mContentView,true);
+
+		mTextTrend = (TextView) findViewById(R.id.txtTitle);
+		return null;
+	}
+
+	@Override
+	protected boolean isNeedHeadPortrait() {
+		return true;
+	}
+
+	@Override
+	protected void onClickThis(BaseModel model) {
+		
+	}
+
+	@Override
+	protected void seconderySet(int type,BaseModel model) {
+
+		if (!(model instanceof Model_TrendsSimple)) {
+			LogUtils.e(TAG, "wrong class type");
+			return;
+		}
+		
+		// cast BaseModel class to subClass like Model_xxx
+		setText(model);
+
+	}
+
+	/**
+	 * @param model
+	 */
+	protected void setText(BaseModel model) {
+		Model_TrendsSimple m = (Model_TrendsSimple) model;
+
+		if (m.getTrendsType().equals(TrendsType.JION_LC)||m.getTrendsType().equals(TrendsType.CHANG_HEADER)) {
+			mTextTrend.setText(m.getText());
+		} else {
+			/** set Content by ContentTypes */
+			Model_TrendsBase.SpanText[] contentTypes = m.getMSpanTexts();
+			if (contentTypes == null) {
+				LogUtils.e(TAG, "");
+				return;
+			}
+			
+			if(m.getTrendsType().equals(TrendsType.JOIN)||m.getTrendsType().equals(TrendsType.QUIT)){
+				for(int i=0;i<contentTypes.length;i++){
+					if(contentTypes[i].getSpanType()!=SpanType.TEXT){
+						contentTypes[i].setSpanType(SpanType.TEXT);
+						contentTypes[i].setTag(null);
+					}
+				}
+				mTextTrend.setTextColor(0xffbdbdbd);
+				mTextTrend.setTextSize(14);
+			}else{
+				mTextTrend.setTextSize(15);
+			}
+			
+			SpannableString span = TrendsSpan.createTrendsSpan(getContext(),
+					contentTypes);
+
+			// setContent
+			mTextTrend.setText(span);
+
+			mTextTrend.setMovementMethod(LinkMovementMethod.getInstance());
+		}
+	}
+
+}

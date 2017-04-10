@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/emptyView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="160dp"
+            android:src="@drawable/bg_search_caution"
+            android:visibility="invisible" />
+
+
+        <LinearLayout
+            android:id="@+id/rg_search"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/searchBar"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/rb_all"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@drawable/selector_topbar_button"
+                android:button="@null"
+                android:gravity="center"
+                android:text="全部"
+                android:textColor="#666666" />
+			<View 
+			    android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:background="#ffffff"
+			    />
+            <Button
+                android:id="@+id/rb_follow"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@drawable/selector_topbar_button"
+                android:button="@null"
+                android:gravity="center"
+                android:text="我关注的"
+                android:textColor="#666666" />
+			<View 
+			    android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:background="#ffffff"
+			    />
+            <Button
+                android:id="@+id/rb_auth"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@drawable/selector_topbar_button"
+                android:button="@null"
+                android:gravity="center"
+                android:text="认证用户"
+                android:textColor="#666666" />
+        </LinearLayout>
+
+        <com.handmark.pulltorefresh.library.PullToRefreshListView
+            xmlns:pull="http://schemas.android.com/apk/res-auto/com.handmark.pulltorefresh.library"
+            android:id="@+id/list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/rg_search"
+            android:layout_marginTop="6dp"
+            android:background="#0000"
+            android:cacheColorHint="#0000"
+            android:divider="#0000"
+            android:fadingEdge="none"
+            android:listSelector="#0000"
+            pull:ptrMode="pullFromEnd" />
+        <com.sinaleju.lifecircle.app.customviews.CustomSearchBarView
+	        android:id="@+id/searchBar"
+	        android:layout_width="match_parent"
+	        android:layout_height="46dp" />
+</RelativeLayout>

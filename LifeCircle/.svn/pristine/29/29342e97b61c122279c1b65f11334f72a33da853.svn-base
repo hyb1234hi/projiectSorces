@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
+<RelativeLayout 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <RelativeLayout
+        android:id="@+id/rl_head_top"
+        android:layout_width="match_parent"
+        android:layout_height="225dp" >
+
+        <ImageView
+            android:id="@+id/iv_bg_community"
+            android:layout_width="match_parent"
+            android:layout_height="225dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bg_community" />
+
+        <FrameLayout
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="33dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="65dp"
+            android:background="@drawable/bg_home_page_top_search" >
+
+            <ImageView
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="-2.5dp"
+                android:layout_marginLeft="8dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_home_page_top_search" />
+        </FrameLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="15dp"
+            android:paddingRight="5dp" >
+
+            <ImageView
+                android:id="@+id/imgHeader"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/bg_visiting_card_header"
+                android:padding="6dp"
+                android:src="@drawable/per_index_default_head_image" />
+
+            <TextView
+                android:id="@+id/txtWuye"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="北京星之光物业有限公司"
+                android:textColor="#fff"
+                android:textSize="18sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/txtTopicNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/txtWuye"
+                android:layout_marginTop="60dp"
+                android:paddingLeft="5dp"
+                android:text="共222333条话题"
+                android:textColor="#827f7e"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_alignTop="@id/txtTopicNum"
+                android:layout_marginBottom="-5dp"
+                android:layout_toLeftOf="@id/txtTopicNum"
+                android:src="@drawable/ic_home_page_top_topic" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_footer_top"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/rl_head_top"
+        android:layout_height="57dp" >
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:checkedButton="0"
+            android:orientation="horizontal" >
+
+            <!-- android:background="@color/color_home_page_top_shishi_remen_bg_selected" -->
+
+            <RadioButton
+                android:id="@+id/radioCurrent"
+                android:layout_width="65dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#24ded0"
+                android:button="@null"
+                android:drawableTop="@drawable/ic_home_page_top_new"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="NEW"
+                android:textSize="10sp" />
+
+            <!-- android:background="@color/color_home_page_top_shishi_remen_bg_unselected" -->
+
+            <RadioButton
+                android:id="@+id/radioHot"
+                android:layout_width="65dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#ff8c0f"
+                android:button="@null"
+                android:drawableTop="@drawable/ic_home_page_top_hot"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="HOT"
+                android:textSize="10sp" />
+        </RadioGroup>
+
+        <include
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="5dp"
+            layout="@layout/include_home_page_top_weather" />
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/ll_adv" 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_footer_top"
+        android:visibility="gone"
+        android:orientation="horizontal"
+        >
+        <ImageView 
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="7dp"
+            android:background="@drawable/logo_quan"
+            />
+        <View
+            android:layout_width="1.5dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16.5dp"
+            android:background="@drawable/bg_time_line" />
+        <LinearLayout 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="7dp"
+            android:orientation="vertical"
+            >
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="券享中国"
+                android:textSize="18sp"
+                android:textColor="#000000"
+                
+                />
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="券享中国，来就送，优惠等你拿~"
+                android:textColor="#000000"
+                />
+            <ImageView 
+                android:id="@+id/iv_quanup"
+                android:layout_width="221.5dp"
+                android:layout_height="50dp"
+                />
+        </LinearLayout>
+    </LinearLayout>
+        <View
+            android:id="@+id/iv_point"
+            android:layout_width="10dp"
+            android:layout_height="11dp"
+            android:layout_marginLeft="57.5dp"
+            android:layout_marginTop="302dp"
+            android:visibility="gone"
+            android:background="@drawable/ic_home_page_flag_normal"/>
+    <!-- footer -->
+
+    <LinearLayout
+        android:id="@+id/foot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/line"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:id="@+id/lyotLoading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible" >
+
+            <LinearLayout
+                android:id="@+id/lyotLoadingShow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true" >
+
+                <ProgressBar
+                    android:id="@+id/indicatiorProgressBar"
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="1dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp"
+                    android:text="加载中..."
+                    android:textColor="#9D9999"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtCaution"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:paddingTop="15dp"
+                android:text="暂无数据"
+                android:textColor="#9D9999"
+                android:textSize="15sp"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_item_home_page"
+        android:layout_width="wrap_content"
+        android:layout_height="75dp"
+        android:layout_marginLeft="55.5dp"
+        android:layout_marginTop="209dp"
+        android:orientation="vertical" >
+
+        <View
+            android:layout_width="1.5dp"
+            android:layout_height="9dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_time_line" />
+
+        <ImageView
+            android:id="@+id/imgFlagDot"
+            android:layout_width="14dp"
+            android:layout_height="15dp"
+            android:background="@drawable/ic_blue_dot"
+            android:gravity="center" />
+
+        <View
+            android:layout_width="1.5dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_time_line" />
+    </LinearLayout>
+</RelativeLayout>
+</merge>

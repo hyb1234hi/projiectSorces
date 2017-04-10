@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EEEBE5"
+    android:orientation="vertical" >
+    
+   
+    
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        xmlns:pull="http://schemas.android.com/apk/res-auto/com.handmark.pulltorefresh.library"
+        android:id="@+id/topic_detail_list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/mTitleBar"
+        android:background="#0000"
+        android:cacheColorHint="#0000"
+        android:divider="#0000"
+        android:fadingEdge="none"
+        android:listSelector="#0000"
+        pull:ptrMode="both" />
+
+<!--     <com.sinaleju.lifecircle.app.customviews.pathlikelistview.PathLikeListView -->
+<!--         xmlns:path="http://schemas.android.com/apk/res-auto" -->
+<!--         android:id="@+id/personal_home_list" -->
+<!--         android:layout_marginTop="55dp" -->
+<!--         android:layout_width="match_parent" -->
+<!--         android:layout_height="match_parent" -->
+<!--         android:cacheColorHint="#00000000" -->
+<!--         android:divider="#0000" -->
+<!--         android:fadingEdge="none" -->
+<!--         android:listSelector="#0000" -->
+<!--         android:scrollbarThumbVertical="@drawable/pathlist_default_scrollbar_transpant_bg" -->
+<!--         path:scrollBarPanel="@layout/view_custom_pathlist_clock" -->
+<!--         path:scrollBarPanelInAnimation="@anim/anim_pathlist_in" -->
+<!--         path:scrollBarPanelOutAnimation="@anim/anim_pathlist_out" /> -->
+
+<!--     <com.sinaleju.lifecircle.app.customviews.pathlikelistview.PathClockView -->
+<!--         android:id="@+id/personal_home_clock" -->
+<!--         android:layout_width="100dp" -->
+<!--         android:layout_height="40dp" -->
+<!--         android:layout_alignParentRight="true" -->
+<!--         android:layout_marginTop="40dp" /> -->
+    
+    <com.sinaleju.lifecircle.app.customviews.bottommenu.BaseBottomMenu
+        android:id="@+id/mBottomMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bottom_menu_bg"
+        android:orientation="vertical"
+        android:paddingBottom="10dip"
+        android:paddingLeft="20dip"
+        android:paddingRight="20dip"
+        android:paddingTop="20dip"
+        android:visibility="gone" />
+
+</RelativeLayout>

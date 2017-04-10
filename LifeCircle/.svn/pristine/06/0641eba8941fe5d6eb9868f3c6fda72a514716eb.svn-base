@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <!-- arcLayout -->
+    <declare-styleable name="ArcLayout">
+        <attr name="fromDegrees" format="float" />
+        <attr name="toDegrees" format="float" />
+        <attr name="childSize" format="dimension" />
+    </declare-styleable>
+
+    <!-- rayLayout -->
+    <declare-styleable name="RayLayout">
+        <attr name="leftHolderWidth" format="dimension" />
+    </declare-styleable>
+
+    <!-- slideIndicator -->
+    <declare-styleable name="SlideIndicator">
+        <attr name="tagColor" format="color|reference" />
+        <attr name="tagWidth" format="dimension|reference" />
+        <attr name="tagHeight" format="dimension|reference" />
+        <attr name="tagBitmap" format="reference" />
+        <attr name="orientation">
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+        </attr>
+    </declare-styleable>
+
+    <!-- PathLikeListView -->
+<!--     <declare-styleable name="PathLikeListView"> -->
+<!--         <attr name="scrollBarPanel" format="reference" /> -->
+<!--         <attr name="scrollBarPanelInAnimation" format="reference" /> -->
+<!--         <attr name="scrollBarPanelOutAnimation" format="reference" /> -->
+<!--     </declare-styleable> -->
+    
+    <!-- RoundAngleImageView -->
+    <declare-styleable name="RoundAngleImageView">
+        <attr name="roundWidth" format="dimension" />
+        <attr name="roundHeight" format="dimension" />
+    </declare-styleable>
+</resources>

@@ -1,0 +1,22 @@
+<component name="libraryTable">
+  <library name="dexedLibs">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/LifeCircle/bin/dexedLibs/issbase_v1.1-056a58bf911b09c5a3fabaa6de7f0873.jar!/" />
+      <root url="jar://$PROJECT_DIR$/LifeCircle/bin/dexedLibs/MapApiSearch-fcd5097a8d5d495f66f49d85bbc4662d.jar!/" />
+      <root url="jar://$PROJECT_DIR$/LifeCircle/bin/dexedLibs/pinyin4j-2.5.0-5818a101ab232275f83d5f47e604e895.jar!/" />
+      <root url="jar://$PROJECT_DIR$/LifeCircle/bin/dexedLibs/MapApiLocation-a5ed76cda611769489f4eddd8cde5e0e.jar!/" />
+      <root url="jar://$PROJECT_DIR$/LifeCircle/bin/dexedLibs/android-support-v4-e701b79eb6a7cd981cbb25e9235cf71e.jar!/" />
+      <root url="jar://$PROJECT_DIR$/LifeCircle/bin/dexedLibs/Android_Map_V2.0.4-889e71ab2355cfbbccff3111a73a4d4d.jar!/" />
+      <root url="jar://$PROJECT_DIR$/LifeCircle/bin/dexedLibs/ormlite-android-4.45-4ddc640819126ec45b788592858a088a.jar!/" />
+      <root url="jar://$PROJECT_DIR$/LifeCircle/bin/dexedLibs/http-a25aad25d037533e6810ac676a6a7c14.jar!/" />
+      <root url="jar://$PROJECT_DIR$/LifeCircle/bin/dexedLibs/ormlite-core-4.45-4264e6d2e7b8def3d169d2afdd3aa4ab.jar!/" />
+      <root url="jar://$PROJECT_DIR$/LifeCircle/bin/dexedLibs/umeng_sdk-e2cf5d0783c293467ee3091a85c4e120.jar!/" />
+      <root url="jar://$PROJECT_DIR$/LifeCircle/bin/dexedLibs/pulltorefresh_library-ba88ba5b31a69e82974ddad2150a66f5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/LifeCircle/bin/dexedLibs/pureMVC-5c4ec8de48134a957bd83e5602c26852.jar!/" />
+      <root url="jar://$PROJECT_DIR$/LifeCircle/bin/dexedLibs/library_slide-7d45a0fa1afefbad42d22f75466e109b.jar!/" />
+      <root url="jar://$PROJECT_DIR$/LifeCircle/bin/dexedLibs/weibo.sdk.android.sso-e01c3a37a7c97b01a85852da372cc265.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

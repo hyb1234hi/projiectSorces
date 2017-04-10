@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="transparent">#00ffffff</color>
+    <color name="transparent_background">#50000000</color>
+    <color name="translucent">#aa000000</color>
+    <color name="ac_left_comm_white">#F7F8F8</color>
+    <color name="ac_left_text_normal">#333333</color>
+    <color name="ac_left_index_red_bg">#39CFE8</color>
+    <color name="ac_regist_text_grey">#C2C2C2</color>
+    <color name="ac_regist_text_blue">#2CA3CE</color>
+    <color name="ac_regist_text_black">#000000</color>
+    <color name="ac_regist_text_grey_dark">#888888</color> 
+    <color name="dark_black">#333333</color>
+    <color name="application_background">#EEEBE5</color>
+    <color name="error">#774A13</color>
+    <color name="msg_last_number">#999999</color>
+    <color name="orange">#FF6600</color>
+    
+    <color name="light_blue">#53B4D6</color>
+
+    <!-- search bar -->
+    
+    <color name="color_search_bar_unchecked">#E2E2E6</color>
+    <color name="color_search_bar_checked">#FB8723</color>
+    
+    <!-- home_page_top -->
+    <color name="color_home_page_top_shishi_remen_bg_selected">#EEEBE5</color>
+    <color name="color_home_page_top_shishi_remen_bg_unselected">#BEBCB8</color>
+    <color name="color_home_page_top_shishi_remen_text_selected">#666666</color>
+    <color name="color_home_page_top_shishi_remen_text_unselected">#fff</color>
+
+    <!-- 列表item背景 -->
+    <color name="list_item_bg_normal">#F4F4F4</color>
+    <color name="list_item_bg_focus">#DDDDDD</color>
+
+    <!-- 右侧服务 -->
+    <color name="hot_topic_text_color">#D9564B</color>
+    <color name="right_fragment_service_text_color">#A29990</color>
+    <color name="right_fragment_service_title_color">#6E6053</color>
+
+    <drawable name="autocomplete">#80000000</drawable>
+    <!-- <drawable name="ac_login_layout_normal">#F7F7F7</drawable> -->
+
+    <drawable name="ac_login_cooperation_grey_bg">#F8F8F8</drawable>
+    <drawable name="ac_login_cooperation_darkgrey_bg">#EEEBE5</drawable>
+    <drawable name="ac_selectlivearea_grey_bg">#F4F4F4</drawable>
+    <drawable name="ac_selectlivearea_blue_bg">#159FFF</drawable>
+	<drawable name="ac_addcell_bottom_bg">#E0DDD7</drawable>
+	<drawable name="ac_regist_persontype_bg_grey">#EFEFEF</drawable>
+	<drawable name="ac_regist_persontype_bg_white">#FFFFFF</drawable>
+</resources>

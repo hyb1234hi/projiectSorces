@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp" >
+
+    <RelativeLayout
+        android:id="@+id/linear_community"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="6.5dp"
+        android:layout_marginRight="10dp"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/from_community"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingTop="4dp"
+            android:text="测试小区一"
+            android:textColor="#9D9999"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/linearCommentCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="50dp"
+        android:layout_toRightOf="@id/linear_community"
+        android:paddingTop="6.5dp" >
+
+        <ImageView
+            android:id="@+id/imgToComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:scaleType="fitStart"
+            android:src="@drawable/ic_msg_comment" />
+
+        <TextView
+            android:id="@+id/txtCommentCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/imgToComment"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="-2dp"
+            android:layout_toRightOf="@id/imgToComment"
+            android:gravity="top"
+            android:paddingBottom="4dp"
+            android:text="评论"
+            android:textColor="#9D9999"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/linearDeliveredCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="50dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="6.5dp"
+        android:layout_toRightOf="@id/linearCommentCount"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/imgToDeliver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:scaleType="fitStart"
+            android:src="@drawable/ic_msg_deliver" />
+
+        <TextView
+            android:id="@+id/txtDeliveredCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_toRightOf="@id/imgToDeliver"
+            android:text="转发"
+            android:textColor="#9D9999"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/lyotFavor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/bg_favor" >
+
+        <ImageView
+            android:id="@+id/imgAgree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="-1.5dp"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/img_agree_unchecked" />
+
+        <TextView
+            android:id="@+id/txtAgreeCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="-1dp"
+            android:gravity="center"
+            android:text="好"
+            android:textColor="#f3f3f3"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+</RelativeLayout>

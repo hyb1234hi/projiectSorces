@@ -1,0 +1,798 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:scrollbars="none" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <com.sinaleju.lifecircle.app.customviews.TitleBar
+            android:id="@+id/mTitleBar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#F4F4F4"
+            android:orientation="vertical"
+            android:paddingBottom="20dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" >
+
+            <!-- 隐私 -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="20dp"
+                android:text="隐私"
+                android:textColor="@color/ac_regist_text_grey"
+                android:textSize="@dimen/dimen_set_fontsize" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/login_background_grey"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:text="允许所有人给我发私信"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/dimen_set_fontsize" />
+
+                    <RadioButton
+                        android:id="@+id/set_allletter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@drawable/selector_regist_radiobutton"
+                        android:duplicateParentState="true" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/regist_iv_checknumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                     android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:singleLine="true"
+                        android:text="只允许我关注的人给我发私信"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/dimen_set_fontsize" />
+
+                    <RadioButton
+                        android:id="@+id/set_attentionletter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@drawable/selector_regist_radiobutton"
+                        android:duplicateParentState="true" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 消息推送 -->
+
+
+            <!--
+                 <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="20dp"
+                android:text="消息推送"
+                android:textColor="@color/ac_regist_text_grey"
+                android:textSize="@dimen/dimen_set_fontsize" />
+            -->
+
+
+            <!--
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/login_background_grey"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="8dp" >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:text="被评论"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/dimen_set_fontsize" />
+
+                    <com.sinaleju.lifecircle.app.customviews.slipswitchbutton.SlipSwitchButton
+                        android:id="@+id/set_allletter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@drawable/selector_regist_radiobutton" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/regist_iv_checknumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="8dp" >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:text="被@"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/dimen_set_fontsize" />
+
+                    <com.sinaleju.lifecircle.app.customviews.slipswitchbutton.SlipSwitchButton
+                        android:id="@+id/set_attentionletter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@drawable/selector_regist_radiobutton" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/regist_iv_checknumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="8dp" >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:text="新粉丝"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/dimen_set_fontsize" />
+
+                    <com.sinaleju.lifecircle.app.customviews.slipswitchbutton.SlipSwitchButton
+                        android:id="@+id/set_newfollower"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@drawable/selector_regist_radiobutton" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/regist_iv_checknumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="8dp" >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:text="新赞"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/dimen_set_fontsize" />
+
+                    <com.sinaleju.lifecircle.app.customviews.slipswitchbutton.SlipSwitchButton
+                        android:id="@+id/set_newpraise"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@drawable/selector_regist_radiobutton" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/regist_iv_checknumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/selector_login_layout_press_bottom"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="8dp" >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:text="特别关注动态提醒"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/dimen_set_fontsize" />
+
+                    <ImageView
+                        android:id="@+id/set_attentionletter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/common_rigtharrow_normal" />
+                </LinearLayout>
+            </LinearLayout>
+            -->
+
+
+            <!-- 音效设置 -->
+
+
+            <!--
+                 <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="20dp"
+                android:text="音效设置"
+                android:textColor="@color/ac_regist_text_grey"
+                android:textSize="@dimen/dimen_set_fontsize" />
+            -->
+
+
+            <!--
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/login_background_grey"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="8dp" >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:text="提示音"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/dimen_set_fontsize" />
+
+                    <com.sinaleju.lifecircle.app.customviews.slipswitchbutton.SlipSwitchButton
+                        android:id="@+id/set_sound"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@drawable/selector_regist_radiobutton"
+                        android:checked="true" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="8dp" >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:text="震动"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/dimen_set_fontsize" />
+
+                    <com.sinaleju.lifecircle.app.customviews.slipswitchbutton.SlipSwitchButton
+                        android:id="@+id/set_shake"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:button="@drawable/selector_regist_radiobutton" />
+                </LinearLayout>
+            </LinearLayout>
+            -->
+
+
+            <!-- 分享中 -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="20dp"
+                android:text="分享中"
+                android:textColor="@color/ac_regist_text_grey"
+                android:textSize="@dimen/dimen_set_fontsize" />
+            <!-- 新浪 -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/login_background_grey"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="5dp" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp" >
+
+                    <!-- android:background="@drawable/selector_login_layout_press_top" -->
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/login_sina"
+                        android:contentDescription="@string/imageDescription" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/login_sina"
+                        android:textColor="#000000"
+                        android:textSize="20sp" />
+
+                    <Button
+                        android:id="@+id/set_share_sina"
+                        android:layout_width="70dp"
+                        android:layout_height="35dp"
+                        android:background="@drawable/common_set_connect"
+                        android:padding="1dp"
+                        android:text="连接" />
+                </LinearLayout>
+
+                <!--
+                     <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+                -->
+
+
+                <!-- 腾讯QQ -->
+
+
+                <!--
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/selector_login_layout_press_middle"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/login_qq"
+                        android:contentDescription="@string/imageDescription" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/login_qq"
+                        android:textColor="#000000"
+                        android:textSize="20sp" />
+
+                    <Button
+                        android:id="@+id/set_share_qq"
+                        android:layout_width="60dp"
+                        android:layout_height="35dp"
+                        android:background="@drawable/selector_main_button"
+                        android:padding="1dp"
+                        android:text="连接" />
+                </LinearLayout>
+                -->
+
+
+                <!--
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+
+                腾讯微博
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/selector_login_layout_press_middle"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/login_qqweibo"
+                        android:contentDescription="@string/imageDescription" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/login_qqweibo"
+                        android:textColor="#000000"
+                        android:textSize="20sp" />
+
+                    <Button
+                        android:id="@+id/set_share_qqweibo"
+                        android:layout_width="60dp"
+                        android:layout_height="35dp"
+                        android:background="@drawable/selector_main_button"
+                        android:padding="1dp"
+                        android:text="连接" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+
+                人人网
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/selector_login_layout_press_middle"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/login_renrenwang"
+                        android:contentDescription="@string/imageDescription" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/login_renren"
+                        android:textColor="#000000"
+                        android:textSize="20sp" />
+
+                    <Button
+                        android:id="@+id/set_share_renrenwang"
+                        android:layout_width="60dp"
+                        android:layout_height="35dp"
+                        android:background="@drawable/selector_main_button"
+                        android:padding="1dp"
+                        android:text="连接" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+
+                开心网
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/selector_login_layout_press_bottom"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/login_kaixinwang"
+                        android:contentDescription="@string/imageDescription" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:text="@string/login_kaixin"
+                        android:textColor="#000000"
+                        android:textSize="20sp" />
+
+                    <Button
+                        android:id="@+id/set_share_kaixinwang"
+                        android:layout_width="60dp"
+                        android:layout_height="35dp"
+                        android:background="@drawable/selector_main_button"
+                        android:padding="1dp"
+                        android:text="连接" />
+                </LinearLayout>
+                -->
+            </LinearLayout>
+
+            <!-- 关于 -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="20dp"
+                android:text="关于"
+                android:textColor="@color/ac_regist_text_grey"
+                android:textSize="@dimen/dimen_set_fontsize" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/login_background_grey"
+                android:orientation="vertical"
+                android:padding="2dp" >
+
+                <LinearLayout
+                    android:id="@+id/set_officialhome"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="8dp" >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:text="官方公共主页"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/dimen_set_fontsize" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ac_left_jiantou_grey" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+
+                <RelativeLayout
+                    android:id="@+id/set_newversion"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:padding="8dp" >
+
+                    <TextView
+                        android:id="@+id/set_newversion_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="5dp"                        
+                        android:text="新版本检测"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/dimen_set_fontsize" />
+                     <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/set_newversion_text"
+                        android:src="@drawable/set_newversionicon" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/ac_left_jiantou_grey" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+
+                <LinearLayout
+                    android:id="@+id/set_guide"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="8dp" >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:text="功能引导页"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/dimen_set_fontsize" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ac_left_jiantou_grey" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+
+                <LinearLayout
+                    android:id="@+id/set_suggestion"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="8dp" >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:text="意见反馈"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/dimen_set_fontsize" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ac_left_jiantou_grey" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+
+                <!--
+                <LinearLayout
+                    android:id="@+id/set_grade"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/selector_login_layout_press_middle"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="8dp" >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:singleLine="true"
+                        android:text="喜欢好吗，给我们评分吧！"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/dimen_set_fontsize" />
+
+                    <ImageView
+                        android:id="@+id/set_attentionletter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/common_rigtharrow_normal" />
+                </LinearLayout>
+                -->
+
+
+                <!--
+                     <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/common_dividerline"
+                    android:contentDescription="@string/imageDescription" />
+                -->
+
+                <LinearLayout
+                    android:id="@+id/set_about"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:clickable="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="8dp" >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:text="关于好吗"
+                        android:textColor="#000000"
+                        android:textSize="@dimen/dimen_set_fontsize" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ac_left_jiantou_grey"
+                        android:contentDescription="@string/imageDescription" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/set_button_exit"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/selector_set_quit"
+                android:text="退出"
+                android:textColor="#ffffff"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

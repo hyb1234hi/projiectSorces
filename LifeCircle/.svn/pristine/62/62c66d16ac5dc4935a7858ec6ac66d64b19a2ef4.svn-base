@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/base"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f4f4f4" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <com.sinaleju.lifecircle.app.customviews.TitleBar
+            android:id="@+id/mTitleBar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+        <FrameLayout
+            android:id="@+id/ac_base_frame_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#fafafa" >
+
+            <LinearLayout
+                android:id="@+id/lyotContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imgProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:scaleType="centerInside"
+                android:visibility="gone" />
+
+            <ProgressBar
+                android:id="@+id/baseProgressBar"
+                style="?android:attr/progressBarStyleInverse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <com.sinaleju.lifecircle.app.customviews.bottommenu.BaseBottomMenu
+        android:id="@+id/mBottomMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@drawable/bottom_menu_bg"
+        android:orientation="vertical"
+        android:paddingBottom="10dip"
+        android:paddingLeft="20dip"
+        android:paddingRight="20dip"
+        android:paddingTop="20dip"
+        android:visibility="gone" />
+    <RelativeLayout
+        android:id="@+id/rl_hoome_frame"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#90000000"
+        android:visibility="gone"
+        >
+        <RelativeLayout
+            android:id="@+id/rl_home_left"
+            android:layout_width="107dp"
+            android:layout_height="113dp"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/home_left"
+            >
+            
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_home_right"
+            android:layout_width="136dp"
+            android:layout_height="103dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/home_right"
+            >
+            
+        </RelativeLayout>
+        <RelativeLayout 
+            android:id="@+id/rl_home_hid"
+            android:layout_width="244dp"
+            android:layout_height="145dp"
+            android:layout_marginTop="5dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/home_hid"
+            android:layout_below="@+id/rl_home_left"
+            >
+            
+        </RelativeLayout>
+        <FrameLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            >
+            <ImageView 
+                android:id="@+id/iv_left"
+                android:layout_width="183dp"
+                android:layout_height="113dp"
+                android:background="@drawable/iv_home_left"
+                />
+            <ImageView 
+                android:id="@+id/iv_right"
+                android:layout_width="236dp"
+                android:layout_height="70dp"
+                android:layout_gravity="bottom|right"
+                android:background="@drawable/iv_home_right"
+                />
+        </FrameLayout>
+        
+    </RelativeLayout>
+    <RelativeLayout 
+        android:id="@+id/rl_near_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#90000000"
+        android:paddingTop="50dp"
+        android:visibility="gone"
+        >
+        <ImageView 
+            android:id="@+id/iv_near_1"
+            android:layout_width="218dp"
+            android:layout_height="106dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="50dp"
+            android:background="@drawable/iv_near_1"
+            
+            />
+        <ImageView 
+            android:id="@+id/iv_near_2"
+            android:layout_alignParentRight="true"
+            android:layout_width="212dp"
+            android:layout_height="96dp"
+            android:layout_marginTop="205dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/iv_near_2"
+            />
+     </RelativeLayout>
+     <LinearLayout 
+        android:id="@+id/ll_send_msg_frame"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#90000000"
+        android:orientation="vertical"
+        android:paddingTop="50dp"
+        android:visibility="gone"
+        
+        >
+        <ImageView 
+            android:id="@+id/iv_msg_1"
+            android:layout_width="257.5dp"
+            android:layout_height="52dp"
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="65dp"
+            android:background="@drawable/iv_msg_1"
+            />
+        <ImageView 
+            android:id="@+id/iv_msg_2"
+            android:layout_width="300dp"
+            android:layout_height="42dp"
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/iv_msg_2"
+            />
+    </LinearLayout>
+<!--     <ImageView -->
+<!--         android:id="@+id/base_fudong_image" -->
+<!--         android:layout_width="fill_parent" -->
+<!--         android:layout_height="fill_parent" -->
+<!--         android:contentDescription="@string/imageDescription" -->
+<!--         android:scaleType="centerInside" -->
+<!--         android:visibility="gone" /> -->
+
+</FrameLayout>

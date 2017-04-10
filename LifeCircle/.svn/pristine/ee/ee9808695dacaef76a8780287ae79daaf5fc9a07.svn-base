@@ -1,0 +1,55 @@
+package com.sinaleju.lifecircle.app.service.remote_impl.entity;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.sinaleju.lifecircle.app.service.remote_impl.ConfirmCompleteStringRS;
+import com.sinaleju.lifecircle.app.service.remote_impl.RemoteConst;
+
+public class RSConfirmComplete extends /* StringRS */ConfirmCompleteStringRS {
+
+	private String platform_name;
+	private String platform_id;
+	private String param;
+	private String user_id;
+	private String type;
+
+	public RSConfirmComplete(String platform_id, String platform_name,
+			String param, String user_id, String type) {
+		setNeedCreateToken(false);
+		// setNeedParams(false);
+		setNeedReturnEntireResult(true);
+		this.platform_id = platform_id;
+		this.platform_name = platform_name;
+		this.param = param;
+		this.user_id = user_id;
+		this.type=type;
+
+	}
+
+	@Override
+	public String getCustomUrl() {
+		return RemoteConst.URL_USER_AUTHORIZELOGIN;
+	}
+
+	@Override
+	public int getMethod() {
+		return ConfirmCompleteStringRS.METHOD_POST;
+		// return StringRS.METHOD_POST;
+	}
+
+	@Override
+	public Map<String, String> getUsingParams() {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("platform_id", platform_id);
+		map.put("platform_name", platform_name);
+		if (!"".equals(param)) {
+			map.put("param", param);
+		}
+		if (!"".equals(user_id)) {
+			map.put("user_id", user_id);
+		}
+		map.put("type", type);
+		return map;
+	}
+
+}
